@@ -412,27 +412,62 @@ input.field { width: 180px; }
 .play { position: fixed; inset: 0; z-index: 50; display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 440px); }
 .play-stage { position: relative; min-width: 0; min-height: 0; perspective: 1600px; overflow: hidden; }
 .play-anchor { top: 54%; }
+.play-stage > .toy-canvas { height: auto; bottom: var(--ui, 132px); }
 .play-now { position: absolute; left: 24px; top: max(24px, env(safe-area-inset-top, 0px)); margin: 0; display: grid; gap: 4px; pointer-events: none; }
 .play-now b { font: 400 clamp(40px, 5vw, 64px)/0.85 var(--f-big); color: var(--sand); }
 .play-now i { font: 400 14px/1.3 var(--f-pix); font-style: normal; color: var(--steel); }
 .play-ui { position: absolute; left: 24px; right: 24px; bottom: max(20px, env(safe-area-inset-bottom, 0px)); display: grid; gap: 12px; justify-items: center; }
-.play-progress { width: min(420px, 100%); height: 4px; background: var(--ink); }
-.play-progress i { display: block; height: 100%; width: 0; background: var(--accent); }
+.combo { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 12px; max-width: min(820px, 100%); }
+.combo-label { font: 500 14px/1 var(--f-pix); color: var(--steel); }
+.combo-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; counter-reset: step; }
+.combo-steps li {
+  display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 4px 0 10px;
+  background: var(--ink); color: var(--fog); font: 500 14px/1 var(--f-pix);
+  clip-path: var(--notch); counter-increment: step;
+  transition: background-color 0.15s var(--ease-out), color 0.15s var(--ease-out);
+}
+.combo-steps li::before { content: counter(step); font-size: 12px; color: var(--slate); margin-right: 2px; }
+.combo-steps li[aria-current] { background: var(--accent); color: var(--night); }
+.combo-steps li[aria-current]::before, .combo-steps li[aria-current] .combo-x { color: var(--night); }
+.combo-steps li.combo-empty { background: none; color: var(--steel); padding: 0; font-weight: 400; }
+.combo-steps li.combo-empty::before { content: none; }
+.combo-x { width: 24px; height: 24px; border: 0; padding: 0; background: none; cursor: pointer; color: var(--steel); font: 400 12px/1 var(--f-pix); }
+.combo-x:hover { color: var(--white); }
+.play .js-run { background: var(--accent); }
+.play .js-run:hover { background: var(--sand); }
+.play .js-run kbd { background: rgba(24, 20, 37, 0.25); color: var(--night); }
 .play-buttons { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
 .play-gap { width: 12px; }
 .play-buttons .chip { background: var(--ink); }
 .play-buttons .chip[aria-pressed="true"] { background: var(--accent); color: var(--night); }
+.play-notes { align-items: flex-start; }
 .play-notes .card { animation: none; }
+.play-h { margin: 4px 0 -4px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font: 500 15px/1.2 var(--f-pix); color: var(--sand); }
+.play-h span { font: 400 12px/1 var(--f-pix); color: var(--steel); }
+.combos { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.combos button { width: 100%; display: grid; gap: 4px; padding: 8px 10px; border: 0; cursor: pointer; text-align: left; background: var(--night); color: var(--fog); transition: background-color 0.15s var(--ease-out); }
+.combos button:hover { background: var(--back); }
+.combos button[aria-pressed="true"] { box-shadow: inset 3px 0 0 var(--accent); }
+.combos b { font: 500 15px/1.2 var(--f-pix); color: var(--sand); }
+.combos i { font: 400 12px/1.4 var(--f-pix); font-style: normal; color: var(--steel); }
 .play-about { margin: 0; font: 400 15px/1.5 var(--f-pix); color: var(--fog); min-height: 3em; }
-.tricks { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; max-height: 46vh; overflow-y: auto; border-top: 2px dashed var(--navy); padding-top: 8px; }
-.tricks button { width: 100%; display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 8px; align-items: baseline; padding: 6px 8px; border: 0; background: none; cursor: pointer; text-align: left; color: var(--fog); }
+.tricks { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; max-height: 38vh; overflow-y: auto; border-top: 2px dashed var(--navy); padding-top: 8px; }
+.tricks button { width: 100%; display: grid; grid-template-columns: 28px minmax(0, 1fr) auto 16px; gap: 8px; align-items: baseline; padding: 6px 8px; border: 0; background: none; cursor: pointer; text-align: left; color: var(--fog); }
+.tricks em { font: 500 16px/1 var(--f-pix); font-style: normal; color: var(--slate); text-align: right; }
+.tricks button:hover em { color: var(--accent); }
 .tricks button:hover { background: var(--night); }
 .tricks button[aria-current] { background: var(--night); box-shadow: inset 3px 0 0 var(--accent); }
 .tricks span { font: 400 12px/1 var(--f-pix); color: var(--slate); }
 .tricks b { font: 500 15px/1.3 var(--f-pix); color: var(--sand); }
 .tricks i { font: 400 12px/1 var(--f-pix); font-style: normal; color: var(--steel); }
 @media (max-width: 860px) {
-  .play { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(340px, 58%) minmax(0, 1fr); }
+  .play { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(400px, 64%) minmax(0, 1fr); }
+  .play-ui { left: 12px; right: 12px; bottom: 12px; gap: 8px; }
+  .combo { flex-wrap: nowrap; width: 100%; justify-content: flex-start; }
+  .combo-label, .play .js-run kbd, .play-gap { display: none; }
+  .combo-steps { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; justify-content: flex-start; min-width: 0; }
+  .combo-steps li { flex: none; }
+  .play-buttons { gap: 6px; }
   .play-now b { font-size: 36px; }
   .tricks { max-height: none; }
 }

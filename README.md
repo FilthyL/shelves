@@ -81,7 +81,11 @@ The basement holds toys you can play with instead of shelves. Each toy is a real
 - **Butterfly knife** (a trainer): 24 tricks, from the basic opening and closing through fans, the Y2K and Zen rollovers, Chaplin, helix, aerials, the ladder and the tornado. The blade and bite handle swing on their own pins, so the knife opens and closes the way the real linkage does.
 - **Deck of cards**: 13 cardistry moves, including the thumb fan, Charlier, swivel, revolution and Sybil cuts, the spring, waterfall, ribbon spread with turnover, riffle shuffle and bridge, pinwheel, scissor cut, boomerang throw and anaconda dribble.
 
-Pick a toy to open the play table. Arrow keys change the trick, space pauses, and every trick has its own link, like `#tricks--butterfly-knife--y2k-rollover`. Tricks live in `assets/js/toys.js`, the 3D models in `assets/js/toys3d.js`; toys are listed in `data/rooms/tricks.json`.
+Hands do the tricks: one hand flips the knife, two hands work the deck, each holding it from the side with the thumb on the front. The knife hand works itself out from each trick: it grips the safe handle and turns with the knife, loosens to let the knife spin in its fingers, and opens flat under a toss.
+
+Pick a toy to open the play table, then **build a combo**: pick one of the suggested combos, or tap tricks on the card to add them in order, and press **Run the combo** (or Enter). The hand runs the whole sequence in one flow. Where a trick needs the knife open or closed and it isn't, the hand opens or closes it on the way. Speeds are 0.5×, 1× and 2×, **Repeat** keeps going, and Backspace takes the last trick out. A trick you add while the hand is resting plays right away, and one you add during a run joins the end of it. The combo is in the link, so it can be shared: `#tricks--butterfly-knife--basic-opening+chaplin+basic-closing`.
+
+Tricks and suggested combos live in `assets/js/tricks.js`, the performer, sound and flat fallback in `assets/js/toys.js`, and the 3D models and hands in `assets/js/toys3d.js`. Toys are listed in `data/rooms/tricks.json`.
 
 ## Sound
 

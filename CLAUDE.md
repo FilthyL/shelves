@@ -22,8 +22,9 @@ A static site at https://filthyl.github.io/shelves/ (repo FilthyL/shelves). A pi
 | `assets/js/pixel.js` | Canvas pixel renderer: street, house exterior and cutaway (attic + floors + basement), dither dissolve, decor sprites, wallpaper tiles |
 | `assets/js/app.js` | Routing, street scene, room shelves (packing, face-out promotion), inspector (3D object in hand), search, Trick Room, play table, logging glue |
 | `assets/js/log.js` | Logging new entries from the site: suggestions (AniList, Open Library, MusicBrainz, IMDb) and a commit through GitHub's contents API with a fine-grained token kept in localStorage |
-| `assets/js/toys.js` | Tricks: butterfly knife (24), deck of cards (13); flat CSS fallback rigs; per-trick sounds derived from motion; the `player` that drives a rig (and its sound) |
-| `assets/js/toys3d.js` | The real 3D toys: Three.js 0.160.0 imported from jsDelivr on demand, extruded knife (rainbow anodised titanium handles: an ENDESGA gradient texture plus iridescence; gold pins), box cards with canvas faces, PMREM studio reflections, shadows |
+| `assets/js/tricks.js` | Trick data (knife 24, cards 13), `COMBOS` (suggested), `knifeRoutine`/`deckRoutine`: a combo as one track (auto open/close between tricks, `from` = current pose, `loop`), smooth curves with snap-and-bounce stops, the derived knife hand, `CARD_HANDS` per move |
+| `assets/js/toys.js` | The `performer` (run/swap/hold a routine, speed, loop), sounds derived from the routine, flat CSS fallback rigs, the `TOYS` registry |
+| `assets/js/toys3d.js` | The real 3D toys: Three.js 0.160.0 imported from jsDelivr on demand, extruded knife (rainbow anodised titanium handles: an ENDESGA gradient texture plus iridescence; gold pins), box cards with canvas faces, jointed hands (`makeHand`, `POSES`/`CONTACT` for the knife, `CARD_POSES`/`CARD_CONTACT` for the deck), PMREM studio reflections, shadows |
 | `assets/js/sound.js` | All sound, synthesized with Web Audio (no files): one-shots via `play(name)`, continuous noise `bed()`s; wakes on first gesture; toggle `M`, stored in localStorage `fm-sound` |
 | `data/house.json` | House name, number, repo/branch for logging, rooms (id, name, kind, file) in house order: attic first, then floors two at a time, a leftover room goes in the basement |
 | `data/rooms/*.json` | `{ "items": [...] }`, one entry per line; order = shelf order |
@@ -34,10 +35,12 @@ A static site at https://filthyl.github.io/shelves/ (repo FilthyL/shelves). A pi
 
 ## Conventions and facts worth keeping
 
-- Hash routes: `#` street, `#house` front open, `#<room>`, `#<room>--<item>` (inspector), manga `#manga--<series>--<vol>`, toys `#tricks--<toy>--<trick>`. Item ids are slugs of the title, deduped with `-<year>`.
+- Hash routes: `#` street, `#house` front open, `#<room>`, `#<room>--<item>` (inspector), manga `#manga--<series>--<vol>`, toys `#tricks--<toy>--<trick>+<trick>…` (the combo). Item ids are slugs of the title, deduped with `-<year>`.
 - Shelfmarks are `<house initials>-<kind code>-<nnn>`, e.g. `FM-MUS-001`, derived from the house name.
 - Room kinds: movies, music, books, anime, manga, toys. Adding a kind touches `KINDS` (model.js), `THEMES`/`interiorPixel`/`PROPS`/`wallTile` (pixel.js), `.theme-<kind>` (shelves.css), `KINDS`/`FORMATS` (shelflib.py), and a source in covers.py if it has covers.
 - Butterfly knife kinematics: the safe handle is the root; blade angle `b` about pin 1 (0 folded, 180 out); bite handle angle `d` about pin 2 relative to the blade (0 along the blade, 180 folded back). Open = b 180, d 180. A trick is `bali(id, name, level, about, frames, pivot)` with frames `[dt, {X,Y,rz,ry,rx,b,d}, ease]`; it must end at its starting angles mod 360 (a quick node check verified all 24). Card moves are functions `f(t, i, n)` returning `{x,y,z,rz,ry,rx}` and must end with the deck square.
+- The owner wanted hands, smoother and faster tricks, and combos instead of a media player (no prev/pause/next or progress bar; speeds stay). Knife tricks play at `TEMPO` 0.64 of their written time, cards at `CARD_TEMPO` 0.78.
+- Knife hand: `handTrack` keeps the hand turned with the knife while they line up within 75°, otherwise it stays (spins, tosses); the rig blends grip/pinch/open from `pinch` and `air` in each sample. `LEAN` tilts the whole knife scene so the arm comes from the lower left. Card hands: the screen-left hand is the performer's right hand, turned 90° about its fingers so the palm faces the deck's edge (thumb on the front); the owner disliked palms-to-camera.
 - Network from GitHub runners: MyAnimeList's Jikan API is unreachable (ENETUNREACH), Letterboxd pages return 403, iTunes film search returns nothing; AniList, MangaDex, MusicBrainz/CAA, Deezer, Open Library and IMDb work.
 
 ## Gotchas hit before
@@ -48,8 +51,9 @@ A static site at https://filthyl.github.io/shelves/ (repo FilthyL/shelves). A pi
 - Container-query units on an element resolve against the nearest container ancestor, or the viewport if there is none (the back-cover padding bug). Use % for an element's own padding.
 - `.scene-room` sets `image-rendering: pixelated` (inherited); real cover images reset it with `.art-img { image-rendering: auto }`.
 - `PMREMGenerator.fromScene(scene, sigma, near, far)` defaults far to 100; a bigger studio scene is clipped and metal renders black. Pass the far plane.
-- WebGL in headless Chromium here needs `--enable-unsafe-swiftshader --use-gl=angle --use-angle=swiftshader`; route the jsDelivr Three.js URL to `scratchpad/three/package/build/three.module.min.js` (npm registry works, jsDelivr is blocked). SwiftShader is slow, so trick time lags real time in tests; wait on the progress bar, not a fixed delay.
-- Sounds: never add audio files. New sounds are recipes in `SOUNDS` (sound.js); toy sounds come from `knifeEvents`/`cardEvents` in toys.js. Test by counting `AudioBufferSourceNode.prototype.start` calls in Playwright.
+- WebGL in headless Chromium here needs `--enable-unsafe-swiftshader --use-gl=angle --use-angle=swiftshader`; route the jsDelivr Three.js URL to `scratchpad/three/package/build/three.module.min.js` (npm registry works, jsDelivr is blocked). SwiftShader is slow, so trick time lags real time in tests; wait on the `.play-now` text or pose exact moments with the harness below, not a fixed delay.
+- To pose toys at exact moments, use `scratchpad/harness.js` style pages: route a fake `http://localhost:8765/__harness.html` in Playwright that imports `TOYS`, builds a rig and calls `rig.render(routine.sample(t))`. The page needs the `.toy-canvas` CSS, since the 3D canvas sizes itself from its own box.
+- Sounds: never add audio files. New sounds are recipes in `SOUNDS` (sound.js); toy sounds come from `knifeEvents`/`moveEvents` in toys.js (worked out from the routine). Test by counting `AudioBufferSourceNode.prototype.start` calls in Playwright.
 - Python output in CI needs flushing (`PYTHONUNBUFFERED=1`, `print(..., flush=True)`) or the log looks hung.
 - `GITHUB_TOKEN` pushes don't trigger workflows; `gh workflow run` (workflow_dispatch) does.
 

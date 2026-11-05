@@ -2,7 +2,7 @@ import { loadHouse, putEntry, hash, esc, roomStats, countLine } from './model.js
 import { spineHTML, spineClass, frameHTML, backHTML, mediaHTML, coverHTML, palVars, volumeLine } from './art.js';
 import { createStreet, decorSprite, wallTile } from './pixel.js';
 import { openLog, canLog, applyPending } from './log.js';
-import { TOYS, trickCount, player } from './toys.js';
+import { TOYS, trickCount, performer } from './toys.js';
 import { play, soundOn, toggleSound, onSound } from './sound.js';
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -793,37 +793,49 @@ function showToyRoom(room) {
       </button>`).join('')}</div></div>
     <div class="floor"></div>
     <footer class="room-foot">
-      <span>Pick a toy up to play with it. Arrow keys change the trick, space pauses.</span>
+      <span>Pick a toy up, choose a combo or build your own from its tricks, and run it.</span>
       <button class="linkish js-log" type="button">${canLog() ? 'Log an entry' : 'Owner? Log an entry'}</button>
     </footer>`;
   $('.js-search', sec).addEventListener('click', openSearch);
   $$('.js-log', sec).forEach(b => b.addEventListener('click', startLog));
   $$('.toy-station', sec).forEach(btn => {
     const it = room.items.find(i => i.id === btn.dataset.key), toy = TOYS[it.toy];
-    let pl = null, rig = null;
-    const on = () => { if (pl && !reduced) pl.go(Math.max(0, toy.tricks.findIndex(t => t.id === toy.preview))); };
-    const off = () => { if (pl) { pl.stop(); rig.pose(); } };
+    const preview = toy.routine(toy.preview, { loop: true });
+    let pf = null;
+    // hovering plays a preview; leaving stops it where it is, and the next hover carries on from there
+    const on = () => { if (pf && !reduced && !pf.running) pf.run(preview, pf.time); };
+    const off = () => pf?.stop();
     btn.addEventListener('pointerenter', on); btn.addEventListener('pointerleave', off);
     btn.addEventListener('focus', on); btn.addEventListener('blur', off);
     btn.addEventListener('click', () => { off(); S.pushed = true; go(`${room.id}--${it.id}`); });
-    toy.make({ container: $('.toy-case', btn), anchor: $('.toy-anchor', btn) }, { ghosts: 0, near: true }).then(r => {
-      if (S.room !== room || !btn.isConnected) return r.destroy();
-      rig = r; rig.pose();
-      pl = player(rig); pl.setMode('loop'); pl.setSpeed(0.8);
-      S.toyRigs.push({ rig, pl });
+    toy.make({ container: $('.toy-case', btn), anchor: $('.toy-anchor', btn) }, { near: true }).then(rig => {
+      if (S.room !== room || !btn.isConnected) return rig.destroy();
+      pf = performer(rig);
+      pf.setSpeed(0.9);
+      pf.hold(preview);
+      S.toyRigs.push({ rig, pl: pf });
       if (btn.matches(':hover, :focus')) on();
     });
   });
   window.scrollTo(0, 0);
 }
 
-function openPlay(room, itemId, trickId) {
+// ------------------------------------------------------------ the play table: build a combo, run it
+const MAX_COMBO = 12;
+const comboFrom = (toy, str) => (str || '').split('+').filter(id => toy.tricks.some(t => t.id === id)).slice(0, MAX_COMBO);
+const trickName = (toy, id) => toy.tricks.find(t => t.id === id)?.name || id;
+
+function openPlay(room, itemId, comboStr) {
   const it = room.items.find(i => i.id === itemId);
   const toy = it && TOYS[it.toy];
   if (!toy) { history.replaceState(null, '', `#${room.id}`); return closePlay(); }
-  const want = Math.max(0, toy.tricks.findIndex(t => t.id === trickId));
-  if (S.play?.item === it) { if (trickId && S.play.pl && want !== S.play.pl.index) S.play.pl.go(want); return; }
+  const asked = comboFrom(toy, comboStr);
+  if (S.play?.item === it) {
+    if (asked.length && asked.join('+') !== S.play.combo.join('+')) { S.play.combo = asked; S.play.named = null; renderCombo(); runCombo(); }
+    return;
+  }
   closePlay();
+  const named = asked.length ? null : toy.combos[0];
   const el = document.createElement('div');
   el.className = `play theme-${room.kind}`;
   el.setAttribute('role', 'dialog');
@@ -833,16 +845,18 @@ function openPlay(room, itemId, trickId) {
     <div class="inspect-backdrop"></div>
     <div class="play-stage">
       <div class="play-anchor" style="--sc:${toy.scale}"></div>
-      <div class="play-now" aria-live="polite"><b></b><i></i></div>
+      <div class="play-now" aria-live="polite"><b>Picking it up…</b><i></i></div>
       <div class="play-ui">
-        <span class="play-progress" aria-hidden="true"><i></i></span>
+        <div class="combo">
+          <span class="combo-label">Your combo</span>
+          <ol class="combo-steps"></ol>
+          <button class="linkish js-clear" type="button">Clear</button>
+        </div>
         <div class="play-buttons">
-          <button class="round js-prev" type="button" aria-label="Previous trick">←</button>
-          <button class="round js-toggle" type="button" aria-label="Pause">❚❚</button>
-          <button class="round js-next" type="button" aria-label="Next trick">→</button>
+          <button class="btn btn-primary js-run" type="button">Run the combo<kbd>Enter</kbd></button>
           <span class="play-gap"></span>
           ${[0.5, 1, 2].map(s => `<button class="chip js-speed" type="button" data-s="${s}" aria-pressed="${s === 1}">${s}×</button>`).join('')}
-          <button class="chip js-mode" type="button" aria-pressed="false" title="Repeat this trick instead of moving on">Repeat</button>
+          <button class="chip js-loop" type="button" aria-pressed="false" title="Keep doing the combo">Repeat</button>
           ${soundButton('round')}
         </div>
       </div>
@@ -854,66 +868,129 @@ function openPlay(room, itemId, trickId) {
           <h2 class="card-title">${esc(it.title)}</h2>
           ${it.creator ? `<p class="card-by"><span>Kind</span>${esc(it.creator)}</p>` : ''}
           <p class="play-about"></p>
-          <ol class="tricks">${toy.tricks.map((t, i) => `<li><button type="button" data-i="${i}"><span>${String(i + 1).padStart(2, '0')}</span><b>${esc(t.name)}</b><i>${esc(t.level)}</i></button></li>`).join('')}</ol>
+          <h3 class="play-h">Suggested combos</h3>
+          <ul class="combos">${toy.combos.map(c => `<li><button type="button" data-combo="${c.id}" aria-pressed="false"><b>${esc(c.name)}</b><i>${c.tricks.map(id => esc(trickName(toy, id))).join(' · ')}</i></button></li>`).join('')}</ul>
+          <h3 class="play-h">Tricks <span>Tap one to add it</span></h3>
+          <ol class="tricks">${toy.tricks.map((t, i) => `<li><button type="button" data-id="${t.id}" aria-label="Add ${esc(t.name)} to the combo"><span>${String(i + 1).padStart(2, '0')}</span><b>${esc(t.name)}</b><i>${esc(t.level)}</i><em aria-hidden="true">+</em></button></li>`).join('')}</ol>
         </div>
       </article>
     </aside>
     <button class="round btn-x" type="button" aria-label="Put it down">✕</button>`;
   document.body.append(el);
   document.body.style.overflow = 'hidden';
-  S.play = { el, item: it, room, rig: null, pl: null };
+  // keep the 3D view above the controls, however many lines they wrap onto
+  const ui = $('.play-ui', el), fitUi = new ResizeObserver(() => $('.play-stage', el).style.setProperty('--ui', `${ui.offsetHeight + 28}px`));
+  fitUi.observe(ui);
+  S.play = { el, fitUi, item: it, room, toy, rig: null, pf: null, combo: asked.length ? asked : named.tricks.slice(), named, loop: false, runIds: [], ciBase: 0, from: null };
+  renderCombo();
+  $('.play-about', el).textContent = 'Pick a suggested combo, or tap tricks to build your own, then run it.';
   play(it.toy === 'cards' ? 'snap' : 'rattle', 0.7);
-  $('.play-now b', el).textContent = 'Picking it up…';
-  toy.make({ container: $('.play-stage', el), anchor: $('.play-anchor', el) }, { ghosts: reduced ? 0 : 2 }).then(rig => {
+  toy.make({ container: $('.play-stage', el), anchor: $('.play-anchor', el) }, {}).then(rig => {
     if (S.play?.el !== el) return rig.destroy(); // put down before it finished loading
-    startPlay(el, it, room, toy, rig, want);
+    startPlay(rig);
   });
   $('.inspect-backdrop', el).addEventListener('click', putBackPlay);
   $('.btn-x', el).addEventListener('click', putBackPlay);
+  $('.js-run', el).addEventListener('click', () => runCombo());
+  $('.js-clear', el).addEventListener('click', () => { S.play.combo = []; S.play.named = null; S.play.pf?.stop(false); renderCombo(); });
+  $('.combo-steps', el).addEventListener('click', e => {
+    const x = e.target.closest('.combo-x');
+    if (!x) return;
+    S.play.combo.splice(+x.dataset.ci, 1);
+    S.play.named = null;
+    S.play.pf?.stop(false); // stop where it is: the rest of the run no longer matches
+    renderCombo();
+  });
+  $('.combos', el).addEventListener('click', e => {
+    const b = e.target.closest('button[data-combo]');
+    if (!b) return;
+    const c = toy.combos.find(x => x.id === b.dataset.combo);
+    S.play.combo = c.tricks.slice(); S.play.named = c;
+    renderCombo(); runCombo();
+  });
+  $('.tricks', el).addEventListener('click', e => { const b = e.target.closest('button[data-id]'); if (b) addTrick(b.dataset.id); });
+  $$('.js-speed', el).forEach(b => b.addEventListener('click', () => {
+    S.play.speed = +b.dataset.s;
+    S.play.pf?.setSpeed(S.play.speed);
+    $$('.js-speed', el).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  }));
+  $('.js-loop', el).addEventListener('click', e => {
+    const P = S.play;
+    P.loop = !P.loop;
+    e.currentTarget.setAttribute('aria-pressed', String(P.loop));
+    if (P.pf?.running) P.pf.swap(P.toy.routine(P.runIds, { from: P.from, loop: P.loop })); // same start, new ending
+  });
   $('.btn-x', el).focus({ preventScroll: true });
 }
 
-function startPlay(el, it, room, toy, rig, want) {
-  const bar = $('.play-progress i', el), toggleBtn = $('.js-toggle', el);
-  const pl = player(rig, {
-    sound: toy.sound?.(),
-    onTrick(i) {
-      const t = toy.tricks[i];
-      $('.play-now b', el).textContent = t.name;
-      $('.play-now i', el).textContent = `${t.level} · ${i + 1} of ${toy.tricks.length}`;
-      $('.play-about', el).textContent = t.about;
-      $$('.tricks button', el).forEach(b => b.toggleAttribute('aria-current', +b.dataset.i === i));
-      $(`.tricks button[data-i="${i}"]`, el)?.scrollIntoView({ block: 'nearest' });
-      history.replaceState(null, '', `#${room.id}--${it.id}--${t.id}`);
+function startPlay(rig) {
+  const P = S.play, el = P.el;
+  const pf = performer(rig, {
+    sound: P.toy.sound?.(),
+    onStep(i, seg) {
+      if (!seg) return;
+      const at = seg.auto ? -1 : P.ciBase + seg.ci;
+      $('.play-now b', el).textContent = seg.trick.name;
+      $('.play-now i', el).textContent = seg.auto
+        ? (seg.trick.id === 'basic-closing' ? 'Closing it first' : 'Opening it first')
+        : `${seg.trick.level} · ${at + 1} of ${P.combo.length}`;
+      $('.play-about', el).textContent = seg.trick.about;
+      $$('.combo-steps li', el).forEach(li => li.toggleAttribute('aria-current', +li.dataset.ci === at));
+      $$('.tricks button', el).forEach(b => b.toggleAttribute('aria-current', b.dataset.id === seg.trick.id));
     },
-    onTick(u) {
-      if (typeof u === 'number') bar.style.width = `${(u * 100).toFixed(1)}%`;
-      toggleBtn.textContent = pl.playing ? '❚❚' : '▶';
-      toggleBtn.setAttribute('aria-label', pl.playing ? 'Pause' : 'Play');
+    onEnd() {
+      $('.play-now i', el).textContent = 'Done. Run it again, or change it.';
+      $$('.combo-steps li', el).forEach(li => li.removeAttribute('aria-current'));
     },
   });
-  Object.assign(S.play, { rig, pl });
-  $('.js-prev', el).addEventListener('click', () => pl.go(pl.index - 1));
-  $('.js-next', el).addEventListener('click', () => pl.go(pl.index + 1));
-  toggleBtn.addEventListener('click', () => pl.toggle());
-  $$('.js-speed', el).forEach(b => b.addEventListener('click', () => {
-    pl.setSpeed(+b.dataset.s);
-    $$('.js-speed', el).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-  }));
-  $('.js-mode', el).addEventListener('click', e => {
-    const loop = pl.mode !== 'loop';
-    pl.setMode(loop ? 'loop' : 'all');
-    e.currentTarget.setAttribute('aria-pressed', String(loop));
-  });
-  $('.tricks', el).addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (b) pl.go(+b.dataset.i); });
-  pl.go(want);
+  pf.setSpeed(P.speed || 1);
+  Object.assign(P, { rig, pf });
+  pf.hold(P.toy.routine(P.combo));
+  runCombo();
+}
+
+/** run the whole combo, starting from wherever the toy is now */
+function runCombo() {
+  const P = S.play;
+  if (!P?.pf || !P.combo.length) return;
+  P.runIds = P.combo.slice();
+  P.ciBase = 0;
+  P.from = P.pf.state;
+  P.pf.run(P.toy.routine(P.runIds, { from: P.from, loop: P.loop }));
+}
+
+/** add a trick: if the toy is resting it does just that trick now; if it is busy, it does it at the end */
+function addTrick(id) {
+  const P = S.play;
+  if (!P || P.combo.length >= MAX_COMBO) return;
+  P.combo.push(id);
+  P.named = null;
+  renderCombo();
+  if (!P.pf) return;
+  if (P.pf.running) { P.runIds.push(id); P.pf.swap(P.toy.routine(P.runIds, { from: P.from, loop: P.loop })); return; }
+  P.runIds = [id];
+  P.ciBase = P.combo.length - 1;
+  P.from = P.pf.state;
+  P.pf.run(P.toy.routine(P.runIds, { from: P.from }));
+}
+
+function renderCombo() {
+  const P = S.play, el = P.el;
+  $('.combo-steps', el).innerHTML = P.combo.length
+    ? P.combo.map((id, i) => `<li data-ci="${i}"><span>${esc(trickName(P.toy, id))}</span><button class="combo-x" type="button" data-ci="${i}" aria-label="Take ${esc(trickName(P.toy, id))} out">✕</button></li>`).join('')
+    : '<li class="combo-empty">Empty. Tap tricks on the card to add them.</li>';
+  $('.js-run', el).disabled = !P.combo.length;
+  $('.js-clear', el).hidden = !P.combo.length;
+  $$('.combos button', el).forEach(b => b.setAttribute('aria-pressed', String(P.named?.id === b.dataset.combo)));
+  history.replaceState(null, '', `#${P.room.id}--${P.item.id}${P.combo.length ? `--${P.combo.join('+')}` : ''}`);
 }
 
 function closePlay() {
   if (!S.play) return;
-  if (S.play.pl) play('set', 0.7);
-  S.play.pl?.stop();
+  if (S.play.pf) play('set', 0.7);
+  S.play.pf?.stop();
   S.play.rig?.destroy();
+  S.play.fitUi.disconnect();
   S.play.el.remove();
   S.play = null;
   document.body.style.overflow = '';
@@ -987,10 +1064,10 @@ function onKey(e) {
   if (e.key === '/' && !typing) { e.preventDefault(); return openSearch(); }
   if ((e.key === 'm' || e.key === 'M') && !typing && !e.metaKey && !e.ctrlKey && !e.altKey) return toggleSound();
   if ((e.key === 'l' || e.key === 'L') && !typing && !S.insp && !S.play && !$('#search') && !$('#log')) { e.preventDefault(); return startLog(); }
-  if (S.play?.pl && !typing && !$('#search')) {
-    if (e.key === 'ArrowLeft') { e.preventDefault(); return S.play.pl.go(S.play.pl.index - 1); }
-    if (e.key === 'ArrowRight') { e.preventDefault(); return S.play.pl.go(S.play.pl.index + 1); }
-    if (e.key === ' ') { e.preventDefault(); return S.play.pl.toggle(); }
+  if (S.play?.pf && !typing && !$('#search')) {
+    const onButton = document.activeElement?.closest?.('button');
+    if (e.key === 'Enter' && !onButton) { e.preventDefault(); return runCombo(); }
+    if (e.key === 'Backspace' && S.play.combo.length) { e.preventDefault(); return $(`.combo-x[data-ci="${S.play.combo.length - 1}"]`, S.play.el)?.click(); }
   }
   if (S.insp && !typing) {
     if (e.key === 'ArrowLeft') step(-1);
