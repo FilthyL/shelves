@@ -128,25 +128,58 @@ function bladeGeometry() {
   return g;
 }
 
+// Rainbow anodised titanium, from ENDESGA 32: gold through magenta and blue to green and round to
+// gold again, so the bands can wrap. Each row is shifted by a slow wave, so the colour flows like
+// oil on water instead of sitting in straight stripes.
+const RAINBOW = ['#fee761', '#feae34', '#f77622', '#b55088', '#68386c', '#124e89', '#0099db', '#2ce8f5', '#63c74d', '#fee761'];
+function rainbowTexture(seed) {
+  const W = 512, H = 64;
+  const strip = document.createElement('canvas');
+  strip.width = W; strip.height = 1;
+  const sg = strip.getContext('2d'), grad = sg.createLinearGradient(0, 0, W, 0);
+  RAINBOW.forEach((c, i) => grad.addColorStop(i / (RAINBOW.length - 1), c));
+  sg.fillStyle = grad; sg.fillRect(0, 0, W, 1);
+  const c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  for (let y = 0; y < H; y++) {
+    const off = ((y * 2.2 + 46 * Math.sin(y / 9 + seed) + 22 * Math.sin(y / 3.7 + seed * 2) + seed * 90) % W + W) % W;
+    g.drawImage(strip, -off, y); g.drawImage(strip, W - off, y);
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 4;
+  // the handle's shape runs x -9..141, y -9..9, and extruded UVs are those raw coordinates
+  tex.repeat.set(1 / 150, 1 / 18);
+  tex.offset.set(9 / 150, 0.5);
+  return tex;
+}
+
+const anodise = map => new THREE.MeshPhysicalMaterial({
+  map, metalness: 0.7, roughness: 0.24, envMapIntensity: 1.3,
+  iridescence: 0.85, iridescenceIOR: 1.7, iridescenceThicknessRange: [180, 620], // the thin oxide film that makes the shimmer
+  clearcoat: 0.5, clearcoatRoughness: 0.15,
+});
+
 export async function makeBalisong3D(container, { framing, near } = {}) {
   await loadThree();
   const st = stage(container, near ? { cam: [170, 150, 700], look: [0, 6, 0] } : framing);
-  const anodised = new THREE.MeshStandardMaterial({ color: 0x0099db, metalness: 0.55, roughness: 0.32, envMapIntensity: 1.2 });
+  const safeFinish = anodise(rainbowTexture(0)), biteFinish = anodise(rainbowTexture(2.4));
+  const gold = new THREE.MeshStandardMaterial({ color: 0xfeae34, metalness: 1, roughness: 0.28 });
   const steel = new THREE.MeshStandardMaterial({ color: 0xe8eef5, metalness: 1, roughness: 0.3, envMapIntensity: 1.6 });
-  const darkSteel = new THREE.MeshStandardMaterial({ color: 0x8b9bb4, metalness: 1, roughness: 0.35 });
   const hGeo = handleGeometry(), pinGeo = new THREE.CylinderGeometry(3.4, 3.4, 13.5, 20);
   pinGeo.rotateX(Math.PI / 2);
   const shadow = m => { m.castShadow = true; m.receiveShadow = true; return m; };
 
   const outer = new THREE.Group(), inner = new THREE.Group();
   outer.add(inner); st.scene.add(outer);
-  const h1 = shadow(new THREE.Mesh(hGeo, anodised)); h1.position.z = 3.4;
-  const pin1 = shadow(new THREE.Mesh(pinGeo, darkSteel));
+  const h1 = shadow(new THREE.Mesh(hGeo, safeFinish)); h1.position.z = 3.4;
+  const pin1 = shadow(new THREE.Mesh(pinGeo, gold));
   const blade = new THREE.Group();
   const bladeMesh = shadow(new THREE.Mesh(bladeGeometry(), steel));
   const h2 = new THREE.Group(); h2.position.set(0, -8, 0);
-  const h2Mesh = shadow(new THREE.Mesh(hGeo, anodised)); h2Mesh.position.z = -3.4;
-  const pin2 = shadow(new THREE.Mesh(pinGeo, darkSteel));
+  const h2Mesh = shadow(new THREE.Mesh(hGeo, biteFinish)); h2Mesh.position.z = -3.4;
+  const pin2 = shadow(new THREE.Mesh(pinGeo, gold));
   const latch = shadow(new THREE.Mesh(new THREE.BoxGeometry(12, 13, 2.4), steel)); latch.position.set(134, 0, -6.6);
   h2.add(h2Mesh, pin2, latch);
   blade.add(bladeMesh, h2);

@@ -23,7 +23,7 @@ A static site at https://filthyl.github.io/shelves/ (repo FilthyL/shelves). A pi
 | `assets/js/app.js` | Routing, street scene, room shelves (packing, face-out promotion), inspector (3D object in hand), search, Trick Room, play table, logging glue |
 | `assets/js/log.js` | Logging new entries from the site: suggestions (AniList, Open Library, MusicBrainz, IMDb) and a commit through GitHub's contents API with a fine-grained token kept in localStorage |
 | `assets/js/toys.js` | Tricks: butterfly knife (24), deck of cards (13); flat CSS fallback rigs; per-trick sounds derived from motion; the `player` that drives a rig (and its sound) |
-| `assets/js/toys3d.js` | The real 3D toys: Three.js 0.160.0 imported from jsDelivr on demand, extruded knife, box cards with canvas faces, PMREM studio reflections, shadows |
+| `assets/js/toys3d.js` | The real 3D toys: Three.js 0.160.0 imported from jsDelivr on demand, extruded knife (rainbow anodised titanium handles: an ENDESGA gradient texture plus iridescence; gold pins), box cards with canvas faces, PMREM studio reflections, shadows |
 | `assets/js/sound.js` | All sound, synthesized with Web Audio (no files): one-shots via `play(name)`, continuous noise `bed()`s; wakes on first gesture; toggle `M`, stored in localStorage `fm-sound` |
 | `data/house.json` | House name, number, repo/branch for logging, rooms (id, name, kind, file) in house order: attic first, then floors two at a time, a leftover room goes in the basement |
 | `data/rooms/*.json` | `{ "items": [...] }`, one entry per line; order = shelf order |

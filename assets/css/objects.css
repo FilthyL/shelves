@@ -334,12 +334,18 @@
 .bl-handle {
   position: absolute; left: -9px; top: -9px; width: 150px; height: 18px;
   border-radius: 9px 5px 5px 9px;
-  background: linear-gradient(180deg, var(--hc1, #2ce8f5), var(--hc2, #0099db) 42%, var(--hc3, #124e89));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent 42%, rgba(24, 20, 37, 0.35)),
+    linear-gradient(100deg, #fee761, #feae34 11%, #f77622 22%, #b55088 34%, #68386c 45%, #124e89 56%, #0099db 67%, #2ce8f5 78%, #63c74d 89%, #fee761);
   box-shadow: inset 0 0 0 1px rgba(24, 20, 37, 0.45), 0 2px 3px rgba(24, 20, 37, 0.35);
 }
-.bl-handle.bite { --hc1: #c0cbdc; --hc2: #0099db; --hc3: #124e89; }
+.bl-handle.bite {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent 42%, rgba(24, 20, 37, 0.35)),
+    linear-gradient(80deg, #124e89, #0099db 11%, #2ce8f5 22%, #63c74d 34%, #fee761 45%, #feae34 56%, #f77622 67%, #b55088 78%, #68386c 89%, #124e89);
+}
 .bl-handle i { position: absolute; top: 5px; height: 8px; border-radius: 4px; background: #181425; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18); }
-.bl-handle .pin { position: absolute; left: 4px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #ffffff, #8b9bb4 60%, #3a4466); }
+.bl-handle .pin { position: absolute; left: 4px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fee761, #feae34 60%, #be4a2f); }
 .bl-handle .latch { position: absolute; right: 2px; top: 3px; width: 10px; height: 12px; border-radius: 2px; background: linear-gradient(90deg, #8b9bb4, #ffffff 50%, #5a6988); }
 .bl-svg { position: absolute; left: -7px; top: -9px; overflow: visible; }
 .bali.ghost { pointer-events: none; filter: saturate(0.6); }
