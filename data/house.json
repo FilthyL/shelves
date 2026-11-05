@@ -2,7 +2,7 @@
   "name": "Filthy Residency",
   "number": "7",
   "established": 2026,
-  "tagline": "Every film, record, book, series and volume that made it past the front door.",
+  "tagline": "Every film, record, book, series and volume that made it past the front door",
   "rooms": [
     { "id": "manga",  "name": "The Manga Loft",     "kind": "manga",  "file": "rooms/manga.json" },
     { "id": "anime",  "name": "The Anime Den",      "kind": "anime",  "file": "rooms/anime.json" },

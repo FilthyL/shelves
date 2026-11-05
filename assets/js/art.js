@@ -20,7 +20,10 @@ function titleSize(t, style) {
   const n = t.length;
   let s = n <= 4 ? 30 : n <= 8 ? 20 : n <= 14 ? 14 : n <= 22 ? 11 : n <= 32 ? 9 : 7.2;
   s *= { cond: 1.12, wide: 0.72, serif: 1, mono: 0.7 }[style] || 1;
-  return s.toFixed(2);
+  // the longest word has to fit on one line, so titles never break mid-word
+  const longest = Math.max(...String(t).split(/\s+/).map(w => w.length), 1);
+  const em = { cond: 0.5, wide: 0.92, serif: 0.56, mono: 0.62 }[style] || 0.6;
+  return Math.min(s, 84 / (longest * em)).toFixed(2);
 }
 
 function lastName(c) {
