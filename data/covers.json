@@ -215,6 +215,10 @@
       "#25548b"
     ]
   },
+  "books/kafka-on-the-shore": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
   "books/meditations": {
     "from": "Open Library",
     "match": "Meditations by Marcus Aurelius",
@@ -321,6 +325,18 @@
       "#d68769",
       "#85483c",
       "#ba745a"
+    ]
+  },
+  "books/the-stranger": {
+    "from": "Open Library",
+    "match": "L’étranger by Albert Camus",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/the-stranger.jpg",
+    "pal": [
+      "#c6ab86",
+      "#f4f0e6",
+      "#c55e44",
+      "#c55e44"
     ]
   },
   "manga/akira": {
@@ -1558,6 +1574,174 @@
       "#b67769"
     ]
   },
+  "movies/2001-a-space-odyssey": {
+    "from": "IMDb",
+    "match": "2001: A Space Odyssey (1968)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/2001-a-space-odyssey.jpg",
+    "pal": [
+      "#050405",
+      "#fbfbf8",
+      "#284a69",
+      "#fbfbf8"
+    ]
+  },
+  "movies/arrival": {
+    "from": "IMDb",
+    "match": "Arrival (2016)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/arrival.jpg",
+    "pal": [
+      "#272a27",
+      "#fdfdfb",
+      "#987759",
+      "#fdfdfb"
+    ]
+  },
+  "movies/blade-runner": {
+    "from": "IMDb",
+    "match": "Blade Runner (1982)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/blade-runner.jpg",
+    "pal": [
+      "#040404",
+      "#fafab6",
+      "#583817",
+      "#fafab6"
+    ]
+  },
+  "movies/gangs-of-wasseypur": {
+    "from": "IMDb",
+    "match": "Gangs of Wasseypur (2012)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/gangs-of-wasseypur.jpg",
+    "pal": [
+      "#896778",
+      "#f4f0e6",
+      "#27386a",
+      "#b8c7b7"
+    ]
+  },
+  "movies/in-the-mood-for-love": {
+    "from": "IMDb",
+    "match": "In the Mood for Love (2000)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/in-the-mood-for-love.jpg",
+    "pal": [
+      "#090a0b",
+      "#d76b0b",
+      "#d76b0b",
+      "#d76b0b"
+    ]
+  },
+  "movies/mulholland-drive": {
+    "from": "IMDb",
+    "match": "Mulholland Drive (2001)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/mulholland-drive.jpg",
+    "pal": [
+      "#0d0c11",
+      "#d8d3b9",
+      "#24486a",
+      "#d8d3b9"
+    ]
+  },
+  "movies/oldboy": {
+    "from": "IMDb",
+    "match": "Oldboy (2003)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/oldboy.jpg",
+    "pal": [
+      "#1a1517",
+      "#c3c8ca",
+      "#761827",
+      "#686a6a"
+    ]
+  },
+  "movies/parasite": {
+    "from": "IMDb",
+    "match": "Parasite (2019)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/parasite.jpg",
+    "pal": [
+      "#fbfefe",
+      "#131b26",
+      "#488b56",
+      "#131b26"
+    ]
+  },
+  "movies/pulp-fiction": {
+    "from": "IMDb",
+    "match": "Pulp Fiction (1994)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/pulp-fiction.jpg",
+    "pal": [
+      "#151719",
+      "#d8a719",
+      "#c61907",
+      "#897729"
+    ]
+  },
+  "movies/seven-samurai": {
+    "from": "IMDb",
+    "match": "Seven Samurai (1954)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/seven-samurai.jpg",
+    "pal": [
+      "#695738",
+      "#c9dacd",
+      "#251916",
+      "#d8a957"
+    ]
+  },
+  "movies/stalker": {
+    "from": "IMDb",
+    "match": "Stalker (1979)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/stalker.jpg",
+    "pal": [
+      "#c7c897",
+      "#293734",
+      "#889768",
+      "#f5f4e9"
+    ]
+  },
+  "movies/taxi-driver": {
+    "from": "IMDb",
+    "match": "Taxi Driver (1976)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/taxi-driver.jpg",
+    "pal": [
+      "#0a080a",
+      "#dad527",
+      "#dad527",
+      "#495646"
+    ]
+  },
+  "movies/the-godfather": {
+    "from": "IMDb",
+    "match": "The Godfather (1972)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/the-godfather.jpg",
+    "pal": [
+      "#020101",
+      "#9a885b",
+      "#56361c",
+      "#9a885b"
+    ]
+  },
+  "movies/there-will-be-blood": {
+    "from": "IMDb",
+    "match": "There Will Be Blood (2007)",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/movies/there-will-be-blood.jpg",
+    "pal": [
+      "#020303",
+      "#a89467",
+      "#4c3618",
+      "#585a54"
+    ]
+  },
   "music/blonde": {
     "from": "Deezer",
     "match": "Blonde by Frank Ocean",
@@ -1568,6 +1752,18 @@
       "#5a5757",
       "#351c15",
       "#5a5757"
+    ]
+  },
+  "music/currents": {
+    "from": "Deezer",
+    "match": "Currents by Tame Impala",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/currents.jpg",
+    "pal": [
+      "#64526a",
+      "#dcdce3",
+      "#251e39",
+      "#dcdce3"
     ]
   },
   "music/discovery": {
@@ -1606,6 +1802,18 @@
       "#898b87"
     ]
   },
+  "music/madvillainy": {
+    "from": "Deezer",
+    "match": "Madvillainy by Madvillain",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/madvillainy.jpg",
+    "pal": [
+      "#e8e8e8",
+      "#0d0d0d",
+      "#ee7536",
+      "#0d0d0d"
+    ]
+  },
   "music/mezzanine": {
     "from": "iTunes",
     "match": "Mezzanine (Deluxe) by Massive Attack",
@@ -1640,6 +1848,18 @@
       "#0f312f",
       "#1b5a56",
       "#8ad2d6"
+    ]
+  },
+  "music/roja": {
+    "from": "iTunes",
+    "match": "Roja (Original Motion Picture Soundtrack) by A.R. Rahman",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/roja.jpg",
+    "pal": [
+      "#eab857",
+      "#772727",
+      "#db4b48",
+      "#772727"
     ]
   },
   "music/rumours": {
