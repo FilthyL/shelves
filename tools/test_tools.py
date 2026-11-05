@@ -49,6 +49,26 @@ class Matching(unittest.TestCase):
         res = [{'collectionName': 'Greatest Hits', 'artistName': 'Someone Else', 'releaseDate': '2004', 'artworkUrl100': 'https://x/100x100bb.jpg'}]
         self.assertIsNone(covers.choose_album(it, res))
 
+    def test_album_pick_skips_eps_and_instrumentals(self):
+        it = {'title': 'Currents', 'creator': 'Tame Impala', 'year': 2015}
+        res = [
+            {'collectionName': 'Currents B-Sides & Remixes - EP', 'artistName': 'Tame Impala', 'releaseDate': '2017-01-01', 'artworkUrl100': 'https://x/ep/100x100bb.jpg'},
+            {'collectionName': 'Currents', 'artistName': 'Tame Impala', 'releaseDate': '2015-07-17', 'artworkUrl100': 'https://x/lp/100x100bb.jpg'},
+        ]
+        self.assertEqual(covers.choose_album(it, res)['url'], 'https://x/lp/1000x1000bb.jpg')
+        it = {'title': 'Madvillainy', 'creator': 'Madvillain', 'year': 2004}
+        only_variant = [{'collectionName': 'Madvillainy Instrumentals', 'artistName': 'Madvillain', 'releaseDate': '2004', 'artworkUrl100': 'https://x/i/100x100bb.jpg'}]
+        self.assertIsNone(covers.choose_album(it, only_variant))
+
+    def test_imdb_pick_prefers_the_film_from_that_year(self):
+        it = {'title': 'Blade Runner', 'year': 1982}
+        res = [
+            {'l': 'Blade Runner 2049', 'y': 2017, 'q': 'feature', 'i': {'imageUrl': 'https://m/2049._V1_.jpg'}},
+            {'l': 'Blade Runner', 'y': 1982, 'q': 'feature', 'i': {'imageUrl': 'https://m/1982._V1_.jpg'}},
+            {'l': 'Blade Runner: Black Lotus', 'y': 2021, 'q': 'TV series', 'qid': 'tvSeries', 'i': {'imageUrl': 'https://m/bl._V1_.jpg'}},
+        ]
+        self.assertEqual(covers.choose_imdb(it, res)['url'], 'https://m/1982._V1_SX800.jpg')
+
     def test_film_pick_uses_year(self):
         it = {'title': 'Oldboy', 'creator': 'Park Chan-wook', 'year': 2003}
         res = [

@@ -215,10 +215,6 @@
       "#25548b"
     ]
   },
-  "books/kafka-on-the-shore": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
   "books/meditations": {
     "from": "Open Library",
     "match": "Meditations by Marcus Aurelius",
@@ -325,18 +321,6 @@
       "#d68769",
       "#85483c",
       "#ba745a"
-    ]
-  },
-  "books/the-stranger": {
-    "from": "Open Library",
-    "match": "The Stranger, The Plague (Coles Notes) by Albert Camus",
-    "fetched": "2026-11-05",
-    "src": "assets/covers/books/the-stranger.jpg",
-    "pal": [
-      "#db0263",
-      "#f4f0e6",
-      "#b79608",
-      "#0d0c0e"
     ]
   },
   "manga/akira": {
@@ -1574,62 +1558,6 @@
       "#b67769"
     ]
   },
-  "movies/2001-a-space-odyssey": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
-  "movies/arrival": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
-  "movies/blade-runner": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
-  "movies/gangs-of-wasseypur": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
-  "movies/in-the-mood-for-love": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
-  "movies/mulholland-drive": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
-  "movies/oldboy": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
-  "movies/parasite": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
-  "movies/pulp-fiction": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
-  "movies/seven-samurai": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
-  "movies/stalker": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
-  "movies/taxi-driver": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
-  "movies/the-godfather": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
-  "movies/there-will-be-blood": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
   "music/blonde": {
     "from": "Deezer",
     "match": "Blonde by Frank Ocean",
@@ -1640,18 +1568,6 @@
       "#5a5757",
       "#351c15",
       "#5a5757"
-    ]
-  },
-  "music/currents": {
-    "from": "iTunes",
-    "match": "Currents B-Sides & Remixes - EP by Tame Impala",
-    "fetched": "2026-11-05",
-    "src": "assets/covers/music/currents.jpg",
-    "pal": [
-      "#5a5365",
-      "#e1e6f2",
-      "#1a1c23",
-      "#929499"
     ]
   },
   "music/discovery": {
@@ -1690,18 +1606,6 @@
       "#898b87"
     ]
   },
-  "music/madvillainy": {
-    "from": "iTunes",
-    "match": "Madvillainy Instrumentals by Madvillain",
-    "fetched": "2026-11-05",
-    "src": "assets/covers/music/madvillainy.jpg",
-    "pal": [
-      "#020202",
-      "#fefefe",
-      "#00bdff",
-      "#fefefe"
-    ]
-  },
   "music/mezzanine": {
     "from": "iTunes",
     "match": "Mezzanine (Deluxe) by Massive Attack",
@@ -1736,18 +1640,6 @@
       "#0f312f",
       "#1b5a56",
       "#8ad2d6"
-    ]
-  },
-  "music/roja": {
-    "from": "iTunes",
-    "match": "Roja (Malayalam) [Original Motion Picture Soundtrack] by A.R. Rahman",
-    "fetched": "2026-11-05",
-    "src": "assets/covers/music/roja.jpg",
-    "pal": [
-      "#44492b",
-      "#f6b67b",
-      "#f6b67b",
-      "#08090a"
     ]
   },
   "music/rumours": {

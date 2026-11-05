@@ -6,7 +6,7 @@ the site reads. Spine colours are taken from each cover when Pillow is installed
 
 Sources, none of which need a key:
   music   iTunes Search (albums), then Deezer
-  movies  TMDB when TMDB_API_KEY is set, then iTunes Search (films)
+  movies  TMDB when TMDB_API_KEY is set, then IMDb title suggestions, then iTunes Search
   books   Open Library, then Google Books
   anime   AniList, then Jikan (MyAnimeList)
   manga   MangaDex, one cover per owned volume, then AniList for the series
@@ -49,8 +49,9 @@ THRESHOLD = 0.72
 PACE = {
     'itunes.apple.com': 3.2, 'api.deezer.com': 0.25, 'api.themoviedb.org': 0.1,
     'openlibrary.org': 1.0, 'www.googleapis.com': 1.0, 'graphql.anilist.co': 2.2,
-    'api.jikan.moe': 1.2, 'api.mangadex.org': 0.3,
+    'api.jikan.moe': 1.2, 'api.mangadex.org': 0.3, 'v3.sg.media-imdb.com': 0.5,
 }
+LOG = print
 _last = {}
 
 
@@ -133,6 +134,22 @@ def year_score(y, other):
     return 1.0 if d == 0 else 0.8 if d <= 1 else 0.4 if d <= 3 else 0.0
 
 
+# releases that share a title with the one you own but are not it
+VARIANTS = re.compile(r'\b(ep|b-sides?|remix(es)?|instrumentals?|live|demos?|karaoke|tribute|acoustic|commentary|'
+                      r'notes|study guide|summary|sparknotes|cliffsnotes|analysis|workbook|malayalam|telugu|hindi|kannada|'
+                      r'dubbed|sampler|single|making of)\b')
+
+
+def variant_penalty(own, cand):
+    mine = set(VARIANTS.findall(str(own or '').lower()))
+    theirs = set(VARIANTS.findall(str(cand or '').lower()))
+    return 0.3 if theirs - mine else 0.0
+
+
+def short(name, res, s):
+    LOG(f'      {name}: {len(res)} candidates, best score {s}')
+
+
 def pick(cands, score):
     best, top = None, 0.0
     for c in cands:
@@ -151,19 +168,22 @@ def music_itunes(it):
 
 def choose_album(it, res):
     best, s = pick(res, lambda r: 0.6 * sim(it['title'], r.get('collectionName')) + 0.3 * sim(it.get('creator'), r.get('artistName'))
-                   + 0.1 * year_score(it.get('year'), r.get('releaseDate')))
+                   + 0.1 * year_score(it.get('year'), r.get('releaseDate')) - variant_penalty(it['title'], r.get('collectionName')))
     if best and s >= THRESHOLD and best.get('artworkUrl100'):
         return {'from': 'iTunes', 'url': best['artworkUrl100'].replace('100x100bb', '1000x1000bb'),
                 'match': f"{best.get('collectionName')} by {best.get('artistName')}", 'score': s}
+    short('iTunes albums', res, s)
     return None
 
 
 def music_deezer(it):
     q = urllib.parse.urlencode({'q': f'artist:"{it.get("creator", "")}" album:"{it["title"]}"', 'limit': 15})
     res = get_json(f'https://api.deezer.com/search/album?{q}').get('data', [])
-    best, s = pick(res, lambda r: 0.65 * sim(it['title'], r.get('title')) + 0.35 * sim(it.get('creator'), (r.get('artist') or {}).get('name')))
+    best, s = pick(res, lambda r: 0.65 * sim(it['title'], r.get('title')) + 0.35 * sim(it.get('creator'), (r.get('artist') or {}).get('name'))
+                   - variant_penalty(it['title'], r.get('title')))
     if best and s >= THRESHOLD and best.get('cover_xl'):
         return {'from': 'Deezer', 'url': best['cover_xl'], 'match': f"{best.get('title')} by {(best.get('artist') or {}).get('name')}", 'score': s}
+    short('Deezer', res, s)
     return None
 
 
@@ -183,6 +203,28 @@ def movie_tmdb(it):
     best, s = pick(res, lambda r: 0.75 * best_sim(it['title'], [r.get('title'), r.get('original_title')]) + 0.25 * year_score(it.get('year'), r.get('release_date')))
     if best and s >= THRESHOLD and best.get('poster_path'):
         return {'from': 'TMDB', 'url': f"https://image.tmdb.org/t/p/w780{best['poster_path']}", 'match': f"{best.get('title')} ({(best.get('release_date') or '')[:4]})", 'score': s}
+    short('TMDB', res, s)
+    return None
+
+
+def movie_imdb(it):
+    """IMDb's public title-suggestion feed: title, year and poster, no key."""
+    q = re.sub(r'\s+', ' ', str(it['title']).lower()).strip()
+    url = f"https://v3.sg.media-imdb.com/suggestion/{urllib.parse.quote(q[:1] or 'x')}/{urllib.parse.quote(q)}.json"
+    res = [r for r in get_json(url).get('d', []) if (r.get('i') or {}).get('imageUrl')]
+    return choose_imdb(it, res)
+
+
+def choose_imdb(it, res):
+    def score(r):
+        kind = 0.0 if r.get('qid') in ('movie', 'tvMovie', 'video', None) or r.get('q') == 'feature' else 0.25
+        return 0.7 * sim(it['title'], r.get('l')) + 0.3 * year_score(it.get('year'), r.get('y')) - kind - variant_penalty(it['title'], r.get('l'))
+    best, s = pick(res, score)
+    if best and s >= THRESHOLD:
+        img = best['i']['imageUrl']
+        img = re.sub(r'\._V1_.*\.jpg$', '._V1_SX800.jpg', img)
+        return {'from': 'IMDb', 'url': img, 'match': f"{best.get('l')} ({best.get('y')})", 'score': s}
+    short('IMDb', res, s)
     return None
 
 
@@ -194,21 +236,27 @@ def movie_itunes(it):
 
 def choose_film(it, res):
     best, s = pick(res, lambda r: 0.6 * sim(it['title'], r.get('trackName')) + 0.2 * sim(it.get('creator'), r.get('artistName'))
-                   + 0.2 * year_score(it.get('year'), r.get('releaseDate')))
+                   + 0.2 * year_score(it.get('year'), r.get('releaseDate')) - variant_penalty(it['title'], r.get('trackName')))
     if best and s >= THRESHOLD and best.get('artworkUrl100'):
         return {'from': 'iTunes', 'url': best['artworkUrl100'].replace('100x100bb', '600x900bb'),
                 'match': f"{best.get('trackName')} ({(best.get('releaseDate') or '')[:4]})", 'score': s}
+    short('iTunes films', res, s)
     return None
 
 
 def book_openlibrary(it):
-    q = urllib.parse.urlencode({'title': it['title'], 'author': it.get('creator', ''), 'limit': 10,
-                                'fields': 'title,author_name,first_publish_year,cover_i'})
-    res = [d for d in get_json(f'https://openlibrary.org/search.json?{q}').get('docs', []) if d.get('cover_i')]
-    best, s = pick(res, lambda d: 0.65 * sim(it['title'], d.get('title')) + 0.35 * best_sim(it.get('creator'), d.get('author_name') or []))
-    if best and s >= THRESHOLD:
-        return {'from': 'Open Library', 'url': f"https://covers.openlibrary.org/b/id/{best['cover_i']}-L.jpg?default=false",
-                'match': f"{best.get('title')} by {', '.join(best.get('author_name') or [])}", 'score': s}
+    fields = 'title,author_name,first_publish_year,cover_i'
+    queries = [{'title': it['title'], 'author': it.get('creator', '')}, {'q': f"{it['title']} {it.get('creator', '')}".strip()}]
+    res, best, s = [], None, 0.0
+    for params in queries:
+        q = urllib.parse.urlencode({**params, 'limit': 20, 'fields': fields})
+        res = [d for d in get_json(f'https://openlibrary.org/search.json?{q}').get('docs', []) if d.get('cover_i')]
+        best, s = pick(res, lambda d: 0.65 * sim(it['title'], d.get('title')) + 0.35 * best_sim(it.get('creator'), d.get('author_name') or [])
+                       - variant_penalty(it['title'], d.get('title')))
+        if best and s >= THRESHOLD:
+            return {'from': 'Open Library', 'url': f"https://covers.openlibrary.org/b/id/{best['cover_i']}-L.jpg?default=false",
+                    'match': f"{best.get('title')} by {', '.join(best.get('author_name') or [])}", 'score': s}
+    short('Open Library', res, s)
     return None
 
 
@@ -219,7 +267,8 @@ def book_google(it):
         params['key'] = os.environ['GOOGLE_BOOKS_API_KEY']
     res = get_json('https://www.googleapis.com/books/v1/volumes?' + urllib.parse.urlencode(params)).get('items', [])
     res = [r.get('volumeInfo', {}) for r in res if (r.get('volumeInfo') or {}).get('imageLinks')]
-    best, s = pick(res, lambda v: 0.65 * sim(it['title'], v.get('title')) + 0.35 * best_sim(it.get('creator'), v.get('authors') or []))
+    best, s = pick(res, lambda v: 0.65 * sim(it['title'], v.get('title')) + 0.35 * best_sim(it.get('creator'), v.get('authors') or [])
+                   - variant_penalty(it['title'], v.get('title')))
     if best and s >= THRESHOLD:
         links = best['imageLinks']
         url = (links.get('extraLarge') or links.get('large') or links.get('medium') or links.get('thumbnail')).replace('http://', 'https://')
@@ -331,7 +380,7 @@ def choose_volume_covers(covers, owned, prefer=None):
 
 SOURCES = {
     'music': [music_itunes, music_deezer],
-    'movies': [movie_tmdb, movie_itunes],
+    'movies': [movie_tmdb, movie_imdb, movie_itunes],
     'books': [book_openlibrary, book_google],
     'anime': [lambda it: anilist(it, 'anime'), lambda it: jikan(it, 'anime')],
     'manga': [mangadex, lambda it: anilist(it, 'manga'), lambda it: jikan(it, 'manga')],
