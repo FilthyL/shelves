@@ -1,1 +1,1933 @@
-{}
+{
+  "anime/akira": {
+    "from": "AniList",
+    "match": "Akira",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx47-4CR68arv452h.jpg",
+    "pal": [
+      "#a5cdde",
+      "#17181b",
+      "#c92229",
+      "#f8f9f3"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "anime/cowboy-bebop": {
+    "from": "AniList",
+    "match": "Cowboy Bebop",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1-GCsPm7waJ4kS.png",
+    "pal": [
+      "#1a0e13",
+      "#fc785b",
+      "#fc785b",
+      "#a84735"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "anime/death-note": {
+    "from": "AniList",
+    "match": "Death Note",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1535-kUgkcrfOrkUM.jpg",
+    "pal": [
+      "#040507",
+      "#677c85",
+      "#2c4858",
+      "#66777b"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "anime/frieren-beyond-journey-s-end": {
+    "from": "AniList",
+    "match": "Frieren: Beyond Journey’s End",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx154587-qQTzQnEJJ3oB.jpg",
+    "pal": [
+      "#4a7857",
+      "#d7fe99",
+      "#98e3fe",
+      "#b7f38b"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "anime/fullmetal-alchemist-brotherhood": {
+    "from": "AniList",
+    "match": "Fullmetal Alchemist: Brotherhood",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx5114-nSWCgQlmOMtj.jpg",
+    "pal": [
+      "#16141a",
+      "#fbf8d8",
+      "#a57a57",
+      "#694845"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "anime/ghost-in-the-shell": {
+    "from": "AniList",
+    "match": "Ghost in the Shell",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx43-Y6EjeEMM14dj.png",
+    "pal": [
+      "#fdfdfd",
+      "#040404",
+      "#987659",
+      "#a9a8a9"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "anime/mob-psycho-100": {
+    "from": "AniList",
+    "match": "Mob Psycho 100",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21507-6YUSbh2m0N1p.jpg",
+    "pal": [
+      "#fefefe",
+      "#252828",
+      "#05091c",
+      "#475746"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "anime/monster": {
+    "from": "AniList",
+    "match": "Monster",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx19-gtMC64182sm4.jpg",
+    "pal": [
+      "#fefeff",
+      "#060607",
+      "#353c67",
+      "#060607"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "anime/neon-genesis-evangelion": {
+    "from": "AniList",
+    "match": "Neon Genesis Evangelion",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx30-AI1zr74Dh4ye.jpg",
+    "pal": [
+      "#1b1514",
+      "#fafafb",
+      "#e63a36",
+      "#fafafb"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "anime/perfect-blue": {
+    "from": "AniList",
+    "match": "Perfect Blue",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx437-69NMlXKFeuse.jpg",
+    "pal": [
+      "#020204",
+      "#f4f0e6",
+      "#1c3564",
+      "#555c85"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "anime/samurai-champloo": {
+    "from": "AniList",
+    "match": "Samurai Champloo",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx205-7tHVFu6dPBm9.png",
+    "pal": [
+      "#fdfdfd",
+      "#851e19",
+      "#851e19",
+      "#1a1516"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "anime/spirited-away": {
+    "from": "AniList",
+    "match": "Spirited Away",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199-sWefXJvXkDOb.jpg",
+    "pal": [
+      "#554c47",
+      "#e2b897",
+      "#d8746b",
+      "#181815"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "anime/steins-gate": {
+    "from": "AniList",
+    "match": "Steins;Gate",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx9253-tIUXF2gfU8Sg.jpg",
+    "pal": [
+      "#464878",
+      "#e6e6e9",
+      "#36291a",
+      "#888788"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "anime/your-name": {
+    "from": "AniList",
+    "match": "Your Name.",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21519-SUo3ZQuCbYhJ.png",
+    "pal": [
+      "#0598d9",
+      "#012a28",
+      "#01469c",
+      "#c9d9e7"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/blood-meridian": {
+    "from": "Open Library",
+    "match": "Blood Meridian by Cormac McCarthy",
+    "src": "https://covers.openlibrary.org/b/id/419991-L.jpg?default=false",
+    "pal": [
+      "#020201",
+      "#fafaf2",
+      "#647b46",
+      "#fafaf2"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/dune": {
+    "from": "Open Library",
+    "match": "Dune by Frank Herbert",
+    "src": "https://covers.openlibrary.org/b/id/11481354-L.jpg?default=false",
+    "pal": [
+      "#0d0a0b",
+      "#a9a8a5",
+      "#584913",
+      "#a9a8a5"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/godel-escher-bach": {
+    "from": "Open Library",
+    "match": "Gödel, Escher, Bach by Douglas R. Hofstadter",
+    "src": "https://covers.openlibrary.org/b/id/14368453-L.jpg?default=false",
+    "pal": [
+      "#070908",
+      "#b56a3b",
+      "#7a4327",
+      "#b56a3b"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/infinite-jest": {
+    "from": "Open Library",
+    "match": "Infinite Jest by David Foster Wallace",
+    "src": "https://covers.openlibrary.org/b/id/8237639-L.jpg?default=false",
+    "pal": [
+      "#020226",
+      "#739705",
+      "#739705",
+      "#25548b"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/kafka-on-the-shore": {
+    "from": "Open Library",
+    "match": "ISBN 9781400079278",
+    "src": "https://covers.openlibrary.org/b/isbn/9781400079278-L.jpg?default=false",
+    "pal": [
+      "#ffffff",
+      "#5768bd",
+      "#485ac2",
+      "#c89578"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/meditations": {
+    "from": "Open Library",
+    "match": "Meditations by Marcus Aurelius",
+    "src": "https://covers.openlibrary.org/b/id/211529-L.jpg?default=false",
+    "pal": [
+      "#fefee6",
+      "#090808",
+      "#686728",
+      "#090808"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/neuromancer": {
+    "from": "Open Library",
+    "match": "Neuromancer by William Gibson",
+    "src": "https://covers.openlibrary.org/b/id/283860-L.jpg?default=false",
+    "pal": [
+      "#1979a5",
+      "#f4f0e6",
+      "#740402",
+      "#6aa7c5"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/nineteen-eighty-four": {
+    "from": "Open Library",
+    "match": "Nineteen Eighty-Four by George Orwell",
+    "src": "https://covers.openlibrary.org/b/id/9267242-L.jpg?default=false",
+    "pal": [
+      "#a49a8b",
+      "#f4f0e6",
+      "#6c6358",
+      "#e0deda"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/one-hundred-years-of-solitude": {
+    "from": "Open Library",
+    "match": "One Hundred Years of Solitude by Gabriel Garcia Marquez",
+    "src": "https://covers.openlibrary.org/b/id/15185412-L.jpg?default=false",
+    "pal": [
+      "#171717",
+      "#a68b78",
+      "#861609",
+      "#a68b78"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/sapiens": {
+    "from": "Open Library",
+    "match": "Sapiens by Yuval Noah Harari",
+    "src": "https://covers.openlibrary.org/b/id/8634250-L.jpg?default=false",
+    "pal": [
+      "#fefaf9",
+      "#161412",
+      "#e68569",
+      "#dcb9b6"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/siddhartha": {
+    "from": "Open Library",
+    "match": "Siddhartha by Hermann Hesse",
+    "src": "https://covers.openlibrary.org/b/id/6562535-L.jpg?default=false",
+    "pal": [
+      "#020202",
+      "#7a7b75",
+      "#5a5b56",
+      "#8a8a84"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/the-brothers-karamazov": {
+    "from": "Open Library",
+    "match": "The Brothers Karamazov by Fiódor Dostoievski",
+    "src": "https://covers.openlibrary.org/b/id/15215022-L.jpg?default=false",
+    "pal": [
+      "#251916",
+      "#a98876",
+      "#696621",
+      "#a98876"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/the-god-of-small-things": {
+    "from": "Open Library",
+    "match": "The God of Small Things by Arundhati Roy",
+    "src": "https://covers.openlibrary.org/b/id/10513792-L.jpg?default=false",
+    "pal": [
+      "#2b2725",
+      "#f4f0e6",
+      "#666949",
+      "#a34a5a"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/the-name-of-the-wind": {
+    "from": "Open Library",
+    "match": "The Name of the Wind by Patrick Rothfuss, Marc Simonetti",
+    "src": "https://covers.openlibrary.org/b/id/11480483-L.jpg?default=false",
+    "pal": [
+      "#272525",
+      "#d68769",
+      "#85483c",
+      "#ba745a"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "books/the-stranger": {
+    "from": "Open Library",
+    "match": "L’étranger by Albert Camus",
+    "src": "https://covers.openlibrary.org/b/id/13151269-L.jpg?default=false",
+    "pal": [
+      "#c6ab86",
+      "#f4f0e6",
+      "#c55e44",
+      "#c55e44"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "manga/akira": {
+    "from": "MangaDex",
+    "match": "Akira",
+    "vols": {
+      "1": {
+        "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/822889a6-15b0-47d5-8a95-8dc9f0818cc7.jpg.512.jpg",
+        "pal": [
+          "#141818",
+          "#fefefe",
+          "#d52633",
+          "#676869"
+        ]
+      },
+      "2": {
+        "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/17bb3503-60f8-4595-83be-e150e8ecf062.jpg.512.jpg",
+        "pal": [
+          "#17529c",
+          "#fdfdfd",
+          "#62b72c",
+          "#151616"
+        ]
+      },
+      "3": {
+        "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/f02b5c7a-476a-441b-9e87-14ee0af4e5b7.jpg.512.jpg",
+        "pal": [
+          "#0d1614",
+          "#fcfdfd",
+          "#0998b7",
+          "#fcfdfd"
+        ]
+      },
+      "4": {
+        "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/b32f5c2c-f652-43c2-8f0d-007be9ff2c40.png.512.jpg",
+        "pal": [
+          "#010202",
+          "#fbf6d8",
+          "#d70402",
+          "#fbf6d8"
+        ]
+      },
+      "5": {
+        "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/a295eb4a-27bb-4c17-8996-984ab50f1471.jpg.512.jpg",
+        "pal": [
+          "#171918",
+          "#fafbfa",
+          "#687945",
+          "#fafbfa"
+        ]
+      },
+      "6": {
+        "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/abcdc429-3019-4c9d-9799-fe136149c512.png.512.jpg",
+        "pal": [
+          "#070806",
+          "#f1ed77",
+          "#e63734",
+          "#f1ed77"
+        ]
+      }
+    },
+    "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/822889a6-15b0-47d5-8a95-8dc9f0818cc7.jpg.512.jpg",
+    "pal": [
+      "#141818",
+      "#fefefe",
+      "#d52633",
+      "#676869"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "manga/berserk": {
+    "from": "MangaDex",
+    "match": "Berserk",
+    "vols": {
+      "1": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/bae91cd3-2847-4c19-8777-9da5db0ed2d1.jpg.512.jpg",
+        "pal": [
+          "#fcf9f7",
+          "#66585a",
+          "#a64a59",
+          "#56474a"
+        ]
+      },
+      "2": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/00c4d205-e955-46c5-8a09-fcd5046cad59.jpg.512.jpg",
+        "pal": [
+          "#fefcfa",
+          "#593837",
+          "#593837",
+          "#985948"
+        ]
+      },
+      "3": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/5ca0c30f-e5b7-405c-8014-39b9cdbfbe91.jpg.512.jpg",
+        "pal": [
+          "#393636",
+          "#fcfaf9",
+          "#b7a648",
+          "#fcfaf9"
+        ]
+      },
+      "4": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/46e070a7-629a-424e-a0a4-5e99959c4683.jpg.512.jpg",
+        "pal": [
+          "#fdfbf6",
+          "#494658",
+          "#6688b6",
+          "#494658"
+        ]
+      },
+      "5": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/fdca00ea-d95b-45f7-86bb-1ed502430c2f.jpg.512.jpg",
+        "pal": [
+          "#453838",
+          "#f4ebe7",
+          "#c7441d",
+          "#676889"
+        ]
+      },
+      "6": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/9dab493c-e5e9-41ad-abc0-40a6783a1a84.jpg.512.jpg",
+        "pal": [
+          "#fdfaf8",
+          "#26262b",
+          "#764629",
+          "#26262b"
+        ]
+      },
+      "7": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/7b4ce148-e8be-48fc-b0e2-4bc7964c3982.jpg.512.jpg",
+        "pal": [
+          "#fcf9f6",
+          "#484857",
+          "#2d3c58",
+          "#767885"
+        ]
+      },
+      "8": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/8b7575f0-79bb-4c5a-8b45-7ef0b1c09ff9.jpg.512.jpg",
+        "pal": [
+          "#fdf9f6",
+          "#893928",
+          "#973926",
+          "#a8845a"
+        ]
+      },
+      "9": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/0a4fb0f5-93c4-4557-b9ba-0f1882de4c7f.jpg.512.jpg",
+        "pal": [
+          "#29262b",
+          "#fefcf8",
+          "#c9882b",
+          "#fefcf8"
+        ]
+      },
+      "10": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/5632fc2e-0fe1-4036-9177-6fa01e4ca5f0.jpg.512.jpg",
+        "pal": [
+          "#39272b",
+          "#fefcf9",
+          "#99492a",
+          "#fefcf9"
+        ]
+      },
+      "11": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/54e9e261-f9af-42e9-a4ec-dac55ae3e83e.jpg.512.jpg",
+        "pal": [
+          "#272547",
+          "#fffdfb",
+          "#b5ba3c",
+          "#fffdfb"
+        ]
+      },
+      "12": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/fa1054c3-d0db-4c41-b7f5-79b240473b7b.jpg.512.jpg",
+        "pal": [
+          "#37232c",
+          "#fefdf7",
+          "#d59936",
+          "#fefdf7"
+        ]
+      },
+      "13": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/9d04e56a-450a-43c9-94de-4d25d07ef27e.jpg.512.jpg",
+        "pal": [
+          "#48343c",
+          "#95aad2",
+          "#95aad2",
+          "#847799"
+        ]
+      },
+      "14": {
+        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/8fad7375-604d-426c-90e8-08a456cf2d90.jpg.512.jpg",
+        "pal": [
+          "#2a262c",
+          "#fffbf7",
+          "#795959",
+          "#fffbf7"
+        ]
+      }
+    },
+    "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/bae91cd3-2847-4c19-8777-9da5db0ed2d1.jpg.512.jpg",
+    "pal": [
+      "#fcf9f7",
+      "#66585a",
+      "#a64a59",
+      "#56474a"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "manga/blame": {
+    "from": "AniList",
+    "match": "BLAME!",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30149-YetcNrfacNVj.jpg",
+    "pal": [
+      "#474949",
+      "#bbd4d8",
+      "#b88557",
+      "#85b4ac"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "manga/chainsaw-man": {
+    "from": "MangaDex",
+    "match": "Chainsaw Man",
+    "vols": {
+      "1": {
+        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/59ade418-3590-4d7b-91b0-24c8feaa845f.png.512.jpg",
+        "pal": [
+          "#593738",
+          "#fde602",
+          "#fde602",
+          "#ea5823"
+        ]
+      },
+      "2": {
+        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/fc3df9c7-ce4c-4e81-8440-099516749158.jpg.512.jpg",
+        "pal": [
+          "#99d4bb",
+          "#682846",
+          "#fc4b89",
+          "#b78986"
+        ]
+      },
+      "3": {
+        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/2eb57e50-7baf-4416-b0dd-2cb20adf6ca4.jpg.512.jpg",
+        "pal": [
+          "#092838",
+          "#ebd9d5",
+          "#d9d804",
+          "#ebd9d5"
+        ]
+      },
+      "4": {
+        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/9fbe8b0d-12a5-4a16-a99e-123268d910b9.jpg.512.jpg",
+        "pal": [
+          "#39a8c8",
+          "#152746",
+          "#c71637",
+          "#c8d7e6"
+        ]
+      },
+      "5": {
+        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/d141ff37-f633-426c-9406-8c73b2f197f9.jpg.512.jpg",
+        "pal": [
+          "#fbf9b4",
+          "#071538",
+          "#ea2858",
+          "#071538"
+        ]
+      },
+      "6": {
+        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/2bab7518-8cc8-4df2-888e-5155834142a2.jpg.512.jpg",
+        "pal": [
+          "#d6b8b9",
+          "#010306",
+          "#010306",
+          "#e90a85"
+        ]
+      },
+      "7": {
+        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/8c3c169a-85fd-45d4-b697-a3ed9eb00419.jpg.512.jpg",
+        "pal": [
+          "#048a88",
+          "#000000",
+          "#000000",
+          "#fbfdfb"
+        ]
+      },
+      "8": {
+        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/d8133023-195f-4822-bfc8-3fbdec38fd76.jpg.512.jpg",
+        "pal": [
+          "#037a59",
+          "#f4f0e6",
+          "#f7dc06",
+          "#674856"
+        ]
+      },
+      "9": {
+        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/b4874983-21c3-40a6-acef-21f561f45064.jpg.512.jpg",
+        "pal": [
+          "#c5d6d8",
+          "#17675a",
+          "#007a65",
+          "#69a6a7"
+        ]
+      },
+      "10": {
+        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/8c89c66f-aa88-4c33-a6e6-dd9cd589e400.jpg.512.jpg",
+        "pal": [
+          "#ea1933",
+          "#f4f0e6",
+          "#c8c70a",
+          "#c3a7ab"
+        ]
+      },
+      "11": {
+        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/a5dd3e26-278f-45eb-a5ca-2544deee3387.jpg.512.jpg",
+        "pal": [
+          "#a8676b",
+          "#f4f0e6",
+          "#f4f0e6",
+          "#f7b688"
+        ]
+      }
+    },
+    "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/59ade418-3590-4d7b-91b0-24c8feaa845f.png.512.jpg",
+    "pal": [
+      "#593738",
+      "#fde602",
+      "#fde602",
+      "#ea5823"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "manga/death-note": {
+    "from": "MangaDex",
+    "match": "Death Note",
+    "vols": {
+      "1": {
+        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/8f45c074-5512-4679-a14b-cac837c87171.jpg.512.jpg",
+        "pal": [
+          "#242429",
+          "#a698aa",
+          "#79394c",
+          "#a698aa"
+        ]
+      },
+      "2": {
+        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/14f108ed-7398-4396-a026-7a329c04fc28.jpg.512.jpg",
+        "pal": [
+          "#e7e4ea",
+          "#a33746",
+          "#a33746",
+          "#e7b665"
+        ]
+      },
+      "3": {
+        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/a2293788-279e-4849-ab75-dc324ee36161.jpg.512.jpg",
+        "pal": [
+          "#34597b",
+          "#bccfda",
+          "#78a6c2",
+          "#282c2a"
+        ]
+      },
+      "4": {
+        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/36a4d59f-042e-48d0-bdd3-77d6e0a4040e.jpg.512.jpg",
+        "pal": [
+          "#477995",
+          "#f4f0e6",
+          "#0c0c14",
+          "#c6c8c7"
+        ]
+      },
+      "5": {
+        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/f082b9fe-0b9f-43d7-a5d9-b366f4cb49b3.jpg.512.jpg",
+        "pal": [
+          "#c9b728",
+          "#3b3847",
+          "#584a11",
+          "#fdfdfc"
+        ]
+      },
+      "6": {
+        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/cb09ea01-764d-4da3-bda4-b01e0b153be5.jpg.512.jpg",
+        "pal": [
+          "#b4a5ca",
+          "#15161c",
+          "#77375a",
+          "#fcfbf9"
+        ]
+      },
+      "7": {
+        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/3b23af6e-c5a6-497e-b82e-5648536d988d.jpg.512.jpg",
+        "pal": [
+          "#dac7b7",
+          "#554c53",
+          "#554c53",
+          "#fefdf9"
+        ]
+      },
+      "8": {
+        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/a761618b-0dfc-410a-a672-651a62a3a078.jpg.512.jpg",
+        "pal": [
+          "#583a48",
+          "#fbd9c8",
+          "#b75b65",
+          "#bb9799"
+        ]
+      },
+      "9": {
+        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/86d6ef2c-a7be-4b1e-a085-604a25e3407f.jpg.512.jpg",
+        "pal": [
+          "#538cb7",
+          "#f4f0e6",
+          "#2b3946",
+          "#a6cae9"
+        ]
+      },
+      "10": {
+        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/b88bc227-656b-48db-a4e1-fd6d502fdeac.jpg.512.jpg",
+        "pal": [
+          "#d6a858",
+          "#473b33",
+          "#8a6847",
+          "#fefefe"
+        ]
+      },
+      "11": {
+        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/79c89fc5-5a29-4ee4-ba1b-05a61c15b5d3.jpg.512.jpg",
+        "pal": [
+          "#383628",
+          "#fcf8d5",
+          "#ba7555",
+          "#fcf8d5"
+        ]
+      },
+      "12": {
+        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/d6555598-8202-477d-acde-303202cb3475.jpg.512.jpg",
+        "pal": [
+          "#f9f6f4",
+          "#796757",
+          "#c5ac96",
+          "#947a65"
+        ]
+      }
+    },
+    "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/8f45c074-5512-4679-a14b-cac837c87171.jpg.512.jpg",
+    "pal": [
+      "#242429",
+      "#a698aa",
+      "#79394c",
+      "#a698aa"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "manga/dorohedoro": {
+    "from": "MangaDex",
+    "match": "Dorohedoro",
+    "vols": {
+      "1": {
+        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/d004bed4-9bab-4ded-b1ec-116a8371f294.jpg.512.jpg",
+        "pal": [
+          "#030601",
+          "#b6772c",
+          "#86150b",
+          "#b6772c"
+        ]
+      },
+      "2": {
+        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/04ec3647-16f1-448b-8e68-b71d3b0d90b1.jpg.512.jpg",
+        "pal": [
+          "#050504",
+          "#b85a77",
+          "#bc3629",
+          "#b85a77"
+        ]
+      },
+      "3": {
+        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/d8f7e03a-9c65-487c-8bdd-3dd737554086.jpg.512.jpg",
+        "pal": [
+          "#27352a",
+          "#9aa695",
+          "#9aa695",
+          "#667975"
+        ]
+      },
+      "4": {
+        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/afb55224-7c24-41bd-a96c-2db287da6bd3.jpg.512.jpg",
+        "pal": [
+          "#263718",
+          "#7c9fd5",
+          "#7c9fd5",
+          "#775835"
+        ]
+      },
+      "5": {
+        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/e9cf5fb5-c786-42a9-a181-dc48cfe7916f.jpg.512.jpg",
+        "pal": [
+          "#0a1618",
+          "#52a418",
+          "#52a418",
+          "#344868"
+        ]
+      },
+      "6": {
+        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/3ba34acd-1da9-4813-9fc2-1ed6859594e5.jpg.512.jpg",
+        "pal": [
+          "#562816",
+          "#b2bcb4",
+          "#ac4933",
+          "#b2bcb4"
+        ]
+      },
+      "7": {
+        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/468a52e6-386d-41f2-baa4-eee37eaac084.jpg.512.jpg",
+        "pal": [
+          "#585635",
+          "#fbe929",
+          "#fbe929",
+          "#020506"
+        ]
+      },
+      "8": {
+        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/6a4aa21d-a7e2-445f-8431-1c136ce76ddb.jpg.512.jpg",
+        "pal": [
+          "#686655",
+          "#f4f0e6",
+          "#1badeb",
+          "#a9aa95"
+        ]
+      }
+    },
+    "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/d004bed4-9bab-4ded-b1ec-116a8371f294.jpg.512.jpg",
+    "pal": [
+      "#030601",
+      "#b6772c",
+      "#86150b",
+      "#b6772c"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "manga/fullmetal-alchemist": {
+    "from": "MangaDex",
+    "match": "Fullmetal Alchemist",
+    "vols": {
+      "1": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/a9cd0207-1b86-4738-a2b5-3575c32d5315.jpg.512.jpg",
+        "pal": [
+          "#060808",
+          "#fbfcfb",
+          "#a5342a",
+          "#474646"
+        ]
+      },
+      "2": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/81243b68-dddb-431f-b254-4d767a0bcaa5.jpg.512.jpg",
+        "pal": [
+          "#050606",
+          "#368779",
+          "#297868",
+          "#749c96"
+        ]
+      },
+      "3": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/22977b85-d384-4a77-9700-7657dbba5de7.jpg.512.jpg",
+        "pal": [
+          "#050707",
+          "#759a58",
+          "#1a4795",
+          "#759a58"
+        ]
+      },
+      "4": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/3c0e8ec6-eefe-4f38-9924-4cc1defcfc3e.jpg.512.jpg",
+        "pal": [
+          "#060607",
+          "#e6b748",
+          "#e6b748",
+          "#685436"
+        ]
+      },
+      "5": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/ce1919fd-8b9e-4d30-9ee2-23092acf9fc0.jpg.512.jpg",
+        "pal": [
+          "#040504",
+          "#baa8d6",
+          "#785697",
+          "#baa8d6"
+        ]
+      },
+      "6": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/8eaade3f-144f-4d72-ae5b-e6a335650562.jpg.512.jpg",
+        "pal": [
+          "#151914",
+          "#579a47",
+          "#579a47",
+          "#979678"
+        ]
+      },
+      "7": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/987f1d98-e2af-4cb6-8265-65d58bc7fe5c.jpg.512.jpg",
+        "pal": [
+          "#1a1c1a",
+          "#b88c83",
+          "#d63835",
+          "#883839"
+        ]
+      },
+      "8": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/08a8a771-93c0-4796-9a9a-9889865abd6e.jpg.512.jpg",
+        "pal": [
+          "#080b09",
+          "#7895ba",
+          "#459be7",
+          "#647aa6"
+        ]
+      },
+      "9": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/bb4018d1-bcea-47e0-8aa0-b131cd4f0bf8.jpg.512.jpg",
+        "pal": [
+          "#191b18",
+          "#fcd578",
+          "#f6b849",
+          "#595548"
+        ]
+      },
+      "10": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/6ba9c1b1-d047-47b8-bf30-36054dcceacb.jpg.512.jpg",
+        "pal": [
+          "#050707",
+          "#b79a66",
+          "#a85828",
+          "#b79a66"
+        ]
+      },
+      "11": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/d3e9625d-6923-4986-9fc3-0196049b9945.jpg.512.jpg",
+        "pal": [
+          "#050706",
+          "#888a88",
+          "#484b9a",
+          "#363a46"
+        ]
+      },
+      "12": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/b698db04-2a1d-4b53-8bcc-8d80b717be0b.jpg.512.jpg",
+        "pal": [
+          "#070808",
+          "#98b479",
+          "#2c5234",
+          "#667a5a"
+        ]
+      },
+      "13": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/ffdb30aa-675b-4ac3-b536-ef8abf2340f1.jpg.512.jpg",
+        "pal": [
+          "#060607",
+          "#99838b",
+          "#652a35",
+          "#99838b"
+        ]
+      },
+      "14": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/6495bfc5-7528-4440-a565-265aa9b304cd.jpg.512.jpg",
+        "pal": [
+          "#070b0a",
+          "#95cae7",
+          "#364859",
+          "#95cae7"
+        ]
+      },
+      "15": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/587f8d69-fabf-4b5b-aa50-19edf94d3b02.jpg.512.jpg",
+        "pal": [
+          "#131b17",
+          "#f6d9a6",
+          "#ca6718",
+          "#f6d9a6"
+        ]
+      },
+      "16": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/fcd460d9-4966-4629-a4cc-bfb90e62a9ae.jpg.512.jpg",
+        "pal": [
+          "#050909",
+          "#6888a7",
+          "#476869",
+          "#6888a7"
+        ]
+      },
+      "17": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/c5276ace-3986-45f1-8284-a58ecffe3f76.jpg.512.jpg",
+        "pal": [
+          "#050607",
+          "#c6c8ca",
+          "#28628d",
+          "#c6c8ca"
+        ]
+      },
+      "18": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/cd390c5d-ddb4-4354-adac-c0ad9d6e81c6.jpg.512.jpg",
+        "pal": [
+          "#050708",
+          "#848688",
+          "#546675",
+          "#3a3c44"
+        ]
+      },
+      "19": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/c0afd15a-5b44-4b4e-904d-5cf37987d21d.jpg.512.jpg",
+        "pal": [
+          "#050607",
+          "#7b7787",
+          "#3d3747",
+          "#7b7787"
+        ]
+      },
+      "20": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/23c46a2f-b2cf-4a8d-a7f8-876b9deb06bb.jpg.512.jpg",
+        "pal": [
+          "#040606",
+          "#5a7a95",
+          "#3a64b9",
+          "#7598b8"
+        ]
+      },
+      "21": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/5dca54d9-fd24-49d4-863c-ea1095ae2949.jpg.512.jpg",
+        "pal": [
+          "#040405",
+          "#798484",
+          "#495768",
+          "#798484"
+        ]
+      },
+      "22": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/704196ae-33ea-4327-9da7-f3214c139441.jpg.512.jpg",
+        "pal": [
+          "#050705",
+          "#a68879",
+          "#b8452a",
+          "#474848"
+        ]
+      },
+      "23": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/31499907-70d3-470a-be66-fc5c5a378a2b.jpg.512.jpg",
+        "pal": [
+          "#080908",
+          "#c9973d",
+          "#c9973d",
+          "#1c3858"
+        ]
+      },
+      "24": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/99b53ded-0f2d-47a1-bedb-a191a0577baa.jpg.512.jpg",
+        "pal": [
+          "#080a0d",
+          "#a6c7f6",
+          "#2b448b",
+          "#a6c7f6"
+        ]
+      },
+      "25": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/b44b0a7d-331d-4a08-9576-948e0dba49d5.jpg.512.jpg",
+        "pal": [
+          "#040405",
+          "#fefefe",
+          "#1d3759",
+          "#fefefe"
+        ]
+      },
+      "26": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/34328fb8-d763-480d-ba3d-bab6cb07c11b.jpg.512.jpg",
+        "pal": [
+          "#050506",
+          "#8593bb",
+          "#7c2618",
+          "#463a4a"
+        ]
+      },
+      "27": {
+        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/02e39a29-d569-4943-98e5-3c7492913352.jpg.512.jpg",
+        "pal": [
+          "#040406",
+          "#acb6b7",
+          "#e8b886",
+          "#acb6b7"
+        ]
+      }
+    },
+    "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/a9cd0207-1b86-4738-a2b5-3575c32d5315.jpg.512.jpg",
+    "pal": [
+      "#060808",
+      "#fbfcfb",
+      "#a5342a",
+      "#474646"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "manga/goodnight-punpun": {
+    "from": "MangaDex",
+    "match": "Oyasumi Punpun",
+    "vols": {
+      "1": {
+        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/0295431e-ccb9-4599-900f-0a1bc7380561.jpg.512.jpg",
+        "pal": [
+          "#fdd937",
+          "#161412",
+          "#a6912d",
+          "#a6912d"
+        ]
+      },
+      "2": {
+        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/8bdd7847-b634-453e-93ab-654cf1612e8d.jpg.512.jpg",
+        "pal": [
+          "#5dceaa",
+          "#161412",
+          "#f0ece2",
+          "#f0ece2"
+        ]
+      },
+      "3": {
+        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/1067c320-812c-4d0d-8301-740429b332f5.jpg.512.jpg",
+        "pal": [
+          "#fa198a",
+          "#f4f0e6",
+          "#f0ece2",
+          "#f0ece2"
+        ]
+      },
+      "4": {
+        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/6d31fe58-d8f9-437f-8739-cc0f00cffa80.jpg.512.jpg",
+        "pal": [
+          "#229828",
+          "#f4f0e6",
+          "#f0ece2",
+          "#f0ece2"
+        ]
+      },
+      "5": {
+        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/b8eb107d-4397-4870-a634-e2b8478c810b.jpg.512.jpg",
+        "pal": [
+          "#fe6a2a",
+          "#f4f0e6",
+          "#f0ece2",
+          "#f0ece2"
+        ]
+      },
+      "6": {
+        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/a33d0de7-1184-43b2-9bf0-3b8c9bb7256e.jpg.512.jpg",
+        "pal": [
+          "#881bc4",
+          "#f4f0e6",
+          "#541277",
+          "#541277"
+        ]
+      },
+      "7": {
+        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/9d406abb-cbab-4f34-8f48-34db5690d5db.jpg.512.jpg",
+        "pal": [
+          "#d3eb12",
+          "#161412",
+          "#839213",
+          "#839213"
+        ]
+      }
+    },
+    "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/0295431e-ccb9-4599-900f-0a1bc7380561.jpg.512.jpg",
+    "pal": [
+      "#fdd937",
+      "#161412",
+      "#a6912d",
+      "#a6912d"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "manga/monster": {
+    "from": "AniList",
+    "match": "Monster",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30001-Knby7l1jevE7.jpg",
+    "pal": [
+      "#fefefe",
+      "#3758a5",
+      "#3758a5",
+      "#8799c5"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "manga/one-piece": {
+    "from": "MangaDex",
+    "match": "One Piece",
+    "vols": {
+      "1": {
+        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/2f4aca53-64c7-46ac-ae85-3bc9b3169890.png.512.jpg",
+        "pal": [
+          "#e9d59d",
+          "#060100",
+          "#060100",
+          "#f9f8f9"
+        ]
+      },
+      "2": {
+        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/47b000fb-c5af-451a-a6b2-580e7b4c81bc.png.512.jpg",
+        "pal": [
+          "#fbfbfa",
+          "#4a4426",
+          "#4a4426",
+          "#b7bb64"
+        ]
+      },
+      "3": {
+        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/64cda2ed-291d-4b57-9ec4-f6b10497c8fa.png.512.jpg",
+        "pal": [
+          "#fdbb8c",
+          "#694935",
+          "#773524",
+          "#b98766"
+        ]
+      },
+      "4": {
+        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/f63ba04d-795c-47f4-8255-3a8055cf1397.png.512.jpg",
+        "pal": [
+          "#c3bde9",
+          "#060101",
+          "#060101",
+          "#aa957b"
+        ]
+      },
+      "5": {
+        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/e90a28a5-12ff-441c-9b7a-2f38d32441dd.png.512.jpg",
+        "pal": [
+          "#fcfcfd",
+          "#78573c",
+          "#764c2d",
+          "#c8b9b7"
+        ]
+      },
+      "6": {
+        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/0199c5de-32ec-45db-9d57-aaf301205469.png.512.jpg",
+        "pal": [
+          "#020202",
+          "#c9c5b7",
+          "#365827",
+          "#c9c5b7"
+        ]
+      },
+      "7": {
+        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/60136814-fb9d-43e1-85b6-dcd362125560.png.512.jpg",
+        "pal": [
+          "#fd2a37",
+          "#030202",
+          "#030202",
+          "#c8b49a"
+        ]
+      },
+      "8": {
+        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/82ac1d1f-d972-4881-b4f0-24c9fd271f3e.png.512.jpg",
+        "pal": [
+          "#fdcb59",
+          "#684748",
+          "#984a3a",
+          "#fcfbf9"
+        ]
+      },
+      "9": {
+        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/5eec93a4-41ae-40c7-a2b4-ca5a951149ff.png.512.jpg",
+        "pal": [
+          "#83e8b1",
+          "#46392a",
+          "#46392a",
+          "#e8d7b6"
+        ]
+      },
+      "10": {
+        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/04872b81-9859-43dd-b82f-fbf956d089e6.png.512.jpg",
+        "pal": [
+          "#126cfd",
+          "#f4f0e6",
+          "#0d46a8",
+          "#fbfbfa"
+        ]
+      },
+      "11": {
+        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/0ac2767b-ca89-453f-a996-6a6b13c40b3c.png.512.jpg",
+        "pal": [
+          "#fc73bd",
+          "#030303",
+          "#b55488",
+          "#030303"
+        ]
+      },
+      "12": {
+        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/344b270b-822d-4ba0-9cea-4ed9582554b6.png.512.jpg",
+        "pal": [
+          "#fc9b4c",
+          "#040304",
+          "#040304",
+          "#c7a994"
+        ]
+      }
+    },
+    "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/2f4aca53-64c7-46ac-ae85-3bc9b3169890.png.512.jpg",
+    "pal": [
+      "#e9d59d",
+      "#060100",
+      "#060100",
+      "#f9f8f9"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "manga/vagabond": {
+    "from": "MangaDex",
+    "match": "Vagabond",
+    "vols": {
+      "1": {
+        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/00cf99f7-5145-44ea-a068-0a8a5cd4dc76.jpg.512.jpg",
+        "pal": [
+          "#fbf8e7",
+          "#555769",
+          "#131c26",
+          "#555769"
+        ]
+      },
+      "2": {
+        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/377d1d2b-ba1c-4ed4-b173-591b23fe01fa.jpg.512.jpg",
+        "pal": [
+          "#fefdf6",
+          "#775b88",
+          "#fa3526",
+          "#966a98"
+        ]
+      },
+      "3": {
+        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/3021c157-ff54-4c98-8b78-f814c918abce.jpg.512.jpg",
+        "pal": [
+          "#293a67",
+          "#faf9ea",
+          "#a4c527",
+          "#faf9ea"
+        ]
+      },
+      "4": {
+        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/915d1bf6-a4fb-40d3-b6f8-1f470a4f103a.jpg.512.jpg",
+        "pal": [
+          "#fcfae9",
+          "#26241c",
+          "#e98558",
+          "#26241c"
+        ]
+      },
+      "5": {
+        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/e5fc4b95-4f7b-4832-bd41-3aefab28f189.jpg.512.jpg",
+        "pal": [
+          "#763b4a",
+          "#fdb30a",
+          "#f9a909",
+          "#eb746b"
+        ]
+      },
+      "6": {
+        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/7e92da9f-828b-4044-9ea3-a2d5dba71013.jpg.512.jpg",
+        "pal": [
+          "#fcf9e7",
+          "#655a2b",
+          "#655a2b",
+          "#171b23"
+        ]
+      },
+      "7": {
+        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/16a6b1d4-a4d7-4dd9-9c50-aeac9c99127f.jpg.512.jpg",
+        "pal": [
+          "#383a78",
+          "#fbf6e5",
+          "#fa2809",
+          "#fbf6e5"
+        ]
+      },
+      "8": {
+        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/12f61045-73db-4edc-bcd5-ac59f72b0fa4.jpg.512.jpg",
+        "pal": [
+          "#faf8ea",
+          "#675757",
+          "#047db6",
+          "#f8c697"
+        ]
+      },
+      "9": {
+        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/af50ed37-6041-40bf-852a-ce4b0ea88059.jpg.512.jpg",
+        "pal": [
+          "#fefdf4",
+          "#5a6a78",
+          "#d84b66",
+          "#5a6a78"
+        ]
+      },
+      "10": {
+        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/cdea9456-4a53-4384-b0fd-dc38e4e75756.jpg.512.jpg",
+        "pal": [
+          "#fefdf7",
+          "#463947",
+          "#160619",
+          "#463947"
+        ]
+      },
+      "11": {
+        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/b12915a2-297d-4157-bbc0-eefdd6113967.jpg.512.jpg",
+        "pal": [
+          "#39434c",
+          "#fdf7e7",
+          "#02b498",
+          "#798688"
+        ]
+      },
+      "12": {
+        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/f0544167-aca8-432c-8ea4-ea1bfb34d321.jpg.512.jpg",
+        "pal": [
+          "#fcfaea",
+          "#1c2736",
+          "#1c2736",
+          "#465858"
+        ]
+      }
+    },
+    "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/00cf99f7-5145-44ea-a068-0a8a5cd4dc76.jpg.512.jpg",
+    "pal": [
+      "#fbf8e7",
+      "#555769",
+      "#131c26",
+      "#555769"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "manga/vinland-saga": {
+    "from": "MangaDex",
+    "match": "Vinland Saga",
+    "vols": {
+      "1": {
+        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/47e19a12-b0fb-4b52-b105-c202c555b966.jpg.512.jpg",
+        "pal": [
+          "#e5d3ca",
+          "#993a29",
+          "#aa432b",
+          "#b67769"
+        ]
+      },
+      "2": {
+        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/58f5bc48-0a72-4739-84aa-16a13b5e5d6f.jpg.512.jpg",
+        "pal": [
+          "#b8cbd9",
+          "#484a4b",
+          "#2c679b",
+          "#c95635"
+        ]
+      },
+      "3": {
+        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/b0228f1b-3c2f-4d4f-a095-2bedabe1bfcc.jpg.512.jpg",
+        "pal": [
+          "#fc9756",
+          "#394637",
+          "#996648",
+          "#f6eae4"
+        ]
+      },
+      "4": {
+        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/c5c99ff7-9296-42d2-a1a1-a20c92de036e.jpg.512.jpg",
+        "pal": [
+          "#a5bbbc",
+          "#444a43",
+          "#bb5856",
+          "#fbfdfd"
+        ]
+      },
+      "5": {
+        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/9b95ed1d-8844-4243-a36d-4d1719460ab0.jpg.512.jpg",
+        "pal": [
+          "#3a4b57",
+          "#f8f3e8",
+          "#e98867",
+          "#987468"
+        ]
+      },
+      "6": {
+        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/66d1eca2-18bb-497a-8a50-741ae73baa6e.jpg.512.jpg",
+        "pal": [
+          "#886a76",
+          "#f4f0e6",
+          "#fbb77a",
+          "#e6d8da"
+        ]
+      },
+      "7": {
+        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/0e58f1a7-b688-44d1-b008-777849ef9826.jpg.512.jpg",
+        "pal": [
+          "#385775",
+          "#c8dae4",
+          "#c85175",
+          "#678bc5"
+        ]
+      },
+      "8": {
+        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/df31fe1d-b77b-4c68-a2dd-17bbc2a8d52d.jpg.512.jpg",
+        "pal": [
+          "#f9f9fa",
+          "#484748",
+          "#e6bb69",
+          "#b8bbc9"
+        ]
+      },
+      "9": {
+        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/b8301266-9311-41d8-8208-c469efc29278.jpg.512.jpg",
+        "pal": [
+          "#596558",
+          "#e5e9e5",
+          "#c6ba89",
+          "#e5e9e5"
+        ]
+      },
+      "10": {
+        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/ebfa4ecd-77ec-469c-ae63-c85731c28972.jpg.512.jpg",
+        "pal": [
+          "#5a5555",
+          "#d6d6d8",
+          "#aa8765",
+          "#d6d6d8"
+        ]
+      }
+    },
+    "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/47e19a12-b0fb-4b52-b105-c202c555b966.jpg.512.jpg",
+    "pal": [
+      "#e5d3ca",
+      "#993a29",
+      "#aa432b",
+      "#b67769"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/2001-a-space-odyssey": {
+    "from": "IMDb",
+    "match": "2001: A Space Odyssey (1968)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNjU0NDFkMTQtZWY5OS00MmZhLTg3Y2QtZmJhMzMzMWYyYjc2XkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#050405",
+      "#fbfbf8",
+      "#284a69",
+      "#fbfbf8"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/arrival": {
+    "from": "IMDb",
+    "match": "Arrival (2016)",
+    "src": "https://m.media-amazon.com/images/M/MV5BMTExMzU0ODcxNDheQTJeQWpwZ15BbWU4MDE1OTI4MzAy._V1_SX800.jpg",
+    "pal": [
+      "#272a27",
+      "#fdfdfb",
+      "#987759",
+      "#fdfdfb"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/blade-runner": {
+    "from": "IMDb",
+    "match": "Blade Runner (1982)",
+    "src": "https://m.media-amazon.com/images/M/MV5BOWQ4YTBmNTQtMDYxMC00NGFjLTkwOGQtNzdhNmY1Nzc1MzUxXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#040404",
+      "#fafab6",
+      "#583817",
+      "#fafab6"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/gangs-of-wasseypur": {
+    "from": "IMDb",
+    "match": "Gangs of Wasseypur (2012)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNWQyMmJkYTItNDUyYS00MjgwLWFmYjUtOWQ1NmRjOGZlOTZhXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#896778",
+      "#f4f0e6",
+      "#27386a",
+      "#b8c7b7"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/in-the-mood-for-love": {
+    "from": "IMDb",
+    "match": "In the Mood for Love (2000)",
+    "src": "https://m.media-amazon.com/images/M/MV5BN2Q4NjllMDgtOTk2Zi00YzM1LWJmOTMtNmRiZDgyZGJmMjQzXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#090a0b",
+      "#d76b0b",
+      "#d76b0b",
+      "#d76b0b"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/mulholland-drive": {
+    "from": "IMDb",
+    "match": "Mulholland Drive (2001)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNjliY2UwMjQtYjVlNi00NzExLTg1MDMtMjE2OTYwYjI0NTcxXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#0d0c11",
+      "#d8d3b9",
+      "#24486a",
+      "#d8d3b9"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/oldboy": {
+    "from": "IMDb",
+    "match": "Oldboy (2003)",
+    "src": "https://m.media-amazon.com/images/M/MV5BMTAwNzNjYWItZmI0Ni00ZTcyLWIwNWMtZjlmNGMxZTEyYTJmXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#1a1517",
+      "#c3c8ca",
+      "#761827",
+      "#686a6a"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/parasite": {
+    "from": "IMDb",
+    "match": "Parasite (2019)",
+    "src": "https://m.media-amazon.com/images/M/MV5BYjk1Y2U4MjQtY2ZiNS00OWQyLWI3MmYtZWUwNmRjYWRiNWNhXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#fbfefe",
+      "#131b26",
+      "#488b56",
+      "#131b26"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/pulp-fiction": {
+    "from": "IMDb",
+    "match": "Pulp Fiction (1994)",
+    "src": "https://m.media-amazon.com/images/M/MV5BYTViYTE3ZGQtNDBlMC00ZTAyLTkyODMtZGRiZDg0MjA2YThkXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#151719",
+      "#d8a719",
+      "#c61907",
+      "#897729"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/seven-samurai": {
+    "from": "IMDb",
+    "match": "Seven Samurai (1954)",
+    "src": "https://m.media-amazon.com/images/M/MV5BZjliMWExOTMtZDQ3ZS00NWU3LWIyN2EtMjllNzk3ZTNlYzg4XkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#695738",
+      "#c9dacd",
+      "#251916",
+      "#d8a957"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/stalker": {
+    "from": "IMDb",
+    "match": "Stalker (1979)",
+    "src": "https://m.media-amazon.com/images/M/MV5BMDIzMDRiYjgtM2U1Yy00MjlhLTliODMtM2E5NDI5Njc3YmZkXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#c7c897",
+      "#293734",
+      "#889768",
+      "#f5f4e9"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/taxi-driver": {
+    "from": "IMDb",
+    "match": "Taxi Driver (1976)",
+    "src": "https://m.media-amazon.com/images/M/MV5BZDNhMGYwM2UtMTdlZS00MGQ1LWI2YzAtODY5YWI1MjYyNzRmXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#0a080a",
+      "#dad527",
+      "#dad527",
+      "#495646"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/the-godfather": {
+    "from": "IMDb",
+    "match": "The Godfather (1972)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNGEwYjgwOGQtYjg5ZS00Njc1LTk2ZGEtM2QwZWQ2NjdhZTE5XkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#020101",
+      "#9a885b",
+      "#56361c",
+      "#9a885b"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/there-will-be-blood": {
+    "from": "IMDb",
+    "match": "There Will Be Blood (2007)",
+    "src": "https://m.media-amazon.com/images/M/MV5BMjAxODQ4MDU5NV5BMl5BanBnXkFtZTcwMDU4MjU1MQ@@._V1_SX800.jpg",
+    "pal": [
+      "#020303",
+      "#a89467",
+      "#4c3618",
+      "#585a54"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/blonde": {
+    "from": "MusicBrainz",
+    "match": "Blonde by Frank Ocean",
+    "src": "https://coverartarchive.org/release-group/0da340a0-6ad7-4fc2-a272-6f94393a7831/front-500",
+    "pal": [
+      "#e3e4e4",
+      "#5a5756",
+      "#361c15",
+      "#5a5756"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/currents": {
+    "from": "MusicBrainz",
+    "match": "Currents by Tame Impala",
+    "src": "https://coverartarchive.org/release-group/08aa7a6c-3e43-4459-87b2-e47faf3a088a/front-500",
+    "pal": [
+      "#66556b",
+      "#dcdce2",
+      "#0b0f04",
+      "#261e42"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/discovery": {
+    "from": "MusicBrainz",
+    "match": "Discovery by Daft Punk",
+    "src": "https://coverartarchive.org/release-group/48117b90-a16e-34ca-a514-19c702df1158/front-500",
+    "pal": [
+      "#000100",
+      "#858689",
+      "#70591a",
+      "#37383a"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/kid-a": {
+    "from": "MusicBrainz",
+    "match": "Kid A by Radiohead",
+    "src": "https://coverartarchive.org/release-group/e75c0549-ad55-39e3-8025-c72c5d4a3c5d/front-500",
+    "pal": [
+      "#040403",
+      "#e9ebea",
+      "#6b3c1a",
+      "#e9ebea"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/kind-of-blue": {
+    "from": "MusicBrainz",
+    "match": "Kind of Blue by Miles Davis",
+    "src": "https://coverartarchive.org/release-group/8e8a594f-2175-38c7-a871-abb68ec363e7/front-500",
+    "pal": [
+      "#171716",
+      "#b6b9b5",
+      "#365459",
+      "#78776f"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/madvillainy": {
+    "from": "MusicBrainz",
+    "match": "Madvillainy by Madvillain",
+    "src": "https://coverartarchive.org/release-group/ab570ccb-b06b-3746-8147-4903163ba895/front-500",
+    "pal": [
+      "#e8e8e8",
+      "#0a0a0a",
+      "#ee7536",
+      "#0a0a0a"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/mezzanine": {
+    "from": "Deezer",
+    "match": "Mezzanine (Deluxe) by Massive Attack",
+    "src": "https://cdn-images.dzcdn.net/images/cover/df85f86252ad9bb3759de26d659ec824/1000x1000-000000-80-0-0.jpg",
+    "pal": [
+      "#fdfdfd",
+      "#040503",
+      "#040503",
+      "#373835"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/modal-soul": {
+    "from": "MusicBrainz",
+    "match": "Modal Soul by Nujabes",
+    "src": "https://coverartarchive.org/release-group/bd62a5df-6643-3aef-b129-9d4e6e296022/front-500",
+    "pal": [
+      "#c5372b",
+      "#f4f0e6",
+      "#273869",
+      "#a7cbe3"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/music-has-the-right-to-children": {
+    "from": "MusicBrainz",
+    "match": "Music Has the Right to Children by Boards of Canada",
+    "src": "https://coverartarchive.org/release-group/17d74d52-c92b-3b8d-9f87-218ab2d1c4a0/front-500",
+    "pal": [
+      "#a7ebe8",
+      "#3c6967",
+      "#169994",
+      "#59c5c8"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/roja": {
+    "from": "MusicBrainz",
+    "match": "Roja by A. R. Rahman",
+    "src": "https://coverartarchive.org/release-group/fc023a2d-7ddb-3911-9ee8-a819a5fae4f1/front-500",
+    "pal": [
+      "#010000",
+      "#f6b995",
+      "#7a1606",
+      "#363636"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/rumours": {
+    "from": "MusicBrainz",
+    "match": "Rumours by Fleetwood Mac",
+    "src": "https://coverartarchive.org/release-group/416bb5e5-c7d1-3977-8fd7-7c9daf6c2be6/front-500",
+    "pal": [
+      "#fefce9",
+      "#1c1d22",
+      "#030308",
+      "#676868"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/the-dark-side-of-the-moon": {
+    "from": "MusicBrainz",
+    "match": "The Dark Side of the Moon by Pink Floyd",
+    "src": "https://coverartarchive.org/release-group/f5093c06-23e3-404f-aeaa-40f72885ee3a/front-500",
+    "pal": [
+      "#000000",
+      "#c7942b",
+      "#f5a308",
+      "#363636"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/to-pimp-a-butterfly": {
+    "from": "MusicBrainz",
+    "match": "To Pimp a Butterfly by Kendrick Lamar",
+    "src": "https://coverartarchive.org/release-group/d9103c72-3807-4378-9ce7-b6f3e8fdd547/front-500",
+    "pal": [
+      "#b8b7b7",
+      "#393735",
+      "#393735",
+      "#7a7877"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/unknown-pleasures": {
+    "from": "MusicBrainz",
+    "match": "Unknown Pleasures by Joy Division",
+    "src": "https://coverartarchive.org/release-group/42352def-1aab-3000-b548-895ebd869cb6/front-500",
+    "pal": [
+      "#001516",
+      "#797d81",
+      "#5a6567",
+      "#5a6567"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "music/variety": {
+    "from": "Deezer",
+    "match": "VARIETY (30th Anniversary Edition) by Mariya Takeuchi",
+    "src": "https://cdn-images.dzcdn.net/images/cover/6b242094079d2068423204d0fdb5275c/1000x1000-000000-80-0-0.jpg",
+    "pal": [
+      "#474747",
+      "#fbfbf7",
+      "#b44844",
+      "#9a9a98"
+    ],
+    "fetched": "2026-11-05"
+  }
+}
