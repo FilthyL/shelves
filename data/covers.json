@@ -215,10 +215,6 @@
       "#25548b"
     ]
   },
-  "books/kafka-on-the-shore": {
-    "miss": true,
-    "tried": "2026-11-05"
-  },
   "books/meditations": {
     "from": "Open Library",
     "match": "Meditations by Marcus Aurelius",

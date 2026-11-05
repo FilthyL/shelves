@@ -5,7 +5,7 @@
     { "title": "The Brothers Karamazov", "original": "Братья Карамазовы", "creator": "Fyodor Dostoevsky", "year": 1880, "format": "hardcover", "pages": 796, "rating": 10, "tags": ["classic"] },
     { "title": "Neuromancer", "creator": "William Gibson", "year": 1984, "format": "paperback", "pages": 271, "rating": 8.5, "tags": ["cyberpunk"] },
     { "title": "One Hundred Years of Solitude", "original": "Cien años de soledad", "creator": "Gabriel García Márquez", "year": 1967, "format": "paperback", "pages": 417, "rating": 9.5, "tags": ["magical realism"] },
-    { "title": "Kafka on the Shore", "original": "海辺のカフカ", "creator": "Haruki Murakami", "year": 2002, "format": "paperback", "pages": 467, "rating": 8.5, "tags": ["surreal"] },
+    { "title": "Kafka on the Shore", "original": "海辺のカフカ", "creator": "Haruki Murakami", "year": 2002, "format": "paperback", "pages": 467, "isbn": "9781400079278", "rating": 8.5, "tags": ["surreal"] },
     { "title": "Nineteen Eighty-Four", "creator": "George Orwell", "year": 1949, "format": "paperback", "pages": 328, "rating": 9, "tags": ["dystopia"] },
     { "title": "The Stranger", "original": "L'Étranger", "creator": "Albert Camus", "year": 1942, "format": "paperback", "pages": 123, "rating": 9, "tags": ["absurdism"] },
     { "title": "Infinite Jest", "creator": "David Foster Wallace", "year": 1996, "format": "paperback", "pages": 1079, "rating": 9, "status": "reading", "tags": ["postmodern"], "note": "Two bookmarks: one for the novel, one for the endnotes." },
