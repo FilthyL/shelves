@@ -63,7 +63,7 @@ export function coverHTML(obj) {
   if (it.kind === 'manga') {
     type = `<span class="mg-logo"><b style="--ts:${titleSize(it.title, 'cond')}">${T}</b>${it.original && it.original !== it.title ? `<small>${esc(it.original)}</small>` : ''}</span>
       <span class="mg-vol"><small>VOL.</small>${obj.vol ?? 1}</span>
-      <span class="mg-foot"><b>${C}</b><i>${esc(it.publisher || 'Filthy Residency')}</i></span>`;
+      <span class="mg-foot"><b>${C}</b><i>${esc(it.publisher || it.house || '')}</i></span>`;
   } else if (comp !== 'void' || it.kind !== 'music') {
     const creator = `<span class="art-creator">${C}</span>`;
     const title = `<span class="art-title s-${style}" style="--ts:${ts}">${T}</span>`;
@@ -175,7 +175,7 @@ export function backHTML(obj) {
   return `<div class="back k-${it.kind} bk-${it.fmt.group}" style="${palVars(obj.pal || it.pal)}">
     <div class="bk-head"><b>${esc(it.title)}</b><i>${esc(it.creator || '')}</i></div>
     ${body}
-    <div class="bk-foot">${barcode(it.seed)}<span class="bk-meta"><b>${esc(it.cat)}${obj.vol ? `·${String(obj.vol).padStart(2, '0')}` : ''}</b><i>${spec}</i><i>Filthy Residency Collection</i></span></div>
+    <div class="bk-foot">${barcode(it.seed)}<span class="bk-meta"><b>${esc(it.cat)}${obj.vol ? `·${String(obj.vol).padStart(2, '0')}` : ''}</b><i>${spec}</i><i>${esc(it.house || '')} Collection</i></span></div>
   </div>`;
 }
 

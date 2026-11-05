@@ -26,6 +26,7 @@ generated art instead, give it "cover": false.
 """
 import argparse
 import datetime as dt
+import functools
 import io
 import json
 import re
@@ -42,9 +43,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from shelflib import DATA, load_house, load_json, parse_owned  # noqa: E402
 
 COVERS_JSON = DATA / 'covers.json'
-UA = 'FilthyResidency-shelves/1.0 (+https://github.com/FilthyL/shelves)'
+UA = 'FilthManor-shelves/1.0 (+https://github.com/FilthyL/shelves)'
 THRESHOLD = 0.72
-LOG = print
+LOG = functools.partial(print, flush=True)  # show progress live in CI logs
 
 # minimum seconds between requests to each host, from each API's published limits
 PACE = {'api.jikan.moe': 1.2, 'api.mangadex.org': 0.3, 'musicbrainz.org': 1.1, 'openlibrary.org': 1.0, 'v3.sg.media-imdb.com': 0.5}
@@ -52,7 +53,7 @@ _last = {}
 
 
 # ------------------------------------------------------------------ http
-def http(url, headers=None, tries=3):
+def http(url, headers=None, tries=3, timeout=25):
     host = urllib.parse.urlparse(url).netloc
     for attempt in range(tries):
         gap = PACE.get(host, 0.15) - (time.monotonic() - _last.get(host, 0))
@@ -61,7 +62,7 @@ def http(url, headers=None, tries=3):
         _last[host] = time.monotonic()
         req = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept': '*/*', **(headers or {})})
         try:
-            with urllib.request.urlopen(req, timeout=25) as r:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
                 return r.read(), r.headers.get('Content-Type', '')
         except urllib.error.HTTPError as e:
             if e.code in (429, 500, 502, 503, 504) and attempt < tries - 1:
@@ -310,8 +311,17 @@ SOURCES = {
 
 # ------------------------------------------------------------------ images
 def check(url):
-    """Read the image into memory to make sure the link serves a real cover. Nothing is written."""
-    body, ctype = http(url)
+    """Read the image into memory to make sure the link serves a real cover. Nothing is written.
+
+    A link that answers with an error is rejected. A host that is merely slow keeps its link,
+    just without spine colours, since a visitor's browser will still load it."""
+    try:
+        body, ctype = http(url, tries=1, timeout=12)
+    except urllib.error.HTTPError:
+        raise
+    except (urllib.error.URLError, TimeoutError, OSError) as e:
+        LOG(f'      slow image host, keeping the link without colours: {e}')
+        return None
     if not ctype.startswith('image/') or len(body) < 2000:
         raise ValueError(f'not an image ({ctype}, {len(body)} bytes)')
     return body
@@ -325,7 +335,7 @@ def palette(image):
     except Exception:
         return None
     bins = {}
-    for px in im.getdata():
+    for px in (im.get_flattened_data() if hasattr(im, 'get_flattened_data') else im.getdata()):
         b = bins.setdefault((px[0] >> 4, px[1] >> 4, px[2] >> 4), [0, 0, 0, 0])
         b[0] += 1; b[1] += px[0]; b[2] += px[1]; b[3] += px[2]
     cols = sorted(([b[0], (b[1] / b[0], b[2] / b[0], b[3] / b[0])] for b in bins.values()), key=lambda x: -x[0])

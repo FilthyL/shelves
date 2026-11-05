@@ -42,6 +42,11 @@ jobs:
         run: pip install --quiet pillow
 
       - name: Find cover art
+        # a slow source must not hold up the deploy; whatever was found is kept
+        timeout-minutes: 12
+        continue-on-error: true
+        env:
+          PYTHONUNBUFFERED: "1"
         run: |
           python tools/covers.py --prune \
             ${{ inputs.refresh && '--refresh' || '' }} \

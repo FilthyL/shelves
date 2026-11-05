@@ -1,6 +1,6 @@
 # shelves
 
-**Filthy Residency** is a house you can walk into. Click it and the front comes away to show five rooms. Each room is a wall of shelving that holds a different part of the collection, drawn as physical copies at true size: vinyl, CDs and cassettes in the Listening Room, Blu-rays, DVDs and VHS in the Screening Room, books in the Library, anime box sets in the Anime Den and manga volumes in the Manga Loft. Take anything off a shelf to turn it over, flip it to read the back and see its card.
+**Filth Manor** is a house you can walk into. Click it and the front comes away to show five rooms. Each room is a wall of shelving that holds a different part of the collection, drawn as physical copies at true size: vinyl, CDs and cassettes in the Listening Room, Blu-rays, DVDs and VHS in the Screening Room, books in the Library, anime box sets in the Anime Den and manga volumes in the Manga Loft. Take anything off a shelf to turn it over, flip it to read the back and see its card.
 
 The house, street and room decor are pixel art drawn on a canvas. The copies keep their real proportions and use their real published covers.
 

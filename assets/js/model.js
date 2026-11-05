@@ -134,12 +134,14 @@ export async function loadHouse(base = 'data/') {
   ]);
   const rooms = await Promise.all(house.rooms.map(async (r, i) => {
     const data = await getJSON(base + r.file);
-    return buildRoom(r, Array.isArray(data) ? data : data.items || [], covers, i);
+    return buildRoom(r, Array.isArray(data) ? data : data.items || [], covers, i, house.name);
   }));
   return { ...house, rooms, byId: Object.fromEntries(rooms.map(r => [r.id, r])) };
 }
 
-function buildRoom(meta, rawItems, covers, index) {
+function buildRoom(meta, rawItems, covers, index, houseName = 'Filth Manor') {
+  // shelfmark prefix from the house's initials: Filth Manor -> FM
+  const prefix = (String(houseName).match(/[A-Za-z0-9]+/g) || ['FM']).map(w => w[0]).join('').toUpperCase().slice(0, 3);
   const kind = KINDS[meta.kind] ? meta.kind : 'books';
   const K = KINDS[kind];
   const room = { ...meta, kind, K, index, items: [], objects: [] };
@@ -175,7 +177,7 @@ function buildRoom(meta, rawItems, covers, index) {
 
     const item = {
       ...raw, id, kind, room: room.id, format, fmt: FORMATS[format], seed, pal, cover,
-      cat: `FR-${K.code}-${String(n + 1).padStart(3, '0')}`,
+      cat: `${prefix}-${K.code}-${String(n + 1).padStart(3, '0')}`, house: houseName,
       tags: Array.isArray(raw.tags) ? raw.tags : [],
       order: n, volCovers, coverPal, source: useFetched && fetched ? fetched.from || null : null,
     };

@@ -119,7 +119,7 @@ export function cellsFor(rooms) {
 // ============================================================ STREET SCENE
 export function createStreet({ rooms, name, number }) {
   const { L, cells } = cellsFor(rooms);
-  const words = String(name || 'Filthy Residency').toUpperCase().split(/\s+/);
+  const words = String(name || 'Filth Manor').toUpperCase().split(/\s+/);
   const signWord = words[0].slice(0, 7);
   const plaque = (words.slice(1).join(' ') || 'HOUSE').slice(0, 11);
   const S = { W: 0, H: 0, hx: 0, hy: 0, ground: 0, bg: null, ext: null, int: null, frame: null, stars: [], box: null };
