@@ -7,7 +7,7 @@ the site reads. Spine colours are taken from each cover when Pillow is installed
 Sources, none of which need a key:
   music   iTunes Search (albums), then Deezer
   movies  TMDB when TMDB_API_KEY is set, then IMDb title suggestions, then iTunes Search
-  books   Open Library, then Google Books
+  books   Open Library (by isbn when the item has one), then Google Books
   anime   AniList, then Jikan (MyAnimeList)
   manga   MangaDex, one cover per owned volume, then AniList for the series
 
@@ -244,6 +244,14 @@ def choose_film(it, res):
     return None
 
 
+def book_isbn(it):
+    """An item with an isbn gets that exact edition's cover."""
+    isbn = re.sub(r'[^0-9Xx]', '', str(it.get('isbn') or ''))
+    if not isbn:
+        return None
+    return {'from': 'Open Library', 'url': f'https://covers.openlibrary.org/b/isbn/{isbn}-L.jpg?default=false', 'match': f'ISBN {isbn}', 'score': 1.0}
+
+
 def book_openlibrary(it):
     fields = 'title,author_name,first_publish_year,cover_i'
     queries = [{'title': it['title'], 'author': it.get('creator', '')}, {'q': f"{it['title']} {it.get('creator', '')}".strip()}]
@@ -381,7 +389,7 @@ def choose_volume_covers(covers, owned, prefer=None):
 SOURCES = {
     'music': [music_itunes, music_deezer],
     'movies': [movie_tmdb, movie_imdb, movie_itunes],
-    'books': [book_openlibrary, book_google],
+    'books': [book_isbn, book_openlibrary, book_google],
     'anime': [lambda it: anilist(it, 'anime'), lambda it: jikan(it, 'anime')],
     'manga': [mangadex, lambda it: anilist(it, 'manga'), lambda it: jikan(it, 'manga')],
 }

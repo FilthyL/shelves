@@ -27,6 +27,7 @@ Everything lives in `data/`. The house and its rooms are in `data/house.json`, a
 | `tracks` | A list of track names, printed on the back of a record |
 | `owned`, `total` | Manga only. `owned` is `"1-14"`, `12` or `[1, 2, 5]`. Each owned volume gets its own spine |
 | `facts` | Any extra rows for the card, like `{ "Director": "Satoshi Kon" }` |
+| `isbn` | Books only. Fetches the cover of that exact edition |
 | `cover` | A cover URL or path to use instead of the fetched one, or `false` to keep the generated art |
 | `colors` | `[ground, ink, accent]` for the generated art and spine |
 | `id` | Only needed when a title has no Latin letters or two items share a title |
