@@ -1,0 +1,6 @@
+{
+  "items": [
+    { "title": "Butterfly knife", "toy": "balisong", "creator": "Trainer, blunt blade", "year": 2026, "format": "toy", "colors": ["#124e89", "#ffffff", "#2ce8f5", "#c0cbdc"], "tags": ["fidget", "flipping"], "note": "Twenty-four tricks, from the basic opening to the ladder." },
+    { "title": "Deck of cards", "toy": "cards", "creator": "Poker size, 52 cards", "year": 2026, "format": "toy", "colors": ["#a22633", "#ffffff", "#e43b44", "#ead4aa"], "tags": ["cardistry"], "note": "Thirteen cardistry moves: cuts, fans, springs and shuffles." }
+  ]
+}

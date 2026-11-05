@@ -2,6 +2,7 @@ import { loadHouse, putEntry, hash, esc, roomStats, countLine } from './model.js
 import { spineHTML, spineClass, frameHTML, backHTML, mediaHTML, coverHTML, palVars, volumeLine } from './art.js';
 import { createStreet, decorSprite, wallTile } from './pixel.js';
 import { openLog, canLog, applyPending } from './log.js';
+import { TOYS, trickCount, player } from './toys.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -47,10 +48,15 @@ function route() {
   const room = S.house.byId[rid];
   if (room) {
     if (S.scene !== 'room' || S.room !== room) showRoom(room);
+    if (room.kind === 'toys') {
+      if (rest[0]) openPlay(room, rest[0], rest[1]); else closePlay();
+      return;
+    }
     const key = rest.join('--');
     if (key) openInspect(key); else closeInspect();
   } else {
     closeInspect(true);
+    closePlay();
     showStreet(h === 'house');
   }
 }
@@ -69,7 +75,7 @@ function buildStreet() {
   const H = S.house;
   ST.scene = createStreet({ rooms: H.rooms, name: H.name, number: H.number });
   const { cells, L } = ST.scene;
-  for (const c of cells) if (c.room) c.room.where = c.attic ? 'Attic' : `${floorName(c.floor, L.floors)} · ${c.x > 50 ? 'East' : 'West'}`;
+  for (const c of cells) if (c.room) c.room.where = c.attic ? 'Attic' : c.basement ? 'Basement' : `${floorName(c.floor, L.floors)} · ${c.x > 50 ? 'East' : 'West'}`;
   const totalStats = H.rooms.map(r => `<span><b>${r.kind === 'manga' ? r.objects.length : r.items.length}</b> ${r.kind === 'manga' ? 'volumes' : r.K.many}</span>`).join('');
 
   $('#street').innerHTML = `
@@ -121,7 +127,7 @@ function fitHouse() {
   let k = Math.min((vh - head - foot - 12) / need, (vw - 8) / 150, 6);
   k = k >= 3 ? Math.floor(k) : Math.max(1.5, Math.floor(k * 4) / 4);
   const W = Math.ceil(vw / k), H = Math.ceil(vh / k);
-  const ground = H - Math.ceil(foot / k) - 7;
+  const ground = H - Math.ceil(foot / k) - 7 - ST.scene.basementH;
   ST.k = k;
   ST.scene.resize(W, H, ground);
   const cv = $('.street-canvas', street);
@@ -192,7 +198,9 @@ function zoomInto(btn, room) {
 
 // ============================================================ ROOMS
 function showRoom(room) {
+  if (room.kind === 'toys') return showToyRoom(room);
   closeInspect(true);
+  closePlay();
   S.scene = 'room'; S.room = room; S.sort = 'shelf'; S.fmt = null; S.q = '';
   $('#street').hidden = true;
   const sec = $('#room');
@@ -212,12 +220,7 @@ function showRoom(room) {
   const covers = room.items.filter(i => i.cover).length;
 
   sec.innerHTML = `
-    <nav class="room-nav" aria-label="Rooms">
-      <a class="nav-mark" href="#house" title="Back to the house">${esc(S.house.name)}</a>
-      <div class="nav-rooms">${S.house.rooms.map(r => `<a href="#${r.id}"${r === room ? ' aria-current="page"' : ''}>${esc(r.name.replace(/^The\s+/i, ''))}</a>`).join('')}</div>
-      ${logButton()}
-      <button class="btn js-search" type="button" aria-label="Search the collection">${searchIcon()}<span>Search</span><kbd>/</kbd></button>
-    </nav>
+    ${navHTML(room)}
     <header class="room-head">
       <div>
         <p class="eyebrow">${esc(room.where || '')}</p>
@@ -734,6 +737,157 @@ function openSearch() {
   input.focus();
 }
 
+// ============================================================ THE TRICK ROOM
+function navHTML(room) {
+  return `<nav class="room-nav" aria-label="Rooms">
+      <a class="nav-mark" href="#house" title="Back to the house">${esc(S.house.name)}</a>
+      <div class="nav-rooms">${S.house.rooms.map(r => `<a href="#${r.id}"${r === room ? ' aria-current="page"' : ''}>${esc(r.name.replace(/^The\s+/i, ''))}</a>`).join('')}</div>
+      ${logButton()}
+      <button class="btn js-search" type="button" aria-label="Search the collection">${searchIcon()}<span>Search</span><kbd>/</kbd></button>
+    </nav>`;
+}
+
+function showToyRoom(room) {
+  closeInspect(true);
+  closePlay();
+  S.scene = 'room'; S.room = room;
+  $('#street').hidden = true;
+  const sec = $('#room');
+  sec.hidden = false;
+  sec.className = `scene scene-room theme-${room.kind}`;
+  const tile = wallTile(room.kind);
+  sec.style.setProperty('--wallpaper', `url(${tile.url})`);
+  sec.style.setProperty('--tile', `${tile.n * 4}px`);
+  document.title = `${room.name} · ${S.house.name}`;
+  const toys = room.items.filter(it => TOYS[it.toy]);
+  sec.innerHTML = `
+    ${navHTML(room)}
+    <header class="room-head"><div>
+      <p class="eyebrow">${esc(room.where || '')}</p>
+      <h1 class="room-title">${esc(room.name)}</h1>
+      <p class="room-sub">${toys.length} ${toys.length === 1 ? 'toy' : 'toys'} · ${trickCount(room)} tricks to play</p>
+    </div></header>
+    <div class="wall"><div class="bench">${toys.map(it => `
+      <button class="toy-station" type="button" data-key="${esc(it.id)}" style="${palVars(it.pal)}" aria-label="Play with the ${esc(it.title.toLowerCase())}, ${TOYS[it.toy].tricks.length} tricks">
+        <span class="toy-case"><span class="toy-anchor" style="--sc:${(TOYS[it.toy].scale * 0.62).toFixed(2)}"></span></span>
+        <span class="toy-label"><b>${esc(it.title)}</b><i>${TOYS[it.toy].tricks.length} tricks${it.creator ? ` · ${esc(it.creator)}` : ''}</i></span>
+      </button>`).join('')}</div></div>
+    <div class="floor"></div>
+    <footer class="room-foot">
+      <span>Pick a toy up to play with it. Arrow keys change the trick, space pauses.</span>
+      <button class="linkish js-log" type="button">${canLog() ? 'Log an entry' : 'Owner? Log an entry'}</button>
+    </footer>`;
+  $('.js-search', sec).addEventListener('click', openSearch);
+  $$('.js-log', sec).forEach(b => b.addEventListener('click', startLog));
+  $$('.toy-station', sec).forEach(btn => {
+    const it = room.items.find(i => i.id === btn.dataset.key), toy = TOYS[it.toy];
+    const rig = toy.make($('.toy-anchor', btn), { ghosts: 0 });
+    rig.pose();
+    const pl = player(rig);
+    pl.setMode('loop'); pl.setSpeed(0.8);
+    const on = () => { if (!reduced) pl.go(Math.max(0, toy.tricks.findIndex(t => t.id === toy.preview))); };
+    const off = () => { pl.stop(); rig.pose(); };
+    btn.addEventListener('pointerenter', on); btn.addEventListener('pointerleave', off);
+    btn.addEventListener('focus', on); btn.addEventListener('blur', off);
+    btn.addEventListener('click', () => { off(); S.pushed = true; go(`${room.id}--${it.id}`); });
+  });
+  window.scrollTo(0, 0);
+}
+
+function openPlay(room, itemId, trickId) {
+  const it = room.items.find(i => i.id === itemId);
+  const toy = it && TOYS[it.toy];
+  if (!toy) { history.replaceState(null, '', `#${room.id}`); return closePlay(); }
+  const want = Math.max(0, toy.tricks.findIndex(t => t.id === trickId));
+  if (S.play?.item === it) { if (trickId && want !== S.play.pl.index) S.play.pl.go(want); return; }
+  closePlay();
+  const el = document.createElement('div');
+  el.className = `play theme-${room.kind}`;
+  el.setAttribute('role', 'dialog');
+  el.setAttribute('aria-modal', 'true');
+  el.setAttribute('aria-label', it.title);
+  el.innerHTML = `
+    <div class="inspect-backdrop"></div>
+    <div class="play-stage">
+      <div class="play-anchor" style="--sc:${toy.scale}"></div>
+      <div class="play-now" aria-live="polite"><b></b><i></i></div>
+      <div class="play-ui">
+        <span class="play-progress" aria-hidden="true"><i></i></span>
+        <div class="play-buttons">
+          <button class="round js-prev" type="button" aria-label="Previous trick">←</button>
+          <button class="round js-toggle" type="button" aria-label="Pause">❚❚</button>
+          <button class="round js-next" type="button" aria-label="Next trick">→</button>
+          <span class="play-gap"></span>
+          ${[0.5, 1, 2].map(s => `<button class="chip js-speed" type="button" data-s="${s}" aria-pressed="${s === 1}">${s}×</button>`).join('')}
+          <button class="chip js-mode" type="button" aria-pressed="false" title="Repeat this trick instead of moving on">Repeat</button>
+        </div>
+      </div>
+    </div>
+    <aside class="notes play-notes">
+      <article class="card">
+        <div class="card-bar"><span>${esc(it.cat)}</span><span>${esc(room.name.replace(/^The\s+/i, ''))}</span></div>
+        <div class="card-body">
+          <h2 class="card-title">${esc(it.title)}</h2>
+          ${it.creator ? `<p class="card-by"><span>Kind</span>${esc(it.creator)}</p>` : ''}
+          <p class="play-about"></p>
+          <ol class="tricks">${toy.tricks.map((t, i) => `<li><button type="button" data-i="${i}"><span>${String(i + 1).padStart(2, '0')}</span><b>${esc(t.name)}</b><i>${esc(t.level)}</i></button></li>`).join('')}</ol>
+        </div>
+      </article>
+    </aside>
+    <button class="round btn-x" type="button" aria-label="Put it down">✕</button>`;
+  document.body.append(el);
+  document.body.style.overflow = 'hidden';
+  const rig = toy.make($('.play-anchor', el), { ghosts: reduced ? 0 : 2 });
+  const bar = $('.play-progress i', el), toggleBtn = $('.js-toggle', el);
+  const pl = player(rig, {
+    onTrick(i) {
+      const t = toy.tricks[i];
+      $('.play-now b', el).textContent = t.name;
+      $('.play-now i', el).textContent = `${t.level} · ${i + 1} of ${toy.tricks.length}`;
+      $('.play-about', el).textContent = t.about;
+      $$('.tricks button', el).forEach(b => b.toggleAttribute('aria-current', +b.dataset.i === i));
+      $(`.tricks button[data-i="${i}"]`, el)?.scrollIntoView({ block: 'nearest' });
+      history.replaceState(null, '', `#${room.id}--${it.id}--${t.id}`);
+    },
+    onTick(u) {
+      if (typeof u === 'number') bar.style.width = `${(u * 100).toFixed(1)}%`;
+      toggleBtn.textContent = pl.playing ? '❚❚' : '▶';
+      toggleBtn.setAttribute('aria-label', pl.playing ? 'Pause' : 'Play');
+    },
+  });
+  S.play = { el, item: it, room, rig, pl };
+  $('.inspect-backdrop', el).addEventListener('click', putBackPlay);
+  $('.btn-x', el).addEventListener('click', putBackPlay);
+  $('.js-prev', el).addEventListener('click', () => pl.go(pl.index - 1));
+  $('.js-next', el).addEventListener('click', () => pl.go(pl.index + 1));
+  toggleBtn.addEventListener('click', () => pl.toggle());
+  $$('.js-speed', el).forEach(b => b.addEventListener('click', () => {
+    pl.setSpeed(+b.dataset.s);
+    $$('.js-speed', el).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  }));
+  $('.js-mode', el).addEventListener('click', e => {
+    const loop = pl.mode !== 'loop';
+    pl.setMode(loop ? 'loop' : 'all');
+    e.currentTarget.setAttribute('aria-pressed', String(loop));
+  });
+  $('.tricks', el).addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (b) pl.go(+b.dataset.i); });
+  pl.go(want);
+  $('.btn-x', el).focus({ preventScroll: true });
+}
+
+function closePlay() {
+  if (!S.play) return;
+  S.play.pl.stop();
+  S.play.rig.destroy();
+  S.play.el.remove();
+  S.play = null;
+  document.body.style.overflow = '';
+}
+
+function putBackPlay() {
+  if (S.pushed) { S.pushed = false; history.back(); } else go(S.room.id);
+}
+
 // ============================================================ LOGGING
 function logButton() {
   return canLog() ? '<button class="btn js-log" type="button" aria-label="Log an entry">+ <span>Log</span><kbd>L</kbd></button>' : '';
@@ -768,12 +922,18 @@ function onKey(e) {
   const typing = /input|select|textarea/i.test(document.activeElement?.tagName || '');
   if (e.key === 'Escape') {
     if ($('#log')) return $('#log').remove();
+    if (S.play) return putBackPlay();
     if ($('#search')) return $('#search').remove();
     if (S.insp) return putBack();
     if (S.scene === 'street' && location.hash === '#house') return go('');
   }
   if (e.key === '/' && !typing) { e.preventDefault(); return openSearch(); }
-  if ((e.key === 'l' || e.key === 'L') && !typing && !S.insp && !$('#search') && !$('#log')) { e.preventDefault(); return startLog(); }
+  if ((e.key === 'l' || e.key === 'L') && !typing && !S.insp && !S.play && !$('#search') && !$('#log')) { e.preventDefault(); return startLog(); }
+  if (S.play && !typing && !$('#search')) {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); return S.play.pl.go(S.play.pl.index - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); return S.play.pl.go(S.play.pl.index + 1); }
+    if (e.key === ' ') { e.preventDefault(); return S.play.pl.toggle(); }
+  }
   if (S.insp && !typing) {
     if (e.key === 'ArrowLeft') step(-1);
     else if (e.key === 'ArrowRight') step(1);

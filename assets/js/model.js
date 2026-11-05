@@ -15,6 +15,7 @@ export const FORMATS = {
   tankobon:  { label: 'Tankōbon',        group: 'manga',    w: 113, h: 176, d: 15 },
   kanzenban: { label: 'Perfect edition', group: 'manga',    w: 148, h: 210, d: 24 },
   deluxe:    { label: 'Deluxe hardcover',group: 'manga',    w: 182, h: 257, d: 30 },
+  toy:       { label: 'Toy',             group: 'toy',      w: 120, h: 90,  d: 30 },
 };
 
 const ALIASES = {
@@ -32,6 +33,8 @@ export const KINDS = {
             scale: 0.92, decor: ['globe', 'candle', 'cat', 'plant'] },
   anime:  { code: 'ANI', one: 'series', many: 'series',  verb: 'Watched', by: 'Studio',      format: 'bluray',
             scale: 0.98, decor: ['daruma', 'plant', 'bookend', 'candle'] },
+  toys:   { code: 'TOY', one: 'toy',    many: 'toys',    verb: 'Played',  by: 'Kind',        format: 'toy',
+            scale: 1.0,  decor: ['plant', 'cat', 'candle', 'bookend'] },
   manga:  { code: 'MNG', one: 'volume', many: 'volumes', verb: 'Read',    by: 'Mangaka',     format: 'tankobon',
             scale: 1.0,  decor: ['daruma', 'lantern', 'cat', 'plant'] },
 };

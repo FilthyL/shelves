@@ -7,10 +7,41 @@
   "branch": "main",
   "tagline": "Every film, record, book, series and volume that made it past the front door",
   "rooms": [
-    { "id": "manga",  "name": "The Manga Loft",     "kind": "manga",  "file": "rooms/manga.json" },
-    { "id": "anime",  "name": "The Anime Den",      "kind": "anime",  "file": "rooms/anime.json" },
-    { "id": "music",  "name": "The Listening Room", "kind": "music",  "file": "rooms/music.json" },
-    { "id": "books",  "name": "The Library",        "kind": "books",  "file": "rooms/books.json" },
-    { "id": "movies", "name": "The Screening Room", "kind": "movies", "file": "rooms/movies.json" }
+    {
+      "id": "manga",
+      "name": "The Manga Loft",
+      "kind": "manga",
+      "file": "rooms/manga.json"
+    },
+    {
+      "id": "anime",
+      "name": "The Anime Den",
+      "kind": "anime",
+      "file": "rooms/anime.json"
+    },
+    {
+      "id": "music",
+      "name": "The Listening Room",
+      "kind": "music",
+      "file": "rooms/music.json"
+    },
+    {
+      "id": "books",
+      "name": "The Library",
+      "kind": "books",
+      "file": "rooms/books.json"
+    },
+    {
+      "id": "movies",
+      "name": "The Screening Room",
+      "kind": "movies",
+      "file": "rooms/movies.json"
+    },
+    {
+      "id": "tricks",
+      "name": "The Trick Room",
+      "kind": "toys",
+      "file": "rooms/tricks.json"
+    }
   ]
 }

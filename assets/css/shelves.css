@@ -379,6 +379,61 @@ input.field { width: 180px; }
 .results .r-room { font: 400 12px/1 var(--f-pix); color: var(--steel); }
 .results .empty { padding: 16px; font: 400 14px/1.4 var(--f-pix); color: var(--steel); }
 
+/* ============================================================ THE TRICK ROOM */
+.theme-toys { --wall: #68386c; --wd0: #262b44; --wd1: #5a6988; --wd2: #8b9bb4; --back: #181425; --floor0: #181425; --floor1: #3a4466; --accent: #f6757a; }
+.theme-toys .floor { background:
+  linear-gradient(180deg, rgba(24, 20, 37, 0.55) 0 8px, transparent 8px),
+  repeating-conic-gradient(#181425 0 25%, #3a4466 0 50%) 0 0 / 48px 48px; }
+.bench {
+  max-width: 1280px; margin: 0 auto; padding: 32px 24px 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 24px;
+  background: linear-gradient(180deg, transparent 0 calc(100% - 28px), var(--wd2) calc(100% - 28px) calc(100% - 24px), var(--wd1) calc(100% - 24px) calc(100% - 8px), var(--wd0) calc(100% - 8px));
+  padding-bottom: 48px;
+}
+.toy-station { display: grid; gap: 12px; padding: 0; border: 0; background: none; cursor: pointer; text-align: left; color: inherit; }
+.toy-case {
+  position: relative; height: 280px; overflow: hidden;
+  background: radial-gradient(60% 60% at 50% 45%, color-mix(in srgb, var(--ac) 22%, #262b44), #181425 75%);
+  box-shadow: inset 0 0 0 4px var(--wd1), inset 0 0 0 6px var(--wd0);
+  perspective: 1200px;
+  transition: box-shadow 0.15s var(--ease-out);
+}
+.toy-case::after { content: ""; position: absolute; inset: 6px; background: linear-gradient(120deg, rgba(255, 255, 255, 0.1), transparent 30%); pointer-events: none; }
+.toy-station:hover .toy-case, .toy-station:focus-visible .toy-case { box-shadow: inset 0 0 0 4px var(--accent), inset 0 0 0 6px var(--wd0); }
+.toy-station:focus-visible { outline: none; }
+.toy-anchor, .play-anchor { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; transform: scale(var(--sc, 1)); }
+.toy-label { display: grid; gap: 2px; }
+.toy-label b { font: 400 34px/0.9 var(--f-big); color: var(--sand); }
+.toy-label i { font: 400 14px/1.3 var(--f-pix); font-style: normal; color: var(--fog); }
+
+.play { position: fixed; inset: 0; z-index: 50; display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 440px); }
+.play-stage { position: relative; min-width: 0; min-height: 0; perspective: 1600px; overflow: hidden; }
+.play-anchor { top: 54%; }
+.play-now { position: absolute; left: 24px; top: max(24px, env(safe-area-inset-top, 0px)); margin: 0; display: grid; gap: 4px; pointer-events: none; }
+.play-now b { font: 400 clamp(40px, 5vw, 64px)/0.85 var(--f-big); color: var(--sand); }
+.play-now i { font: 400 14px/1.3 var(--f-pix); font-style: normal; color: var(--steel); }
+.play-ui { position: absolute; left: 24px; right: 24px; bottom: max(20px, env(safe-area-inset-bottom, 0px)); display: grid; gap: 12px; justify-items: center; }
+.play-progress { width: min(420px, 100%); height: 4px; background: var(--ink); }
+.play-progress i { display: block; height: 100%; width: 0; background: var(--accent); }
+.play-buttons { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
+.play-gap { width: 12px; }
+.play-buttons .chip { background: var(--ink); }
+.play-buttons .chip[aria-pressed="true"] { background: var(--accent); color: var(--night); }
+.play-notes .card { animation: none; }
+.play-about { margin: 0; font: 400 15px/1.5 var(--f-pix); color: var(--fog); min-height: 3em; }
+.tricks { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; max-height: 46vh; overflow-y: auto; border-top: 2px dashed var(--navy); padding-top: 8px; }
+.tricks button { width: 100%; display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 8px; align-items: baseline; padding: 6px 8px; border: 0; background: none; cursor: pointer; text-align: left; color: var(--fog); }
+.tricks button:hover { background: var(--night); }
+.tricks button[aria-current] { background: var(--night); box-shadow: inset 3px 0 0 var(--accent); }
+.tricks span { font: 400 12px/1 var(--f-pix); color: var(--slate); }
+.tricks b { font: 500 15px/1.3 var(--f-pix); color: var(--sand); }
+.tricks i { font: 400 12px/1 var(--f-pix); font-style: normal; color: var(--steel); }
+@media (max-width: 860px) {
+  .play { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(340px, 58%) minmax(0, 1fr); }
+  .play-now b { font-size: 36px; }
+  .tricks { max-height: none; }
+}
+
 /* ============================================================ LOGGING */
 .btn-primary { background: var(--amber); color: var(--night); box-shadow: none; }
 .btn-primary:hover { background: var(--peach); color: var(--night); }

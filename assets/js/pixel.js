@@ -17,6 +17,7 @@ export const THEMES = {
   music:  { wall: E.brown, motif: E.plum,   floor: E.plum,  floorLine: E.night, wood: [E.plum, E.clay, E.peach],  light: E.amber },
   books:  { wall: E.pine,  motif: E.deep,   floor: E.brown, floorLine: E.plum,  wood: [E.plum, E.brown, E.clay],  light: E.amber },
   movies: { wall: E.wine,  motif: E.brown,  floor: E.plum,  floorLine: E.night, wood: [E.night, E.plum, E.brown], light: E.fog },
+  toys:   { wall: E.grape, motif: E.plum,   floor: E.night, floorLine: E.slate, wood: [E.ink, E.slate, E.steel],  light: E.pink },
 };
 
 const BAYER = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
@@ -94,13 +95,16 @@ function rng(seed) {
 
 // ============================================================ HOUSE GEOMETRY
 // Unscaled art pixels. hx,hy = top-left of the house body (below the gable).
-export const HG = { BW: 116, RH: 30, FH: 42, base: 5, wall: 3, stair: 18, eave: 4, chimney: 9 };
+export const HG = { BW: 116, RH: 30, FH: 42, base: 5, wall: 3, stair: 18, eave: 4, chimney: 9, BH: 40 };
 
 export function houseLayout(nRooms) {
-  const attic = nRooms % 2 === 1;
-  const floors = Math.max(1, Math.ceil((nRooms - (attic ? 1 : 0)) / 2));
+  // the first room goes in the attic, the rest two to a floor; one left over goes in the basement
+  const attic = nRooms % 2 === 1 || nRooms >= 6;
+  const rest = nRooms - (attic ? 1 : 0);
+  const basement = attic && rest % 2 === 1;
+  const floors = Math.max(1, Math.floor(rest / 2));
   const cw = (HG.BW - HG.wall * 2 - HG.stair) / 2;
-  return { attic, floors, cw, bodyH: floors * HG.FH, totalH: HG.chimney + HG.RH + floors * HG.FH + HG.base };
+  return { attic, floors, basement, cw, bodyH: floors * HG.FH, totalH: HG.chimney + HG.RH + floors * HG.FH + HG.base + (basement ? HG.BH : 0) };
 }
 
 /** rooms → cells (relative to hx, hy) */
@@ -113,6 +117,7 @@ export function cellsFor(rooms) {
     cells.push({ room: rooms[i++] || null, x: HG.wall, y, w: L.cw, h, floor: f });
     cells.push({ room: rooms[i++] || null, x: HG.wall + L.cw + HG.stair, y, w: L.cw, h, floor: f });
   }
+  if (L.basement) cells.push({ room: rooms[i++] || null, basement: true, x: HG.wall, y: L.bodyH + HG.base + 3, w: HG.BW - HG.wall * 2, h: HG.BH - 6 });
   return { L, cells };
 }
 
@@ -129,7 +134,7 @@ export function createStreet({ rooms, name, number }) {
     S.hx = Math.round(W / 2 - HG.BW / 2) - 4;
     S.hy = ground - HG.base - L.bodyH;
     S.bg = new Raster(W, H); S.ext = new Raster(W, H); S.int = new Raster(W, H); S.frame = new Raster(W, H);
-    S.box = { x: S.hx - HG.eave - 2, y: S.hy - HG.RH - HG.chimney - 2, w: HG.BW + HG.eave * 2 + 18, h: HG.RH + HG.chimney + L.bodyH + HG.base + 6 };
+    S.box = { x: S.hx - HG.eave - 2, y: S.hy - HG.RH - HG.chimney - 2, w: HG.BW + HG.eave * 2 + 18, h: HG.RH + HG.chimney + L.bodyH + HG.base + 6 + (L.basement ? HG.BH : 0) };
     drawBackground(S);
     drawHouse(S, S.ext, false);
     drawHouse(S, S.int, true);
@@ -201,8 +206,16 @@ export function createStreet({ rooms, name, number }) {
     r.hl(0, ground, W, E.steel); r.rect(0, ground + 1, W, 5, E.slate);
     for (let i = 0; i < W; i += 14) r.vl(i, ground + 1, 5, E.navy);
     r.hl(0, ground + 6, W, E.fog); r.rect(0, ground + 7, W, 2, E.navy);
-    r.rect(0, ground + 9, W, H - ground - 9, E.ink);
-    for (let i = 3; i < W; i += 16) r.rect(i, ground + 15, 7, 1, E.slate);
+    if (L.basement) {
+      // a cross-section: soil under the pavement, so the basement shows when the front comes off
+      r.rect(0, ground + 9, W, H - ground - 9, E.plum);
+      r.dith(0, ground + 9, W, H - ground - 9, E.brown, 0.18);
+      const srand = rng(31);
+      for (let n = 0; n < W / 6; n++) { const sx = Math.floor(srand() * W), sy = ground + 11 + Math.floor(srand() * (H - ground - 12)); r.rect(sx, sy, 2, 1, srand() < 0.5 ? E.ink : E.tan); }
+    } else {
+      r.rect(0, ground + 9, W, H - ground - 9, E.ink);
+      for (let i = 3; i < W; i += 16) r.rect(i, ground + 15, 7, 1, E.slate);
+    }
     // street lamp
     const lx = S.hx - 26;
     r.rect(lx, ground - 40, 2, 40, E.navy); r.rect(lx - 1, ground - 2, 4, 2, E.ink);
@@ -219,7 +232,7 @@ export function createStreet({ rooms, name, number }) {
     r.rect(vx + 2, vy + 17, 6, 2, E.night); r.rect(vx + 9, vy + 16, 2, 3, E.steel); r.hl(vx, vy + 21, 13, E.steel);
   }
 
-  return { S, cells, L, resize, compose, signWord, plaque, get box() { return S.box; } };
+  return { S, cells, L, resize, compose, signWord, plaque, basementH: L.basement ? HG.BH : 0, get box() { return S.box; } };
 
   // ------------------------------------------------------------ house painter
   function drawHouse(S, r, cut) {
@@ -330,11 +343,23 @@ export function createStreet({ rooms, name, number }) {
     r.rect(sx, sy + 6, 3, 1, E.night); r.rect(sx, sy + sh - 7, 3, 1, E.night);
     r.rect(sx + 3, sy, 9, sh, E.night); r.rect(sx + 4, sy + 1, 7, sh - 2, E.ink);
     r.dith(sx + 1, sy - 2, 13, sh + 4, E.wine, 0.12);
+    // basement, dug under the pavement
+    const bc = cells.find(c => c.basement);
+    if (cut && bc) {
+      const by = hy + bodyH + HG.base;
+      r.rect(hx - 2, by, HG.BW + 4, HG.BH, E.slate);
+      for (let j = 2; j < HG.BH; j += 4) r.hl(hx - 2, by + j, HG.BW + 4, E.navy);
+      paintCell(r, bc, hx + bc.x, hy + bc.y);
+      const lx = hx + HG.wall + L.cw + 4; // a ladder down from the stairwell
+      r.vl(lx, by - HG.base, HG.BH + HG.base - 4, E.clay); r.vl(lx + 8, by - HG.base, HG.BH + HG.base - 4, E.clay);
+      for (let j = by - HG.base + 2; j < by + HG.BH - 6; j += 4) r.hl(lx, j, 9, E.peach);
+    }
     // foundation + steps
     const fy = hy + bodyH;
     r.rect(hx - 2, fy, BW + 4, HG.base, E.steel);
     for (let i = hx - 2; i < hx + BW + 2; i += 8) r.vl(i, fy, HG.base, E.slate);
     r.hl(hx - 2, fy, BW + 4, E.fog); r.hl(hx - 2, fy + HG.base - 1, BW + 4, E.navy);
+    if (cut && bc) r.rect(hx + HG.wall + L.cw + 3, fy, 11, HG.base, E.night); // the hatch the ladder comes through
     if (!cut) {
       r.rect(Math.round(cx) - 9, fy, 18, 2, E.fog); r.rect(Math.round(cx) - 11, fy + 2, 22, 3, E.steel);
       r.sprite(SPR.cat, CAT, Math.round(cx) + 12, fy - 9);
@@ -381,13 +406,17 @@ export function createStreet({ rooms, name, number }) {
   function interiorPixel(kind, i, j, isAttic, c) {
     const t = THEMES[kind] || THEMES.books;
     const h = isAttic ? HG.RH : c.h;
-    if (j >= h - 3) return j === h - 3 ? t.floorLine : (i % 9 === 0 ? t.floorLine : t.floor);
+    if (j >= h - 3) {
+      if (kind === 'toys') return j === h - 3 ? t.floorLine : ((i >> 1) + j) % 2 ? E.night : E.fog; // arcade checkerboard
+      return j === h - 3 ? t.floorLine : (i % 9 === 0 ? t.floorLine : t.floor);
+    }
     switch (kind) {
       case 'manga': return (i % 7 === 0 || j % 6 === 0) ? t.motif : t.wall;
       case 'anime': return (i % 4 === 0 && j % 4 === 0) ? E.grape : t.wall;
       case 'music': return ((i + (j >> 2) * 2) % 6 === 0 && j % 4 === 1) ? t.motif : t.wall;
       case 'books': return ((i + j) % 6 === 0 || (i - j + 60) % 6 === 0) ? t.motif : t.wall;
       case 'movies': return (i % 3 === 0) ? t.motif : t.wall;
+      case 'toys': return (i % 4 === 2 && j % 4 === 2) ? t.motif : t.wall;
       default: return t.wall;
     }
   }
@@ -461,6 +490,7 @@ export function createStreet({ rooms, name, number }) {
       for (const c of cells) {
         if (!c.room) continue;
         const x0 = S.hx + c.x, y0 = S.hy + c.y;
+        if (c.room.kind === 'toys' && PROPS.arcadeAt) { const a = PROPS.arcadeAt; f.dith(a.x, a.y, 11, 8, Math.sin(t * 6) > 0 ? E.sky : E.lime, 0.35); }
         if (c.room.kind === 'anime') { const tv = PROPS.tvAt; if (tv) f.dith(tv.x, tv.y, 7, 5, Math.sin(t * 9) > 0 ? E.cyan : E.sky, 0.5); }
         if (c.room.kind === 'music' && PROPS.deckAt) { const d = PROPS.deckAt; f.px(d.x + Math.round(2 + Math.cos(t * 4) * 2), d.y + Math.round(Math.sin(t * 4) * 0.5), E.steel); }
         if (st.hover === c.room.id) outlineRect(f, x0 - 1, y0 - 1, c.w + 2, c.h + 2, c.attic);
@@ -518,6 +548,14 @@ const PROPS = {
   books(r, x, fl, w) {
     r.rect(x + 6, fl - 9, 10, 9, E.wine); r.rect(x + 5, fl - 7, 12, 5, E.red); r.rect(x + 6, fl - 6, 10, 3, E.wine);
     r.vl(x + 1, fl - 22, 22, E.sand); r.rect(x - 1, fl - 24, 5, 3, E.amber); glow(r, x + 1, fl - 18, 9, E.yellow, 0.3);
+  },
+  toys(r, x, fl, w) {
+    r.rect(x, fl - 27, 15, 27, E.night); r.rect(x + 1, fl - 26, 13, 4, E.hot); r.hl(x + 3, fl - 25, 9, E.yellow);
+    r.rect(x + 2, fl - 20, 11, 8, E.cyan); PROPS.arcadeAt = { x: x + 2, y: fl - 20 };
+    r.rect(x + 1, fl - 11, 13, 3, E.slate); r.px(x + 4, fl - 10, E.red); r.px(x + 7, fl - 10, E.amber); r.px(x + 10, fl - 10, E.lime);
+    r.rect(x + 22, fl - 10, 34, 2, E.green); r.hl(x + 22, fl - 10, 34, E.lime); r.vl(x + 39, fl - 13, 3, E.white);
+    r.rect(x + 24, fl - 8, 1, 8, E.night); r.rect(x + 53, fl - 8, 1, 8, E.night);
+    r.rect(x + 60, fl - 4, 4, 4, E.pink); r.px(x + 61, fl - 5, E.white);
   },
   movies(r, x, fl, w) {
     r.rect(x, fl - 30, 22, 14, E.night); r.rect(x + 1, fl - 29, 20, 12, E.fog); r.dith(x + 1, fl - 29, 20, 12, E.white, 0.5);
@@ -598,14 +636,15 @@ export function wallTile(kind) {
   const key = 'wall-' + kind;
   if (spriteCache[key]) return spriteCache[key];
   const t = THEMES[kind] || THEMES.books;
-  const n = { manga: 12, anime: 8, music: 16, books: 12, movies: 6 }[kind] || 12;
+  const n = { manga: 12, anime: 8, music: 16, books: 12, movies: 6, toys: 6 }[kind] || 12;
   const r = new Raster(n, n);
-  const base = { manga: E.deep, anime: E.ink, music: E.plum, books: E.pine, movies: E.wine }[kind] || t.wall;
+  const base = { manga: E.deep, anime: E.ink, music: E.plum, books: E.pine, movies: E.wine, toys: E.grape }[kind] || t.wall;
   r.rect(0, 0, n, n, base);
   if (kind === 'manga') { r.hl(0, 0, n, E.pine); r.vl(0, 0, n, E.pine); }
   if (kind === 'anime') { r.px(0, 0, E.navy); r.px(4, 4, E.grape); }
   if (kind === 'music') { r.rect(4, 4, 2, 2, E.brown); r.rect(12, 12, 2, 2, E.brown); }
   if (kind === 'books') { for (let i = 0; i < n; i++) { r.px(i, i, E.deep); r.px(n - 1 - i, i, E.deep); } r.px(6, 0, E.green); r.px(0, 6, E.green); }
   if (kind === 'movies') { r.vl(0, 0, n, E.brown); r.dith(1, 0, 2, n, E.brown, 0.25); }
+  if (kind === 'toys') { r.rect(2, 2, 2, 2, E.plum); r.px(2, 2, E.night); } // pegboard
   return (spriteCache[key] = { url: r.toURL(), n });
 }

@@ -74,6 +74,15 @@ python3 tools/covers.py
 
 If it picks the wrong edition, set `"cover"` on the item to the image you want. Items it couldn't match keep their generated cover. Run with `--retry-misses` to try them again, or `--refresh` to fetch everything again.
 
+## The Trick Room
+
+The basement holds toys you can play with instead of shelves. Each toy is a 3D rig moved by a timeline, so nothing is a video:
+
+- **Butterfly knife** (a trainer): 24 tricks, from the basic opening and closing through fans, the Y2K and Zen rollovers, Chaplin, helix, aerials, the ladder and the tornado. The blade and bite handle swing on their own pins, so the knife opens and closes the way the real linkage does.
+- **Deck of cards**: 13 cardistry moves, including the thumb fan, Charlier, swivel, revolution and Sybil cuts, the spring, waterfall, ribbon spread with turnover, riffle shuffle and bridge, pinwheel, scissor cut, boomerang throw and anaconda dribble.
+
+Pick a toy to open the play table. Arrow keys change the trick, space pauses, and every trick has its own link, like `#tricks--butterfly-knife--y2k-rollover`. Tricks live in `assets/js/toys.js`; toys are listed in `data/rooms/tricks.json`.
+
 ## Log from the site
 
 On the published site, press **L** (or **+ Log** once connected, or the link at the foot of any room). Pick a shelf and start typing a title. Suggestions come from AniList, Open Library, MusicBrainz or IMDb, and picking one fills in the creator, year and cover. Add your rating, take and tags, then **Log it**. The page commits the entry into that shelf's JSON, which redeploys the site within a minute; until then it already shows on your device.
