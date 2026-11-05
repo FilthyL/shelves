@@ -28,6 +28,13 @@ class Helpers(unittest.TestCase):
             self.assertEqual(len(ids), len(set(ids)), room['id'])
 
 
+class Network(unittest.TestCase):
+    def test_unreachable_host_is_not_retried(self):
+        covers._dead.add('example.invalid')
+        with self.assertRaises(covers.Unreachable):
+            covers.http('https://example.invalid/x')
+
+
 class Matching(unittest.TestCase):
     def test_similarity_ignores_editions_and_articles(self):
         self.assertEqual(covers.sim('Kid A (Remastered)', 'Kid A'), 1.0)
@@ -69,15 +76,16 @@ class Matching(unittest.TestCase):
                 'first-release-date': '1992', 'artist-credit': [{'name': 'A.R. Rahman'}]}]
         self.assertEqual(covers.choose_musicbrainz(it, res)['url'], 'https://coverartarchive.org/release-group/ost/front-500')
 
-    def test_myanimelist_matches_native_title_and_year(self):
-        it = {'title': 'Ghost in the Shell', 'original': '攻殻機動隊', 'year': 1995}
+    def test_anilist_matches_on_native_title(self):
+        it = {'title': 'Spirited Away', 'original': '千と千尋の神隠し', 'creator': 'Studio Ghibli', 'year': 2001}
         res = [
-            {'title': 'Koukaku Kidoutai: Stand Alone Complex', 'title_english': 'Ghost in the Shell: Stand Alone Complex',
-             'title_japanese': '攻殻機動隊 STAND ALONE COMPLEX', 'year': 2002, 'images': {'jpg': {'large_image_url': 'https://cdn/sac.jpg'}}},
-            {'title': 'Koukaku Kidoutai', 'title_english': 'Ghost in the Shell', 'title_japanese': '攻殻機動隊',
-             'aired': {'prop': {'from': {'year': 1995}}}, 'images': {'jpg': {'large_image_url': 'https://cdn/gits.jpg'}}},
+            {'title': {'english': 'Spirited Away', 'romaji': 'Sen to Chihiro no Kamikakushi', 'native': '千と千尋の神隠し'},
+             'startDate': {'year': 2001}, 'coverImage': {'extraLarge': 'https://img/sa.jpg'}, 'studios': {'nodes': [{'name': 'Studio Ghibli'}]}},
+            {'title': {'english': 'Howl’s Moving Castle', 'romaji': 'Hauru no Ugoku Shiro', 'native': 'ハウルの動く城'},
+             'startDate': {'year': 2004}, 'coverImage': {'extraLarge': 'https://img/howl.jpg'}, 'studios': {'nodes': [{'name': 'Studio Ghibli'}]}},
         ]
-        self.assertEqual(covers.choose_jikan(it, res)['url'], 'https://cdn/gits.jpg')
+        self.assertEqual(covers.choose_anilist(it, res)['url'], 'https://img/sa.jpg')
+
 
 
 

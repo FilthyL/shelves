@@ -1,12 +1,16 @@
-name: Fetch covers and deploy
+name: Deploy site and find covers
+
+# The site deploys first, with whatever cover links are already committed.
+# Covers are looked up afterwards; if new ones turn up, the site deploys again.
 
 on:
   push:
+    branches: [main]
     paths: ["data/**", "assets/**", "index.html", "tools/**", ".github/workflows/**"]
   workflow_dispatch:
     inputs:
       refresh:
-        description: "Fetch every cover again"
+        description: "Look every cover up again"
         type: boolean
         default: false
       retry_misses:
@@ -21,60 +25,31 @@ permissions:
 
 concurrency:
   group: shelves-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  covers:
+  build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
       - name: Check the data
         run: |
           python tools/validate.py
-          python -m unittest discover -s tools -v
-
-      - name: Install Pillow for spine colours
-        run: pip install --quiet pillow
-
-      - name: Find cover art
-        # a slow source must not hold up the deploy; whatever was found is kept
-        timeout-minutes: 12
-        continue-on-error: true
-        env:
-          PYTHONUNBUFFERED: "1"
-        run: |
-          python tools/covers.py --prune \
-            ${{ inputs.refresh && '--refresh' || '' }} \
-            ${{ inputs.retry_misses && '--retry-misses' || '' }}
-
-      - name: Commit the cover list
-        run: |
-          git config user.name "shelves-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/covers.json
-          if git diff --cached --quiet; then
-            echo "No new covers"
-          else
-            git commit -m "Update cover links"
-            for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break; sleep 5; done
-          fi
-
+          python -m unittest discover -s tools
       - name: Build the site
         run: |
           mkdir _site
           cp -r index.html assets data _site/
-
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
   deploy:
-    needs: covers
+    needs: build
     if: github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     environment:
@@ -83,3 +58,64 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  covers:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Pillow for spine colours
+        run: pip install --quiet pillow
+      - name: Find cover art
+        # a slow source must never hold anything up; whatever was found is kept
+        timeout-minutes: 10
+        continue-on-error: true
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: |
+          python tools/covers.py --prune \
+            ${{ inputs.refresh && '--refresh' || '' }} \
+            ${{ inputs.retry_misses && '--retry-misses' || '' }}
+      - name: Commit the cover list
+        id: commit
+        run: |
+          git config user.name "shelves-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/covers.json
+          if git diff --cached --quiet; then
+            echo "No new covers"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Update cover links"
+            for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break; sleep 5; done
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Build the site with the new covers
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          mkdir _site
+          cp -r index.html assets data _site/
+      - if: steps.commit.outputs.changed == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+          name: github-pages-covers
+
+  redeploy:
+    needs: [deploy, covers]
+    if: needs.covers.outputs.changed == 'true' && github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-covers

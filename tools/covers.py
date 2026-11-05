@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 """Find the published cover for everything on the shelves.
 
-One free source per shelf, no keys needed:
-  anime   MyAnimeList (through the Jikan API)
-  manga   MangaDex, a cover for every owned volume
-  music   MusicBrainz, with covers from the Cover Art Archive
+Free sources, no keys needed, all shelves looked up at the same time:
+  anime   AniList
+  manga   MangaDex, a cover for every owned volume (AniList for a series MangaDex lacks)
+  music   MusicBrainz with the Cover Art Archive (Deezer for a record it lacks)
   books   Open Library (by isbn when the item has one)
   movies  IMDb's public title suggestions
 
 Nothing is stored in the repo: data/covers.json records each cover's link, and
 the site loads it from there. Each image is read once into memory to check the
 link works and, when Pillow is installed, to take the spine colours from it.
+Items already in covers.json are skipped, so after the first run only new
+items are looked up. A site that cannot be reached is skipped for the rest of
+the run instead of being retried for every item.
 
 Usage
   python3 tools/covers.py                  find whatever is missing
@@ -31,11 +34,14 @@ import io
 import json
 import re
 import sys
+import threading
 import time
 import unicodedata
 import urllib.error
 import urllib.parse
 import urllib.request
+from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor
 from difflib import SequenceMatcher
 from pathlib import Path
 
@@ -48,36 +54,52 @@ THRESHOLD = 0.72
 LOG = functools.partial(print, flush=True)  # show progress live in CI logs
 
 # minimum seconds between requests to each host, from each API's published limits
-PACE = {'api.jikan.moe': 1.2, 'api.mangadex.org': 0.3, 'musicbrainz.org': 1.1, 'openlibrary.org': 1.0, 'v3.sg.media-imdb.com': 0.5}
+PACE = {'graphql.anilist.co': 2.1, 'api.mangadex.org': 0.3, 'musicbrainz.org': 1.1, 'api.deezer.com': 0.2,
+        'openlibrary.org': 1.0, 'v3.sg.media-imdb.com': 0.4}
 _last = {}
+_locks = defaultdict(threading.Lock)
+_dead = set()  # hosts that could not be reached; not tried again this run
+
+
+class Unreachable(urllib.error.URLError):
+    pass
 
 
 # ------------------------------------------------------------------ http
-def http(url, headers=None, tries=3, timeout=25):
+def http(url, data=None, headers=None, tries=2, timeout=15):
     host = urllib.parse.urlparse(url).netloc
+    if host in _dead:
+        raise Unreachable(f'{host} could not be reached earlier in this run')
     for attempt in range(tries):
-        gap = PACE.get(host, 0.15) - (time.monotonic() - _last.get(host, 0))
-        if gap > 0:
-            time.sleep(gap)
-        _last[host] = time.monotonic()
-        req = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept': '*/*', **(headers or {})})
+        with _locks[host]:  # one request at a time per host, spaced by its limit
+            gap = PACE.get(host, 0.1) - (time.monotonic() - _last.get(host, 0))
+            if gap > 0:
+                time.sleep(gap)
+            _last[host] = time.monotonic()
+        req = urllib.request.Request(url, data=data, headers={'User-Agent': UA, 'Accept': '*/*', **(headers or {})})
         try:
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 return r.read(), r.headers.get('Content-Type', '')
         except urllib.error.HTTPError as e:
             if e.code in (429, 500, 502, 503, 504) and attempt < tries - 1:
-                time.sleep(2 ** attempt * 3)
+                time.sleep(3)
                 continue
             raise
-        except (urllib.error.URLError, TimeoutError):
+        except (urllib.error.URLError, TimeoutError, OSError) as e:
             if attempt < tries - 1:
-                time.sleep(2 ** attempt * 2)
+                time.sleep(1)
                 continue
-            raise
+            _dead.add(host)
+            raise Unreachable(f'{host}: {e}') from e
 
 
 def get_json(url, **kw):
     body, _ = http(url, **kw)
+    return json.loads(body.decode('utf-8'))
+
+
+def post_json(url, payload):
+    body, _ = http(url, data=json.dumps(payload).encode(), headers={'Content-Type': 'application/json', 'Accept': 'application/json'})
     return json.loads(body.decode('utf-8'))
 
 
@@ -140,43 +162,54 @@ def pick(cands, score):
     return (best, round(top, 3)) if best is not None else (None, 0.0)
 
 
-def short(name, res, s):
-    LOG(f'      {name}: {len(res)} candidates, best score {s}')
+def short(name, res, s, log):
+    log(f'{name}: {len(res)} candidates, best score {s}')
 
 
-# ------------------------------------------------------------------ anime: MyAnimeList
-def anime_myanimelist(it):
-    q = urllib.parse.urlencode({'q': it['title'], 'limit': 10})
-    return choose_jikan(it, get_json(f'https://api.jikan.moe/v4/anime?{q}').get('data', []))
+# ------------------------------------------------------------------ anime + manga series: AniList
+ANILIST_Q = '''query ($q: String, $type: MediaType) { Page(perPage: 8) { media(search: $q, type: $type, sort: SEARCH_MATCH) {
+  title { romaji english native } startDate { year } coverImage { extraLarge large }
+  studios(isMain: true) { nodes { name } } staff(perPage: 4) { nodes { name { full } } } } } }'''
 
 
-def choose_jikan(it, res):
+def anilist(it, kind, log):
+    data = post_json('https://graphql.anilist.co', {'query': ANILIST_Q, 'variables': {'q': it['title'], 'type': 'MANGA' if kind == 'manga' else 'ANIME'}})
+    res = ((data.get('data') or {}).get('Page') or {}).get('media') or []
+    hit = choose_anilist(it, res)
+    if not hit:
+        short('AniList', res, 0, log)
+    return hit
+
+
+def choose_anilist(it, res):
     def score(m):
-        names = [m.get('title'), m.get('title_english')] + [t.get('title') for t in m.get('titles') or []]
-        s = 0.7 * best_sim(it['title'], names)
-        if it.get('original') and it['original'].strip() in (m.get('title_japanese') or '', *names):
-            s = max(s, 0.7)
-        y = m.get('year') or (((m.get('aired') or m.get('published') or {}).get('prop') or {}).get('from') or {}).get('year')
-        return s + 0.3 * year_score(it.get('year'), y) - variant_penalty(it['title'], m.get('title_english') or m.get('title'))
+        t = m.get('title') or {}
+        s = 0.65 * best_sim(it['title'], [t.get('english'), t.get('romaji')])
+        if it.get('original') and t.get('native') and it['original'].strip() == t['native'].strip():
+            s = max(s, 0.65)
+        s += 0.2 * year_score(it.get('year'), (m.get('startDate') or {}).get('year'))
+        people = [n.get('name') for n in ((m.get('studios') or {}).get('nodes') or [])]
+        people += [(n.get('name') or {}).get('full') for n in ((m.get('staff') or {}).get('nodes') or [])]
+        return s + 0.15 * best_sim(it.get('creator'), people)
     best, s = pick(res, score)
-    url = ((best or {}).get('images') or {}).get('jpg', {}).get('large_image_url')
-    if best and s >= THRESHOLD and url:
-        return {'from': 'MyAnimeList', 'url': url, 'match': best.get('title_english') or best.get('title'), 'score': s}
-    short('MyAnimeList', res, s)
+    img = (best or {}).get('coverImage') or {}
+    if best and s >= THRESHOLD - 0.05 and (img.get('extraLarge') or img.get('large')):
+        t = best.get('title') or {}
+        return {'from': 'AniList', 'url': img.get('extraLarge') or img.get('large'), 'match': t.get('english') or t.get('romaji'), 'score': s}
     return None
 
 
-# ------------------------------------------------------------------ manga: MangaDex
+# ------------------------------------------------------------------ manga volumes: MangaDex
 MD = 'https://api.mangadex.org'
 
 
-def manga_mangadex(it):
+def manga_mangadex(it, kind, log):
     q = urllib.parse.urlencode([('title', it['title']), ('limit', 10), ('includes[]', 'author'),
                                 ('contentRating[]', 'safe'), ('contentRating[]', 'suggestive'), ('contentRating[]', 'erotica')])
     res = get_json(f'{MD}/manga?{q}').get('data', [])
     best, s = pick(res, lambda m: score_mangadex(it, m))
     if not best or s < THRESHOLD:
-        short('MangaDex', res, s)
+        short('MangaDex', res, s, log)
         return None
     covers, offset = [], 0
     while True:
@@ -188,7 +221,7 @@ def manga_mangadex(it):
             break
     vols = choose_volume_covers(covers, set(it['_vols']), it.get('cover_locale'))
     if not vols:
-        LOG('      MangaDex: no covers for the owned volumes')
+        log('MangaDex: no covers for the owned volumes')
         return None
     titles = (best.get('attributes') or {}).get('title') or {}
     return {'from': 'MangaDex', 'match': next(iter(titles.values()), it['title']), 'score': s,
@@ -224,7 +257,7 @@ def choose_volume_covers(covers, owned, prefer=None):
     return {str(v): fn for v, (_, fn) in sorted(best.items())}
 
 
-# ------------------------------------------------------------------ music: MusicBrainz + Cover Art Archive
+# ------------------------------------------------------------------ music: MusicBrainz + Cover Art Archive, then Deezer
 ODD_TYPES = {'Live', 'Remix', 'Compilation', 'DJ-mix', 'Demo', 'Interview', 'Mixtape/Street'}
 
 
@@ -232,13 +265,16 @@ def _lucene(s):
     return str(s or '').replace('\\', '\\\\').replace('"', '\\"')
 
 
-def music_musicbrainz(it):
+def music_musicbrainz(it, kind, log):
     query = f'releasegroup:"{_lucene(it["title"])}"'
     if it.get('creator'):
         query += f' AND artist:"{_lucene(it["creator"])}"'
     q = urllib.parse.urlencode({'query': query, 'fmt': 'json', 'limit': 15})
     res = get_json(f'https://musicbrainz.org/ws/2/release-group/?{q}', headers={'Accept': 'application/json'}).get('release-groups', [])
-    return choose_musicbrainz(it, res)
+    hit = choose_musicbrainz(it, res)
+    if not hit:
+        short('MusicBrainz', res, 0, log)
+    return hit
 
 
 def _credit(g):
@@ -258,12 +294,22 @@ def choose_musicbrainz(it, res):
     if best and s >= THRESHOLD:
         return {'from': 'MusicBrainz', 'url': f"https://coverartarchive.org/release-group/{best['id']}/front-500",
                 'match': f"{best.get('title')} by {_credit(best)}", 'score': s}
-    short('MusicBrainz', res, s)
+    return None
+
+
+def music_deezer(it, kind, log):
+    q = urllib.parse.urlencode({'q': f'artist:"{it.get("creator", "")}" album:"{it["title"]}"', 'limit': 15})
+    res = get_json(f'https://api.deezer.com/search/album?{q}').get('data', [])
+    best, s = pick(res, lambda r: 0.65 * sim(it['title'], r.get('title')) + 0.35 * sim(it.get('creator'), (r.get('artist') or {}).get('name'))
+                   - variant_penalty(it['title'], r.get('title')))
+    if best and s >= THRESHOLD and best.get('cover_xl'):
+        return {'from': 'Deezer', 'url': best['cover_xl'], 'match': f"{best.get('title')} by {(best.get('artist') or {}).get('name')}", 'score': s}
+    short('Deezer', res, s, log)
     return None
 
 
 # ------------------------------------------------------------------ books: Open Library
-def book_openlibrary(it):
+def book_openlibrary(it, kind, log):
     isbn = re.sub(r'[^0-9Xx]', '', str(it.get('isbn') or ''))
     if isbn:  # an isbn pins the exact edition
         return {'from': 'Open Library', 'url': f'https://covers.openlibrary.org/b/isbn/{isbn}-L.jpg?default=false', 'match': f'ISBN {isbn}', 'score': 1.0}
@@ -276,16 +322,19 @@ def book_openlibrary(it):
         if best and s >= THRESHOLD:
             return {'from': 'Open Library', 'url': f"https://covers.openlibrary.org/b/id/{best['cover_i']}-L.jpg?default=false",
                     'match': f"{best.get('title')} by {', '.join(best.get('author_name') or [])}", 'score': s}
-    short('Open Library', res, s)
+    short('Open Library', res, s, log)
     return None
 
 
 # ------------------------------------------------------------------ movies: IMDb
-def movie_imdb(it):
+def movie_imdb(it, kind, log):
     q = re.sub(r'\s+', ' ', str(it['title']).lower()).strip()
     url = f"https://v3.sg.media-imdb.com/suggestion/{urllib.parse.quote(q[:1] or 'x')}/{urllib.parse.quote(q)}.json"
     res = [r for r in get_json(url).get('d', []) if (r.get('i') or {}).get('imageUrl')]
-    return choose_imdb(it, res)
+    hit = choose_imdb(it, res)
+    if not hit:
+        short('IMDb', res, 0, log)
+    return hit
 
 
 def choose_imdb(it, res):
@@ -296,21 +345,20 @@ def choose_imdb(it, res):
     if best and s >= THRESHOLD:
         img = re.sub(r'\._V1_.*\.jpg$', '._V1_SX800.jpg', best['i']['imageUrl'])
         return {'from': 'IMDb', 'url': img, 'match': f"{best.get('l')} ({best.get('y')})", 'score': s}
-    short('IMDb', res, s)
     return None
 
 
 SOURCES = {
-    'anime': anime_myanimelist,
-    'manga': manga_mangadex,
-    'music': music_musicbrainz,
-    'books': book_openlibrary,
-    'movies': movie_imdb,
+    'anime': [anilist],
+    'manga': [manga_mangadex, anilist],
+    'music': [music_musicbrainz, music_deezer],
+    'books': [book_openlibrary],
+    'movies': [movie_imdb],
 }
 
 
 # ------------------------------------------------------------------ images
-def check(url):
+def check(url, log):
     """Read the image into memory to make sure the link serves a real cover. Nothing is written.
 
     A link that answers with an error is rejected. A host that is merely slow keeps its link,
@@ -320,7 +368,7 @@ def check(url):
     except urllib.error.HTTPError:
         raise
     except (urllib.error.URLError, TimeoutError, OSError) as e:
-        LOG(f'      slow image host, keeping the link without colours: {e}')
+        log(f'slow image host, keeping the link without colours ({e})')
         return None
     if not ctype.startswith('image/') or len(body) < 2000:
         raise ValueError(f'not an image ({ctype}, {len(body)} bytes)')
@@ -363,31 +411,37 @@ def palette(image):
     return [hx(bg), hx(ink), hx(accent if contrast(accent, bg) > 1.6 else ink), hx(extra)]
 
 
-# ------------------------------------------------------------------ main
-def lookup(kind, it):
-    """Ask the shelf's source; returns the entry for covers.json, or None."""
-    hit = SOURCES[kind](it)
-    if not hit:
-        return None
-    entry = {'from': hit['from'], 'match': hit['match']}
-    if 'vols' in hit:
-        entry['vols'] = {}
-        for v, url in hit['vols'].items():
-            try:
-                img = check(url)
-            except Exception as e:
-                LOG(f'      volume {v}: {e}')
+# ------------------------------------------------------------------ lookup
+def lookup(kind, it, log):
+    """Try the shelf's sources in order; the first whose cover link works wins."""
+    for src in SOURCES[kind]:
+        try:
+            hit = src(it, kind, log)
+            if not hit:
                 continue
-            entry['vols'][v] = {'src': url, **({'pal': p} if (p := palette(img)) else {})}
-        if not entry['vols']:
-            return None
-        first = entry['vols'][min(entry['vols'], key=int)]
-        entry.update({k: first[k] for k in ('src', 'pal') if k in first})
-    else:
-        entry['src'] = hit['url']
-        if (p := palette(check(hit['url']))):
-            entry['pal'] = p
-    return entry
+            entry = {'from': hit['from'], 'match': hit['match']}
+            if 'vols' in hit:
+                entry['vols'] = {}
+                for v, url in hit['vols'].items():
+                    try:
+                        img = check(url, log)
+                    except Exception as e:
+                        log(f'volume {v}: {e}')
+                        continue
+                    entry['vols'][v] = {'src': url, **({'pal': p} if img and (p := palette(img)) else {})}
+                if not entry['vols']:
+                    continue
+                first = entry['vols'][min(entry['vols'], key=int)]
+                entry.update({k: first[k] for k in ('src', 'pal') if k in first})
+            else:
+                img = check(hit['url'], log)
+                entry['src'] = hit['url']
+                if img and (p := palette(img)):
+                    entry['pal'] = p
+            return entry
+        except Exception as e:  # one source failing should not stop the next
+            log(f'{src.__name__} failed: {e}')
+    return None
 
 
 def main(argv=None):
@@ -403,41 +457,50 @@ def main(argv=None):
     covers = load_json(COVERS_JSON) if COVERS_JSON.exists() else {}
     _, rooms = load_house()
     today = dt.date.today().isoformat()
-    found = missed = skipped = 0
-    live = set()
+    lock = threading.Lock()
+    stats = {'found': 0, 'missed': 0, 'skipped': 0}
+    live = {f"{room['id']}/{it['_id']}" for room, items in rooms for it in items}
 
     def save():
         if not args.dry_run:
             COVERS_JSON.write_text(json.dumps(dict(sorted(covers.items())), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
 
-    for room, items in rooms:
+    def todo(room, items):
         kind = room.get('kind', room['id'])
+        out = []
         for it in items:
             key = f"{room['id']}/{it['_id']}"
-            live.add(key)
             if (args.room and room['id'] != args.room) or (args.only and it['_id'] != args.only):
                 continue
             prev = covers.get(key)
             if 'cover' in it or kind not in SOURCES or (prev and not args.refresh and not (prev.get('miss') and args.retry_misses)):
-                skipped += 1
+                stats['skipped'] += 1
                 continue
             it['_vols'] = parse_owned(it.get('owned'), it.get('total')) if kind == 'manga' else []
-            LOG(f"  {key}: {it['title']}")
-            try:
-                entry = lookup(kind, it)
-            except Exception as e:  # one bad lookup should not stop the run
-                LOG(f'      failed: {e}')
-                entry = None
-            if entry:
-                entry['fetched'] = today
-                LOG(f"      {entry['from']}: {entry['match']}")
-                covers[key] = entry
-                found += 1
-            else:
-                LOG('      no cover found')
-                covers[key] = {'miss': True, 'tried': today}
-                missed += 1
-            save()
+            out.append((key, it))
+        return kind, out
+
+    def run_room(room, items):
+        kind, work = todo(room, items)
+        for key, it in work:
+            log = lambda m, key=key: LOG(f'  {key}: {m}')  # noqa: E731
+            entry = lookup(kind, it, log)
+            with lock:
+                if entry:
+                    entry['fetched'] = today
+                    covers[key] = entry
+                    stats['found'] += 1
+                    log(f"{entry['from']}, {entry['match']}")
+                else:
+                    covers[key] = {'miss': True, 'tried': today}
+                    stats['missed'] += 1
+                    log('no cover found')
+                save()
+
+    # every shelf asks different sites, so the rooms run side by side
+    with ThreadPoolExecutor(max_workers=max(1, len(rooms))) as pool:
+        for f in [pool.submit(run_room, room, items) for room, items in rooms]:
+            f.result()
 
     if args.prune:
         for key in [k for k in covers if k not in live]:
@@ -445,7 +508,7 @@ def main(argv=None):
             covers.pop(key)
         save()
 
-    LOG(f'covers: {found} found, {missed} without a match, {skipped} already done')
+    LOG(f"covers: {stats['found']} found, {stats['missed']} without a match, {stats['skipped']} already done")
     return 0
 
 

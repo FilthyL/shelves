@@ -48,17 +48,17 @@ python3 tools/validate.py
 
 ## Covers
 
-`tools/covers.py` finds each item's published cover and records its link in `data/covers.json`, along with spine colours taken from it. The images are never stored in the repo; the site loads each one from where it is published. Each shelf uses one free source, none of which needs a key:
+`tools/covers.py` finds each item's published cover and records its link in `data/covers.json`, along with spine colours taken from it. The images are never stored in the repo; the site loads each one from where it is published. Every source is free and needs no key, and all shelves are looked up at the same time:
 
 | Shelf | Source |
 | --- | --- |
-| Anime | MyAnimeList |
-| Manga | MangaDex, a cover for every owned volume |
-| Music | MusicBrainz and the Cover Art Archive |
+| Anime | AniList |
+| Manga | MangaDex, a cover for every owned volume; AniList for a series MangaDex lacks |
+| Music | MusicBrainz and the Cover Art Archive; Deezer for a record it lacks |
 | Books | Open Library, by `isbn` when the item has one |
 | Films | IMDb |
 
-The deploy workflow runs it on every push and commits the updated list back to the branch, so adding an item to the JSON is enough. To run it yourself:
+On every push to `main` the workflow deploys the site straight away, then looks up any covers that are missing, commits the updated list and deploys again. Adding an item to the JSON is enough. To run it yourself:
 
 ```bash
 pip install pillow
@@ -88,10 +88,10 @@ python3 -m unittest discover -s tools
 
 ## Deploy
 
-`.github/workflows/deploy.yml` fetches covers, builds the site and deploys it to GitHub Pages from the default branch.
+`.github/workflows/deploy.yml` deploys the site to GitHub Pages from `main`, then fills in covers and deploys again if any were added.
 
 1. In the repo, open **Settings → Pages** and set **Source** to **GitHub Actions**.
-2. Push to `main`, or run **Actions → Fetch covers and deploy → Run workflow**.
+2. Push to `main`, or run **Actions → Deploy site and find covers → Run workflow**.
 
 ## Credits
 
