@@ -1,8 +1,47 @@
 # shelves
 
-**Filth Manor** is a house you can walk into. Click it and the front comes away to show five rooms. Each room is a wall of shelving that holds a different part of the collection, drawn as physical copies at true size: vinyl, CDs and cassettes in the Listening Room, Blu-rays, DVDs and VHS in the Screening Room, books in the Library, anime box sets in the Anime Den and manga volumes in the Manga Loft. Take anything off a shelf to turn it over, flip it to read the back and see its card.
+**Filth Manor** is a house you can walk into. Click it and the front comes away to show six rooms. Each room is a wall of shelving that holds a different part of the collection, drawn as physical copies at true size: vinyl, CDs and cassettes in the Listening Room, Blu-rays, DVDs and VHS in the Screening Room, books in the Library, anime box sets in the Anime Den and manga volumes in the Manga Loft. Take anything off a shelf to turn it over, flip it to read the back and see its card.
+
+The basement is the Trick Room, where real 3D hands play with a butterfly knife, a karambit and a deck of cards.
 
 The house, street and room decor are pixel art drawn on a canvas. The copies keep their real proportions and use their real published covers.
+
+## Stack, and why
+
+The site is a folder of static files: no framework, no bundler, no server and no database. Each piece of the stack was picked to keep it that way.
+
+| Part | What it uses | Why |
+| --- | --- | --- |
+| Pages and code | Plain HTML, CSS and JavaScript ES modules | The site has a handful of views and no shared app state, so a framework would add more than it saves. With no build step, the files in the repo are exactly what the browser runs: you can read, edit and debug any of it directly, and nothing has to be upgraded to keep it working. |
+| Hosting and deploys | GitHub Pages, with a GitHub Actions workflow | Free, and it lives next to the code. A push to `main` deploys in about a minute. Cover fetching runs after the deploy, so a slow cover site never holds the site back. |
+| Data | JSON files in `data/` | Every shelf is a file you can read, diff and edit by hand. The in-site logger commits to the same files through GitHub's API, so there is no database to run or back up. |
+| The house and street | A small canvas pixel renderer (`pixel.js`) | Pixel art needs exact control of every pixel: a fixed palette (ENDESGA 32), dithering and integer scaling. A few hundred lines of raster code do that more simply than a game engine would. |
+| Shelves and the inspector | CSS layout and CSS 3D transforms | Cases, spines and books are boxes. CSS draws them with sharp text and real cover images, turns them in 3D without WebGL, and copes with any screen size. |
+| The Trick Room | [Three.js](https://threejs.org) (WebGL), loaded from jsDelivr only when you go down there | Lighting, metal reflections, shadows and rigged hands need a real 3D engine. Loading it on demand keeps the rest of the site small, and if it can't load, flat CSS versions of the toys stand in. |
+| Hands | The generic hand models from [WebXR Input Profiles](https://github.com/immersive-web/webxr-input-profiles) (MIT), from jsDelivr | Realistic rigged hands without sculpting our own or storing models in the repo. The fingers are posed by the site's own code. |
+| Tricks and combos | Keyframes joined into one smooth track (`tricks.js`) | A combo plays as one continuous motion, so tricks flow into each other. The hand's grip is worked out from the same track rather than animated by hand. |
+| Sound | The Web Audio API | Every sound is made on the fly from noise and short tones, worked out from each trick's motion. There are no audio files to store or download. |
+| Covers and suggestions | AniList, MangaDex, MusicBrainz with the Cover Art Archive, Deezer, Open Library and IMDb's suggestion feed | All free, with no API keys. The repo keeps only links (`data/covers.json`), and images load from their sources, so the repo stays small. |
+| Tools | Python 3 standard library (`tools/`), with Pillow optional for spine colours | Runs on any machine and on GitHub's runners with nothing to install. Tests use saved responses, so they run offline. |
+| Type | Google Fonts | Pixelify Sans and Jersey 10 for the interface, Archivo, Bodoni Moda and IBM Plex Mono for printing on the objects. |
+
+The code is laid out like this:
+
+```
+index.html            the page: fonts, styles, an import map for three, app.js
+assets/css/           shelves.css (the interface), objects.css (the physical objects)
+assets/js/app.js      routing, the street, rooms, inspector, search, Trick Room, play table
+assets/js/model.js    formats in millimetres, room kinds, loading data/
+assets/js/pixel.js    the pixel renderer: street, house, cutaway, decor
+assets/js/art.js      generated covers, spines and discs for items without a real cover
+assets/js/log.js      logging new entries from the site
+assets/js/tricks.js   the tricks, suggested combos, and how a combo becomes one track
+assets/js/toys.js     the performer, toy sounds, flat stand-ins, the list of toys
+assets/js/toys3d.js   the 3D toys and hands (Three.js)
+assets/js/sound.js    all sound, made with Web Audio
+data/                 house.json, rooms/*.json, covers.json
+tools/                covers.py, validate.py and their tests
+```
 
 ## Add to the collection
 
@@ -76,12 +115,13 @@ If it picks the wrong edition, set `"cover"` on the item to the image you want. 
 
 ## The Trick Room
 
-The basement holds toys you can play with instead of shelves. Each toy is a real 3D model (drawn with [Three.js](https://threejs.org), loaded from jsDelivr only when you go down there) moved by a timeline, so nothing is a video. If Three.js can't load, the toys fall back to a flat CSS version of the same tricks.
+The basement holds toys you can play with instead of shelves: a butterfly knife (31 tricks), a karambit (16) and a deck of cards (19). Each toy is a real 3D model (drawn with [Three.js](https://threejs.org), loaded from jsDelivr only when you go down there) moved by a timeline, so nothing is a video. If Three.js can't load, the toys fall back to a flat CSS version of the same tricks.
 
-- **Butterfly knife** (a trainer): 24 tricks, from the basic opening and closing through fans, the Y2K and Zen rollovers, Chaplin, helix, aerials, the ladder and the tornado. The blade and bite handle swing on their own pins, so the knife opens and closes the way the real linkage does.
-- **Deck of cards**: 13 cardistry moves, including the thumb fan, Charlier, swivel, revolution and Sybil cuts, the spring, waterfall, ribbon spread with turnover, riffle shuffle and bridge, pinwheel, scissor cut, boomerang throw and anaconda dribble.
+- **Butterfly knife** (a rainbow titanium trainer): 31 tricks, from the basic opening and closing through fans, the Y2K and Zen rollovers, Chaplin, helix, aerials, the ladder, the tornado, the matrix and the sunrise. The blade and bite handle swing on their own pins, so the knife opens and closes the way the real linkage does.
+- **Karambit** (an original black-and-gold design with a gold finger ring): 16 tricks spun round the index finger through the ring: index and reverse spins, the stall, the inspect, toss and catch, grip switches, the figure eight, the ring flip and a hook-and-pull slash.
+- **Deck of cards**: 19 cardistry moves, including the thumb fan, Charlier, swivel, revolution and Sybil cuts, the spring, waterfall, ribbon spread with turnover, riffle shuffle and bridge, faro and overhand shuffles, two-hand spread, pressure fan, top card turnover, pinwheel, scissor cut, boomerang throw and anaconda dribble.
 
-Real hands do the tricks: sculpted, rigged hand models with a bone in every joint. A right hand flips the knife and two hands work the deck, each holding it from the side with the thumb on the front. The knife has solid chamfered handles, screw-head pivots and a thick ground blade; the cards have real thickness, rounded corners and a coated finish. Drag the play table to look around them. The knife hand works itself out from each trick: it grips the safe handle and turns with the knife, loosens to let the knife spin in its fingers, and opens flat under a toss.
+Real hands do the tricks: sculpted, rigged hand models with a bone in every joint. A right hand flips the knife and spins the karambit, and two hands work the deck, each holding it from the side with the thumb on the front. The knife has solid chamfered handles, screw-head pivots and a thick ground blade; the cards have real thickness, rounded corners and a coated finish. Drag the play table to look around them. The knife hand works itself out from each trick: it grips the safe handle and turns with the knife, loosens to let the knife spin in its fingers, and opens flat under a toss.
 
 Pick a toy to open the play table, then **build a combo**: pick one of the suggested combos, or tap tricks on the card to add them in order, and press **Run the combo** (or Enter). The hand runs the whole sequence in one flow. Where a trick needs the knife open or closed and it isn't, the hand opens or closes it on the way. Speeds are 0.5×, 1× and 2×, **Repeat** keeps going, and Backspace takes the last trick out. A trick you add while the hand is resting plays right away, and one you add during a run joins the end of it. The combo is in the link, so it can be shared: `#tricks--butterfly-knife--basic-opening+chaplin+basic-closing`.
 

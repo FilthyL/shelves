@@ -32,8 +32,8 @@ const CLOSED = { b: 0, d: 0 };
 export const BASE = { X: 0, Y: 0, rz: 90, ry: 0, rx: 0, b: 180, d: 180 };
 export const GRIP = [L * 0.55, 0];
 
-function seq(frames) {
-  let t = 0, cur = { ...BASE };
+function seq(frames, base = BASE) {
+  let t = 0, cur = { ...base };
   const keys = frames.map(([dt, p = {}, e = 'io']) => { t += dt; cur = { ...cur, ...p }; return { t, p: { ...cur }, e }; });
   return { keys, dur: t };
 }
@@ -91,9 +91,68 @@ export const BALISONG_TRICKS = [
     [[0, { ...CLOSED, rz: -90 }], [0.4], [0.35, { b: 180, rz: -112 }, 'out'], [0.3, { d: 180, rz: -90 }, 'out'], [0.8]]),
   bali('pendulum', 'Pendulum', 'Beginner', 'The blade and bite handle swing loose under the safe handle like a pendulum, then latch.',
     [[0, OPEN], [0.3], [0.2, { d: 0 }], [0.45, { b: 110 }], [0.45, { b: 250 }], [0.45, { b: 130 }], [0.45, { b: 180 }], [0.3, { d: 180 }, 'out'], [0.5]]),
+  bali('horizontal-aerial', 'Horizontal aerial', 'Advanced', 'Tossed flat: the knife rolls end over end on its long axis in the air and drops back latched.',
+    [[0, OPEN], [0.3], [0.2, { Y: 22 }, 'in'], [0.45, { Y: -160, rx: 180, d: 0 }, 'out'], [0.45, { Y: 0, rx: 360, d: 180 }, 'in'], [0.15, { Y: 10 }], [0.2, { Y: 0 }], [0.5]]),
+  bali('fan-to-close', 'Fan into a close', 'Intermediate', 'Two fans round the fingers, and the spin carries straight on into a closing.',
+    [[0, OPEN], [0.3], [1.2, { rz: 810 }, 'lin'], [0.3, { d: 0 }], [0.3, { b: 0 }, 'out'], [0.5]]),
+  bali('matrix', 'Matrix', 'Advanced', 'The blade swings round behind the hand while the knife rolls over, like dodging in slow motion.',
+    [[0, OPEN], [0.3], [0.3, { d: 0 }], [0.6, { rx: 180, b: 360 }], [0.6, { rx: 360, b: 540 }], [0.3, { d: 180 }, 'out'], [0.4]]),
+  bali('sunrise', 'Sunrise', 'Intermediate', 'The bite handle lets go and rises in one slow arc over the top before it latches.',
+    [[0, OPEN], [0.3], [0.4, { d: 0, rz: 60 }], [0.8, { b: 540, rz: 120 }], [0.3, { d: 180, rz: 90 }, 'out'], [0.4]]),
+  bali('ice-pick-close', 'Ice pick closing', 'Beginner', 'The ice pick opening backwards: the blade folds home in the reverse grip.',
+    [[0, { ...OPEN, rz: -90 }], [0.3], [0.3, { d: 0, rz: -112 }, 'out'], [0.35, { b: 0, rz: -90 }, 'out'], [0.6]]),
+  bali('fan-reversal', 'Fan reversal', 'Intermediate', 'Two fans forward, a stall with the blade up, then two straight back.',
+    [[0, OPEN], [0.3], [0.8, { rz: 810 }, 'lin'], [0.18], [0.8, { rz: 90 }, 'lin'], [0.4]]),
+  bali('bite-loop', 'Bite handle loop', 'Intermediate', 'The bite handle loops all the way round its pin and slaps back into the latch.',
+    [[0, OPEN], [0.3], [0.5, { d: 540, rz: 100 }], [0.2, { rz: 90 }], [0.5]]),
 ];
 
+// ============================================================ KARAMBIT
+// A curved claw blade with a finger ring. The index finger goes through the ring, and the ring is
+// the pivot: rz spins the knife round that finger (in the screen plane, the finger pointing into it).
+// rz 0 is the handle across the fingers with the blade curving out below the little finger. A key
+// with follow: 1 makes the hand turn with the knife whatever the angle (a wrist roll).
+export const KBASE = { X: 0, Y: 0, rz: 0, ry: 0, rx: 0, b: 0, d: 0, follow: 0 };
+const kara = (id, name, level, about, frames) => ({ id, name, level, about, pv: [0, 0], ...seq(frames, KBASE) });
+
+export const KARAMBIT_TRICKS = [
+  kara('index-spin', 'Index spin', 'Beginner', 'Fingers open, and the karambit spins twice round the index finger before the hand closes on it.',
+    [[0], [0.25], [0.9, { rz: 720 }, 'lin'], [0.4]]),
+  kara('reverse-spin', 'Reverse spin', 'Beginner', 'The same spin the other way: two turns backwards round the finger.',
+    [[0], [0.25], [0.9, { rz: -720 }, 'lin'], [0.4]]),
+  kara('triple-spin', 'Triple spin', 'Intermediate', 'Faster and longer: three turns in one go.',
+    [[0], [0.2], [1.0, { rz: 1080 }, 'lin'], [0.4]]),
+  kara('stall', 'Spin and stall', 'Intermediate', 'A turn and a half, a stop with the blade standing up, then the last half turn home.',
+    [[0], [0.25], [0.6, { rz: 540 }, 'out'], [0.3], [0.3, { rz: 720 }, 'in'], [0.4]]),
+  kara('inspect', 'Inspect', 'Beginner', 'The hand turns the karambit to the light: one face, a roll to show the other, and back.',
+    [[0], [0.25], [0.5, { ry: 55, rz: -25, follow: 1 }], [0.4], [0.6, { rx: 180, ry: 35, follow: 1 }], [0.4], [0.6, { rx: 360, ry: 0, rz: 0, follow: 1 }], [0.2, { follow: 0 }], [0.3]]),
+  kara('toss-catch', 'Toss and catch', 'Intermediate', 'Flicked up off the finger, two turns in the air, and caught back on the ring.',
+    [[0], [0.25], [0.15, { Y: 16 }, 'in'], [0.45, { Y: -150, rz: 360 }, 'out'], [0.45, { Y: 0, rz: 720 }, 'in'], [0.12, { Y: 8 }], [0.2, { Y: 0 }], [0.4]]),
+  kara('grip-switch', 'Grip switch', 'Beginner', 'A half turn flips it into a forward grip with the blade up, then a half turn back.',
+    [[0], [0.25], [0.35, { rz: 180 }, 'out'], [0.5], [0.35, { rz: 360 }, 'out'], [0.4]]),
+  kara('slash', 'Hook and pull', 'Beginner', 'A short reverse-grip slash: hook forward, pull back, the way the blade is meant to cut.',
+    [[0], [0.2], [0.18, { X: -40, Y: -20, rz: -35, follow: 1 }, 'out'], [0.22, { X: 50, Y: 20, rz: 30, follow: 1 }, 'out'], [0.3, { X: 0, Y: 0, rz: 0, follow: 1 }], [0.2, { follow: 0 }], [0.3]]),
+  kara('figure-eight', 'Figure eight', 'Advanced', 'Two spins while the hand tips the knife in and out of the plane, tracing an eight.',
+    [[0], [0.25], [0.45, { rz: 360, ry: 40 }, 'lin'], [0.45, { rz: 720, ry: -40 }, 'lin'], [0.3, { ry: 0 }], [0.4]]),
+  kara('wrist-roll', 'Wrist roll', 'Beginner', 'The whole hand rolls over and back, the karambit held on the ring the whole way.',
+    [[0], [0.25], [0.7, { rx: 180, follow: 1 }], [0.3], [0.7, { rx: 360, follow: 1 }], [0.2, { follow: 0 }], [0.3]]),
+  kara('behind-spin', 'Behind-the-hand spin', 'Intermediate', 'A spin that tips back so the blade passes behind the hand, then rolls forward again.',
+    [[0], [0.25], [0.5, { rz: 360, ry: 70 }], [0.5, { rz: 720, ry: 0 }], [0.4]]),
+  kara('spin-flurry', 'Spin flurry', 'Advanced', 'Three quick single spins, each caught and let go again.',
+    [[0], [0.2], [0.35, { rz: 360 }, 'lin'], [0.12], [0.35, { rz: 720 }, 'lin'], [0.12], [0.35, { rz: 1080 }, 'lin'], [0.4]]),
+  kara('fan-spin', 'Fan spin', 'Intermediate', 'A long smooth spin that slows down and speeds up again like a fan changing gear.',
+    [[0], [0.2], [0.5, { rz: 300 }, 'in'], [0.4, { rz: 560 }, 'lin'], [0.6, { rz: 1080 }, 'out'], [0.4]]),
+  kara('stab-spin', 'Stab and spin', 'Intermediate', 'A quick stab forward, and the recoil throws the knife into a spin back home.',
+    [[0], [0.2], [0.16, { X: -30, Y: -40, follow: 1 }, 'out'], [0.2, { X: 0, Y: 0, follow: 0 }], [0.8, { rz: -720 }, 'lin'], [0.4]]),
+  kara('ring-flip', 'Ring flip', 'Advanced', 'The knife flips over on the finger, a turn round two axes at once, and lands the right way up.',
+    [[0], [0.25], [0.9, { rz: 360, rx: 360 }], [0.4]]),
+  kara('slow-spin', 'Slow spin', 'Beginner', 'One slow, controlled turn so you can see the finger keep the ring moving.',
+    [[0], [0.25], [1.2, { rz: 360 }], [0.4]]),
+];
+
+
 const KNIFE = Object.fromEntries(BALISONG_TRICKS.map(t => [t.id, t]));
+const KARAMBIT = Object.fromEntries(KARAMBIT_TRICKS.map(t => [t.id, t]));
 
 // ------------------------------------------------------------ a combo as one track
 const ANGLES = ['rz', 'ry', 'rx', 'b', 'd'];
@@ -113,13 +172,13 @@ function steps(trick) {
 }
 
 /** the order the knife actually needs: open it before a trick that starts open, close it before one that starts closed */
-function plan(ids, from) {
+function plan(ids, from, table = KNIFE) {
   const out = [];
   let end = from;
   for (const id of ids) {
-    const tr = KNIFE[id];
+    const tr = table[id];
     if (!tr) continue;
-    if (end) {
+    if (end && table === KNIFE) {
       if (isOpen(end) && !isOpen(tr.keys[0].p)) out.push({ trick: KNIFE['basic-closing'], auto: true });
       else if (!isOpen(end) && isOpen(tr.keys[0].p)) out.push({ trick: KNIFE['basic-opening'], auto: true });
     }
@@ -133,9 +192,9 @@ function plan(ids, from) {
  * Join tricks into one track of keys. `from` is the pose the knife is in now, so a new run starts
  * where the last one stopped; `loop` adds the way back to the start, so a repeat never jumps.
  */
-export function knifeRoutine(ids, { from = null, loop = false, lead = 0.2, tail = 0.45 } = {}) {
-  const todo = plan(ids, from);
-  if (!todo.length) todo.push({ trick: KNIFE['forward-fan'], auto: true, idle: true });
+export function knifeRoutine(ids, { from = null, loop = false, lead = 0.2, tail = 0.45, table = KNIFE } = {}) {
+  const todo = plan(ids, from, table);
+  if (!todo.length) todo.push({ trick: Object.values(table)[0], auto: true, idle: true });
   const keys = [], segs = [];
   let t = 0, cur = null;
   const push = (p, e = 'io') => keys.push({ t, p: { ...p }, e });
@@ -161,7 +220,7 @@ export function knifeRoutine(ids, { from = null, loop = false, lead = 0.2, tail 
   if (loop && keys.length > 1) {
     // close or open as needed and come back to the very first pose
     const first = keys[0].p;
-    if (isOpen(cur) !== isOpen(first)) {
+    if (table === KNIFE && isOpen(cur) !== isOpen(first)) {
       const tr = KNIFE[isOpen(cur) ? 'basic-closing' : 'basic-opening'], st = steps(tr);
       const off = moveTo({ ...st[0].p, pvx: tr.pv[0], pvy: tr.pv[1] }), t0 = t;
       for (let i = 1; i < st.length; i++) { t += st[i].dt * TEMPO; push(shift({ ...st[i].p, pvx: tr.pv[0], pvy: tr.pv[1] }, off), st[i].e); }
@@ -173,8 +232,13 @@ export function knifeRoutine(ids, { from = null, loop = false, lead = 0.2, tail 
     t += 0.28; push(back);
   } else { t += tail; push(cur); }
   handTrack(keys, from && Number.isFinite(from.hrz) ? { rz: from.hrz, ry: from.hry, rx: from.hrx } : null);
-  return trackOf(keys, segs, t);
+  const r = trackOf(keys, segs, t);
+  r.kind = table === KNIFE ? 'knife' : 'karambit';
+  return r;
 }
+
+/** the karambit's combos: the same track, no opening or closing */
+export const karambitRoutine = (ids, o = {}) => knifeRoutine(ids, { ...o, table: KARAMBIT });
 
 /**
  * Where the hand is at each key. It holds the safe handle and turns with the knife while the two
@@ -188,7 +252,8 @@ function handTrack(keys, start) {
       const c = {};
       let lined = true;
       for (const a of ['rz', 'ry', 'rx']) { c[a] = p[a] - Math.round((p[a] - h[a]) / 360) * 360; if (Math.abs(c[a] - h[a]) > 75) lined = false; }
-      if (lined) h = c;
+      if (p.follow) h = { rz: p.rz, ry: p.ry, rx: p.rx }; // the wrist turns the knife: the hand goes with it
+      else if (lined) h = c;
     }
     p.hrz = h.rz; p.hry = h.ry; p.hrx = h.rx;
     p.hX = p.X; p.hY = p.Y > -40 ? p.Y : -40 + (p.Y + 40) * 0.12; // a tossed knife leaves the hand below it
@@ -370,6 +435,40 @@ export const CARD_MOVES = [
     }
     return { x: back ? lerp(x, 0, back) : x, y: back ? lerp(y, 0, back) : y, z: u >= 1 ? j * 0.45 : i * 0.45, rz: u > 0 && u < 1 ? 32 * Math.sin(u * 2 * Math.PI) : 0, ry: 0, rx: 0 };
   }),
+  move('two-hand-spread', 'Two-hand spread', 'Beginner', 'Both hands pull the deck into one wide arc, hold it up, and push it shut again.', 3.0, (t, i, n) => {
+    const open = sm(t, 0.25, 1.0) * (1 - sm(t, 2.0, 2.7)), deg = (-75 + (150 * i) / (n - 1)) * open;
+    const [x, y] = around([0, 150], deg);
+    return { x, y, z: i * 0.45, rz: deg, ry: 0, rx: 0 };
+  }),
+  move('overhand-shuffle', 'Overhand shuffle', 'Beginner', 'The top hand holds the deck while the thumb below peels off small packets, four at a time.', 3.2, (t, i, n) => {
+    const up = sm(t, 0, 0.3), back = sm(t, 2.6, 3.1), k = Math.floor((n - 1 - i) / 4), t0 = 0.45 + k * 0.3, u = sm(t, t0, t0 + 0.24);
+    const from = [44 * up, -44 * up], to = [-22, 24];
+    const x = lerp(from[0], to[0], u), y = lerp(from[1], to[1], u) - 18 * Math.sin(u * Math.PI);
+    const z = u >= 1 ? (k * 4 + (i % 4)) * 0.45 : i * 0.45 + 2;
+    return { x: lerp(x, 0, back), y: lerp(y, 0, back), z, rz: 8 * Math.sin(u * Math.PI), ry: 0, rx: 0 };
+  }),
+  move('faro', 'Faro shuffle', 'Advanced', 'Two halves meet edge to edge and weave together one card at a time, then cascade and push square.', 3.0, (t, i, n) => {
+    const half = n / 2, left = i < half, side = left ? -1 : 1, rank = left ? 2 * i : 2 * (i - half) + 1;
+    const split = sm(t, 0.1, 0.5), meet = sm(t, 0.7, 1.2), cascade = Math.sin(Math.PI * sm(t, 1.4, 2.0)), push = sm(t, 2.1, 2.5);
+    const x = side * (40 * split - 37 * meet) * (1 - push), z = meet > 0.5 ? rank * 0.45 : i * 0.45;
+    return { x, y: -cascade * 10 * Math.sin((Math.PI * rank) / (n - 1)), z, rz: side * 4 * split * (1 - meet), ry: 0, rx: cascade * 28 };
+  }),
+  move('turnover', 'Top card turnover', 'Beginner', 'The thumb flips the top card face up onto the deck, shows it, and flips it face down again.', 2.2, (t, i, n) => {
+    if (i !== n - 1) return REST(i);
+    const a = sm(t, 0.2, 0.75), b = sm(t, 1.25, 1.8), lift = 22 * (Math.sin(Math.PI * a) + Math.sin(Math.PI * b));
+    return { x: 0, y: -lift * 0.3, z: i * 0.45 + lift, rz: 0, ry: 180 * (a - b), rx: 0 };
+  }),
+  move('pressure-fan', 'Pressure fan', 'Intermediate', 'Squeezed from the bottom, the deck snaps into a fan that swings left and right before it closes.', 2.8, (t, i, n) => {
+    const open = sm(t, 0.25, 0.7) * (1 - sm(t, 2.1, 2.6)), sway = 16 * Math.sin(Math.PI * 2 * sm(t, 0.8, 2.0));
+    const deg = (-52 + (104 * i) / (n - 1)) * open + sway * open;
+    const [x, y] = around([0, 49], deg);
+    return { x, y, z: i * 0.45, rz: deg, ry: 0, rx: 0 };
+  }),
+  move('cut-and-carry', 'Cut and carry', 'Beginner', 'The top half is lifted off, carried over in an arc and slid in underneath.', 2.4, (t, i, n) => {
+    const top = i >= n / 2, p = sm(t, 0.2, 1.8), arc = Math.sin(Math.PI * p);
+    if (!top) return { ...REST(i), z: i * 0.45 + (p > 0.6 ? (n / 2) * 0.45 : 0) };
+    return { x: 90 * arc, y: -120 * arc, z: i * 0.45 + 30 * arc - (p > 0.6 ? (n / 2) * 0.45 : 0), rz: 20 * arc, ry: 0, rx: 0 };
+  }),
 ];
 
 /** which card sits at position i in the deck */
@@ -457,6 +556,30 @@ const CARD_HANDS = {
       R: mixH(REST_R, H(52 + 4, 70 + 14, 0, { catch: 1 }), sm(t, 0, 0.2) * (1 - back)),
     };
   },
+  'two-hand-spread': (t, n, f) => {
+    const a = f(t, 0, n), b = f(t, n - 1, n), k = sm(t, 0, 0.2) * (1 - sm(t, 2.7, 3.0));
+    return { L: H(a.x - 6, a.y + 16, a.rz, { hold: 1 }), R: mixH(REST_R, H(b.x + 6, b.y + 16, b.rz, { hold: 1 }), k) };
+  },
+  'overhand-shuffle': t => {
+    const up = sm(t, 0, 0.3), back = sm(t, 2.6, 3.1);
+    return {
+      L: mixH(H(-22 - 4, 24 + 16, 0, { catch: 1 }), HOME_L, back),
+      R: mixH(REST_R, H(44 * up + 6, -44 * up + 14, 0, { squeeze: 1 }), sm(t, 0, 0.12) * (1 - sm(t, 2.5, 2.9))),
+    };
+  },
+  faro: t => {
+    const split = sm(t, 0.1, 0.5), meet = sm(t, 0.7, 1.2), push = sm(t, 2.1, 2.5), x = (40 * split - 30 * meet) * (1 - push);
+    return { L: H(-x - 8, 16, 0, { hold: 1 }), R: mixH(REST_R, H(x + 8, 16, 0, { hold: 1 }), sm(t, 0, 0.12) * (1 - sm(t, 2.7, 3.0))) };
+  },
+  turnover: t => ({ L: HOME_L, R: mixH(REST_R, H(30, -34, -10, { pinch: 1 }), sm(t, 0.02, 0.18) * (1 - sm(t, 1.9, 2.2))) }),
+  'pressure-fan': (t, n, f) => {
+    const top = f(t, Math.floor(n / 2), n), k = sm(t, 0.1, 0.25) * (1 - sm(t, 2.3, 2.7));
+    return { L: H(-4, 49 + 6, 0, { squeeze: 1 }), R: mixH(REST_R, H(top.x + 4, top.y - 30, top.rz, { pinch: 1 }), k) };
+  },
+  'cut-and-carry': (t, n, f) => {
+    const c = f(t, n - 1, n), k = sm(t, 0, 0.18) * (1 - sm(t, 2.0, 2.4));
+    return { L: HOME_L, R: mixH(REST_R, H(c.x + 6, c.y + 14, c.rz, { squeeze: 1 }), k) };
+  },
 };
 for (const m of CARD_MOVES) m.hands = CARD_HANDS[m.id];
 
@@ -494,11 +617,22 @@ export const COMBOS = {
     { id: 'cane-work', name: 'Cane work', tricks: ['basic-opening', 'chaplin', 'pendulum', 'kickback', 'basic-closing'] },
     { id: 'air-time', name: 'Air time', tricks: ['basic-opening', 'aerial', 'forward-fan', 'double-aerial', 'basic-closing'] },
     { id: 'twirls', name: 'Twirls', tricks: ['basic-opening', 'double-twirl', 'behind-hand-twirl', 'ripple', 'basic-closing'] },
+    { id: 'flow-state', name: 'Flow state', tricks: ['basic-opening', 'sunrise', 'matrix', 'fan-reversal', 'fan-to-close'] },
+    { id: 'air-show', name: 'Air show', tricks: ['basic-opening', 'horizontal-aerial', 'aerial', 'bite-loop', 'basic-closing'] },
+  ],
+  karambit: [
+    { id: 'warm-up', name: 'Warm up', tricks: ['index-spin', 'reverse-spin', 'inspect'] },
+    { id: 'spin-control', name: 'Spin control', tricks: ['stall', 'spin-flurry', 'fan-spin', 'slow-spin'] },
+    { id: 'show-off', name: 'Show off', tricks: ['toss-catch', 'figure-eight', 'ring-flip', 'behind-spin'] },
+    { id: 'close-quarters', name: 'Close quarters', tricks: ['slash', 'stab-spin', 'grip-switch', 'triple-spin'] },
+    { id: 'the-inspect', name: 'The inspect', tricks: ['inspect', 'wrist-roll', 'index-spin', 'inspect'] },
   ],
   cards: [
     { id: 'show-the-deck', name: 'Show the deck', tricks: ['thumb-fan', 'ribbon-spread'] },
     { id: 'cuts', name: 'One-hand cuts', tricks: ['charlier', 'scissor-cut', 'swivel-cut', 'revolution-cut'] },
     { id: 'flow', name: 'Flow', tricks: ['spring', 'waterfall', 'anaconda'] },
     { id: 'full-routine', name: 'Full routine', tricks: ['riffle-shuffle', 'sybil-cut', 'pinwheel', 'card-throw', 'thumb-fan'] },
+    { id: 'shuffles', name: 'Shuffles', tricks: ['riffle-shuffle', 'overhand-shuffle', 'faro', 'cut-and-carry'] },
+    { id: 'showtime', name: 'Showtime', tricks: ['two-hand-spread', 'pressure-fan', 'turnover'] },
   ],
 };

@@ -1,6 +1,7 @@
 {
   "items": [
-    { "title": "Butterfly knife", "toy": "balisong", "creator": "Rainbow titanium trainer, blunt blade", "year": 2026, "format": "toy", "colors": ["#68386c", "#ffffff", "#b55088", "#feae34"], "tags": ["fidget", "flipping"], "note": "Twenty-four tricks, from the basic opening to the ladder." },
-    { "title": "Deck of cards", "toy": "cards", "creator": "Poker size, 52 cards", "year": 2026, "format": "toy", "colors": ["#a22633", "#ffffff", "#e43b44", "#ead4aa"], "tags": ["cardistry"], "note": "Thirteen cardistry moves: cuts, fans, springs and shuffles." }
+    { "title": "Butterfly knife", "toy": "balisong", "creator": "Rainbow titanium trainer, blunt blade", "year": 2026, "format": "toy", "colors": ["#68386c", "#ffffff", "#b55088", "#feae34"], "tags": ["fidget", "flipping"], "note": "Thirty-one tricks, from the basic opening to the matrix." },
+    { "title": "Karambit", "toy": "karambit", "creator": "Black and gold, gold finger ring", "year": 2026, "format": "toy", "colors": ["#181425", "#feae34", "#feae34", "#b55088"], "tags": ["fidget", "spinning"], "note": "Sixteen tricks, from the index spin to the inspect." },
+    { "title": "Deck of cards", "toy": "cards", "creator": "Poker size, 52 cards", "year": 2026, "format": "toy", "colors": ["#a22633", "#ffffff", "#e43b44", "#ead4aa"], "tags": ["cardistry"], "note": "Nineteen cardistry moves: cuts, fans, springs and shuffles." }
   ]
 }

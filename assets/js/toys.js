@@ -3,8 +3,8 @@
 // models are in toys3d.js; the flat CSS rigs below only stand in when Three.js can't load.
 import { play, bed } from './sound.js';
 import {
-  BALISONG_TRICKS, CARD_MOVES, COMBOS, CARD_TEMPO, N, cardOf,
-  knifeRoutine, deckRoutine, ramp, fold,
+  BALISONG_TRICKS, CARD_MOVES, KARAMBIT_TRICKS, COMBOS, CARD_TEMPO, N, cardOf,
+  knifeRoutine, karambitRoutine, deckRoutine, ramp, fold,
 } from './tricks.js';
 
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
@@ -38,6 +38,23 @@ function makeBalisong(stage) {
     blade.style.transform = `rotateZ(${p.b}deg)`;
     h2.style.transform = `translate(0px, 8px) rotateZ(${p.d}deg) translateZ(-3px)`;
   };
+  return { render: put, pose: put, destroy() { el.remove(); } };
+}
+
+// the karambit's outline, y down: ring at the origin, handle to the right, blade curving down
+const KARAMBIT_SVG = `<svg class="kb-svg" viewBox="-24 -64 190 90" width="190" height="90" aria-hidden="true">
+  <path fill="#feae34" fill-rule="evenodd" d="M21 0 A21 21 0 1 1 -21 0 A21 21 0 1 1 21 0 Z M13.5 0 A13.5 13.5 0 1 0 -13.5 0 A13.5 13.5 0 1 0 13.5 0 Z"/>
+  <path fill="#181425" stroke="#feae34" stroke-width="1" d="M14 -12 C40 -15 75 -14 100 -12 L104 -10 L104 12 C92 16 84 8 74 12 C64 16 56 8 46 12 C34 16 22 15 14 12 Z"/>
+  <path fill="#262b44" stroke="#feae34" stroke-width="2.4" d="M104 -11 C142 -15 170 8 161 60 C151 36 134 18 106 10 L104 10 Z" transform="scale(1,-1) translate(0,0)"/>
+  <rect x="99" y="-15" width="9" height="30" rx="3" fill="#feae34"/>
+</svg>`;
+
+function makeKarambit(stage) {
+  const el = document.createElement('div');
+  el.className = 'kb';
+  el.innerHTML = KARAMBIT_SVG;
+  stage.append(el);
+  const put = p => { el.style.transform = `translate3d(${p.X}px, ${p.Y}px, 0) rotateZ(${p.rz}deg) rotateY(${p.ry}deg) rotateX(${p.rx}deg)`; };
   return { render: put, pose: put, destroy() { el.remove(); } };
 }
 
@@ -122,7 +139,21 @@ function deckEvents(routine) {
   return routine.segs.flatMap(g => moveEvents(g.trick).map(e => ({ ...e, t: g.t0 + e.t * CARD_TEMPO })));
 }
 
-export const routineSounds = r => (r.sfx ||= r.kind === 'knife' ? knifeEvents(r) : deckEvents(r));
+/** the karambit: a snick each time a spin is caught in the hand, a flick as one starts, a catch after a toss */
+function karambitEvents(routine) {
+  const k = routine.keys, raw = [];
+  for (let i = 1; i < k.length; i++) {
+    const a = k[i - 1].p, b = k[i].p, c = k[i + 1]?.p, dt = k[i].t - k[i - 1].t;
+    if (dt <= 0) continue;
+    const mv = b.rz - a.rz, goesOn = c && Math.sign(c.rz - b.rz) === Math.sign(mv) && Math.abs(c.rz - b.rz) > 1;
+    if (Math.abs(mv) >= 150 && !goesOn) raw.push({ t: k[i].t, s: 'clack', v: clamp(0.45 + Math.abs(mv) / dt / 3000, 0.45, 0.85) });
+    if (Math.abs(mv) >= 150 && (!k[i - 2] || Math.abs(a.rz - k[i - 2].p.rz) < 1)) raw.push({ t: k[i - 1].t + 0.01, s: 'rattle', v: 0.5 });
+    if (b.Y - a.Y > 100) raw.push({ t: k[i].t, s: 'catch', v: 0.9 });
+  }
+  return settle(raw, { crowd: 99 });
+}
+
+export const routineSounds = r => (r.sfx ||= r.kind === 'knife' ? knifeEvents(r) : r.kind === 'karambit' ? karambitEvents(r) : deckEvents(r));
 
 /** how loud the air and the sliding are at time t of a routine, played at `rate` times normal speed */
 function knifeMotion(r, t, rate) {
@@ -223,6 +254,10 @@ export const TOYS = {
   balisong: {
     make: (where, o) => make3d('makeBalisong3D', makeBalisong, where, o), sound: knifeSound,
     tricks: BALISONG_TRICKS, combos: COMBOS.balisong, routine: loopable(knifeRoutine), preview: ['forward-fan', 'reverse-fan'], scale: 1.2,
+  },
+  karambit: {
+    make: (where, o) => make3d('makeKarambit3D', makeKarambit, where, o), sound: knifeSound,
+    tricks: KARAMBIT_TRICKS, combos: COMBOS.karambit, routine: loopable(karambitRoutine), preview: ['index-spin', 'reverse-spin'], scale: 1.3,
   },
   cards: {
     make: (where, o) => make3d('makeDeck3D', makeDeck, where, o), sound: deckSound,

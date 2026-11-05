@@ -349,6 +349,8 @@
 .bl-handle .latch { position: absolute; right: 2px; top: 3px; width: 10px; height: 12px; border-radius: 2px; background: linear-gradient(90deg, #8b9bb4, #ffffff 50%, #5a6988); }
 .bl-svg { position: absolute; left: -7px; top: -9px; overflow: visible; }
 .bali.ghost { pointer-events: none; filter: saturate(0.6); }
+.kb { position: absolute; left: 0; top: 0; transform-style: preserve-3d; transform-origin: 0 0; }
+.kb-svg { position: absolute; left: -24px; top: -64px; overflow: visible; }
 
 /* cards */
 .deck { position: absolute; left: 0; top: 0; transform-style: preserve-3d; }
