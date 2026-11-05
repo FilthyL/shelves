@@ -215,6 +215,18 @@
       "#25548b"
     ]
   },
+  "books/kafka-on-the-shore": {
+    "from": "Open Library",
+    "match": "ISBN 9781400079278",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/kafka-on-the-shore.jpg",
+    "pal": [
+      "#ffffff",
+      "#5768bd",
+      "#485ac2",
+      "#c89578"
+    ]
+  },
   "books/meditations": {
     "from": "Open Library",
     "match": "Meditations by Marcus Aurelius",
