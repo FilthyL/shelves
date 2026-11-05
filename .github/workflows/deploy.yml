@@ -1,0 +1,83 @@
+name: Fetch covers and deploy
+
+on:
+  push:
+    paths: ["data/**", "assets/**", "index.html", "tools/**", ".github/workflows/**"]
+  workflow_dispatch:
+    inputs:
+      refresh:
+        description: "Fetch every cover again"
+        type: boolean
+        default: false
+      retry_misses:
+        description: "Retry items that found no cover last time"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: shelves-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  covers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check the data
+        run: |
+          python tools/validate.py
+          python -m unittest discover -s tools -v
+
+      - name: Install Pillow for spine colours
+        run: pip install --quiet pillow
+
+      - name: Fetch cover art
+        env:
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+          GOOGLE_BOOKS_API_KEY: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
+        run: |
+          python tools/covers.py --prune \
+            ${{ inputs.refresh && '--refresh' || '' }} \
+            ${{ inputs.retry_misses && '--retry-misses' || '' }}
+
+      - name: Commit new covers
+        run: |
+          git config user.name "shelves-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/covers.json assets/covers 2>/dev/null || git add data/covers.json
+          if git diff --cached --quiet; then
+            echo "No new covers"
+          else
+            git commit -m "Fetch cover art"
+            for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break; sleep 5; done
+          fi
+
+      - name: Build the site
+        run: |
+          mkdir _site
+          cp -r index.html assets data _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: covers
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
