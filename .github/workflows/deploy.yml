@@ -42,9 +42,6 @@ jobs:
         run: pip install --quiet pillow
 
       - name: Find cover art
-        env:
-          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
-          GOOGLE_BOOKS_API_KEY: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
         run: |
           python tools/covers.py --prune \
             ${{ inputs.refresh && '--refresh' || '' }} \

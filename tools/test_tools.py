@@ -34,31 +34,8 @@ class Matching(unittest.TestCase):
         self.assertGreater(covers.sim('The Dark Side of the Moon', 'Dark Side Of The Moon - 50th Anniversary'), 0.85)
         self.assertLess(covers.sim('Kid A', 'Amnesiac'), 0.5)
 
-    def test_album_pick_prefers_the_right_record(self):
-        it = {'title': 'Kid A', 'creator': 'Radiohead', 'year': 2000}
-        res = [
-            {'collectionName': 'Kid A Mnesia', 'artistName': 'Radiohead', 'releaseDate': '2021-11-05', 'artworkUrl100': 'https://x/mn/100x100bb.jpg'},
-            {'collectionName': 'Kid A', 'artistName': 'Radiohead', 'releaseDate': '2000-10-02', 'artworkUrl100': 'https://x/ka/100x100bb.jpg'},
-            {'collectionName': 'Kid A', 'artistName': 'Tribute Band', 'releaseDate': '2015-01-01', 'artworkUrl100': 'https://x/tb/100x100bb.jpg'},
-        ]
-        hit = covers.choose_album(it, res)
-        self.assertEqual(hit['url'], 'https://x/ka/1000x1000bb.jpg')
 
-    def test_album_pick_refuses_a_weak_match(self):
-        it = {'title': 'Roja', 'creator': 'A. R. Rahman', 'year': 1992}
-        res = [{'collectionName': 'Greatest Hits', 'artistName': 'Someone Else', 'releaseDate': '2004', 'artworkUrl100': 'https://x/100x100bb.jpg'}]
-        self.assertIsNone(covers.choose_album(it, res))
 
-    def test_album_pick_skips_eps_and_instrumentals(self):
-        it = {'title': 'Currents', 'creator': 'Tame Impala', 'year': 2015}
-        res = [
-            {'collectionName': 'Currents B-Sides & Remixes - EP', 'artistName': 'Tame Impala', 'releaseDate': '2017-01-01', 'artworkUrl100': 'https://x/ep/100x100bb.jpg'},
-            {'collectionName': 'Currents', 'artistName': 'Tame Impala', 'releaseDate': '2015-07-17', 'artworkUrl100': 'https://x/lp/100x100bb.jpg'},
-        ]
-        self.assertEqual(covers.choose_album(it, res)['url'], 'https://x/lp/1000x1000bb.jpg')
-        it = {'title': 'Madvillainy', 'creator': 'Madvillain', 'year': 2004}
-        only_variant = [{'collectionName': 'Madvillainy Instrumentals', 'artistName': 'Madvillain', 'releaseDate': '2004', 'artworkUrl100': 'https://x/i/100x100bb.jpg'}]
-        self.assertIsNone(covers.choose_album(it, only_variant))
 
     def test_imdb_pick_prefers_the_film_from_that_year(self):
         it = {'title': 'Blade Runner', 'year': 1982}
@@ -68,6 +45,11 @@ class Matching(unittest.TestCase):
             {'l': 'Blade Runner: Black Lotus', 'y': 2021, 'q': 'TV series', 'qid': 'tvSeries', 'i': {'imageUrl': 'https://m/bl._V1_.jpg'}},
         ]
         self.assertEqual(covers.choose_imdb(it, res)['url'], 'https://m/1982._V1_SX800.jpg')
+
+    def test_variant_releases_are_penalised(self):
+        self.assertGreater(covers.variant_penalty('Currents', 'Currents B-Sides & Remixes - EP'), 0)
+        self.assertGreater(covers.variant_penalty('The Stranger', 'The Stranger (Coles Notes)'), 0)
+        self.assertEqual(covers.variant_penalty('Live Through This', 'Live Through This'), 0)
 
     def test_musicbrainz_prefers_the_studio_album(self):
         it = {'title': 'Unknown Pleasures', 'creator': 'Joy Division', 'year': 1979}
@@ -97,23 +79,7 @@ class Matching(unittest.TestCase):
         ]
         self.assertEqual(covers.choose_jikan(it, res)['url'], 'https://cdn/gits.jpg')
 
-    def test_film_pick_uses_year(self):
-        it = {'title': 'Oldboy', 'creator': 'Park Chan-wook', 'year': 2003}
-        res = [
-            {'trackName': 'Oldboy', 'artistName': 'Spike Lee', 'releaseDate': '2013-11-27', 'artworkUrl100': 'https://x/2013/100x100bb.jpg'},
-            {'trackName': 'Oldboy', 'artistName': 'Park Chan-wook', 'releaseDate': '2003-11-21', 'artworkUrl100': 'https://x/2003/100x100bb.jpg'},
-        ]
-        self.assertEqual(covers.choose_film(it, res)['url'], 'https://x/2003/600x900bb.jpg')
 
-    def test_anilist_matches_on_native_title(self):
-        it = {'title': 'Spirited Away', 'original': '千と千尋の神隠し', 'creator': 'Studio Ghibli', 'year': 2001}
-        res = [
-            {'title': {'english': 'Spirited Away', 'romaji': 'Sen to Chihiro no Kamikakushi', 'native': '千と千尋の神隠し'},
-             'startDate': {'year': 2001}, 'coverImage': {'extraLarge': 'https://img/sa.jpg'}, 'studios': {'nodes': [{'name': 'Studio Ghibli'}]}},
-            {'title': {'english': 'Howl’s Moving Castle', 'romaji': 'Hauru no Ugoku Shiro', 'native': 'ハウルの動く城'},
-             'startDate': {'year': 2004}, 'coverImage': {'extraLarge': 'https://img/howl.jpg'}, 'studios': {'nodes': [{'name': 'Studio Ghibli'}]}},
-        ]
-        self.assertEqual(covers.choose_anilist(it, 'anime', res)['url'], 'https://img/sa.jpg')
 
     def test_volume_covers_prefer_japanese_and_skip_unowned(self):
         cov = [
