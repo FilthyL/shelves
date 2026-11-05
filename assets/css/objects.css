@@ -183,8 +183,8 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 .art-shape { position: absolute; inset: 0; }
-.art-img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; display: block; }
-.img-vol { position: absolute; right: 4cqw; bottom: 4cqw; min-width: 14cqw; padding: 1.5cqw 2.5cqw; background: #f4f1ea; color: #111; font: 900 7cqw/1 var(--f-sans); font-stretch: 70%; text-align: center; }
+.art-img { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; max-width: none; object-fit: cover; display: block; }
+.img-vol { position: absolute; z-index: 3; right: 4cqw; bottom: 4cqw; min-width: 14cqw; padding: 1.5cqw 2.5cqw; background: #f4f1ea; color: #111; font: 900 7cqw/1 var(--f-sans); font-stretch: 70%; text-align: center; }
 
 .art-orb .art-shape { background:
   radial-gradient(circle calc(var(--r) * 1cqmin) at var(--x) var(--y), var(--ac) 99.4%, transparent 100%),

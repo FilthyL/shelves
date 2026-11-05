@@ -602,7 +602,7 @@ export function wallTile(kind) {
   const r = new Raster(n, n);
   const base = { manga: E.deep, anime: E.ink, music: E.plum, books: E.pine, movies: E.wine }[kind] || t.wall;
   r.rect(0, 0, n, n, base);
-  if (kind === 'manga') { r.hl(0, 0, n, E.pine); r.vl(0, 0, n, E.pine); r.px(6, 6, E.pine); r.px(5, 6, E.pine); r.px(7, 6, E.pine); r.px(6, 5, E.pine); r.px(6, 7, E.pine); }
+  if (kind === 'manga') { r.hl(0, 0, n, E.pine); r.vl(0, 0, n, E.pine); }
   if (kind === 'anime') { r.px(0, 0, E.navy); r.px(4, 4, E.grape); }
   if (kind === 'music') { r.rect(4, 4, 2, 2, E.brown); r.rect(12, 12, 2, 2, E.brown); }
   if (kind === 'books') { for (let i = 0; i < n; i++) { r.px(i, i, E.deep); r.px(n - 1 - i, i, E.deep); } r.px(6, 0, E.green); r.px(0, 6, E.green); }
