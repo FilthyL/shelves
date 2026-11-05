@@ -93,16 +93,6 @@ Logging needs a GitHub token, pasted once and kept only in that browser:
 2. Under Repository access, choose **Only select repositories** and pick this repo.
 3. Under Permissions, set **Contents** to **Read and write**, then generate it.
 
-## Letterboxd
-
-`tools/letterboxd.py` brings the films from the Letterboxd profile named in `data/house.json` onto the Screening Room shelf: every film with your star rating as a score out of 10, and your reviews as "My take". The **Sync films from Letterboxd** workflow runs it every day and on demand, then redeploys. Synced films carry a `letterboxd` slug; later syncs add new films and refresh ratings and reviews, and never touch entries you added yourself. Run it once with **replace** ticked to make the shelf exactly your Letterboxd films.
-
-If Letterboxd will not serve the profile pages, use its own export (Letterboxd → Settings → Data → Export your data) instead:
-
-```bash
-python3 tools/letterboxd.py --export letterboxd-export.zip
-```
-
 ## Run locally
 
 ```bash
