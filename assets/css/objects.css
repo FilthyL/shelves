@@ -248,7 +248,7 @@
 .k-manga .mg-foot i { font: 600 3cqw/1 var(--f-mono); font-style: normal; text-transform: uppercase; letter-spacing: 0.08em; flex: none; }
 
 /* ============================================================ BACK COVERS + EDGES */
-.back { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 4cqw; padding: 7cqw; background: var(--bg); color: var(--ink); container-type: size; overflow: hidden; font-family: var(--f-sans); }
+.back { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px; padding: 7%; background: var(--bg); color: var(--ink); container-type: size; overflow: hidden; font-family: var(--f-sans); }
 .back::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255, 255, 255, 0.12), transparent 40%); pointer-events: none; }
 .bk-head { display: grid; gap: 1cqw; }
 .bk-head b { font: italic 500 8cqw/1 var(--f-display); }
