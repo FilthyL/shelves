@@ -69,6 +69,34 @@ class Matching(unittest.TestCase):
         ]
         self.assertEqual(covers.choose_imdb(it, res)['url'], 'https://m/1982._V1_SX800.jpg')
 
+    def test_musicbrainz_prefers_the_studio_album(self):
+        it = {'title': 'Unknown Pleasures', 'creator': 'Joy Division', 'year': 1979}
+        res = [
+            {'id': 'live', 'title': 'Unknown Pleasures', 'primary-type': 'Album', 'secondary-types': ['Live'],
+             'first-release-date': '2007', 'artist-credit': [{'name': 'Joy Division'}]},
+            {'id': 'lp', 'title': 'Unknown Pleasures', 'primary-type': 'Album', 'first-release-date': '1979-06-15',
+             'artist-credit': [{'name': 'Joy Division'}]},
+            {'id': 'single', 'title': 'Unknown Pleasures', 'primary-type': 'Single', 'first-release-date': '1979',
+             'artist-credit': [{'name': 'Joy Division'}]},
+        ]
+        self.assertEqual(covers.choose_musicbrainz(it, res)['url'], 'https://coverartarchive.org/release-group/lp/front-500')
+
+    def test_musicbrainz_keeps_soundtracks(self):
+        it = {'title': 'Roja', 'creator': 'A. R. Rahman', 'year': 1992}
+        res = [{'id': 'ost', 'title': 'Roja', 'primary-type': 'Album', 'secondary-types': ['Soundtrack'],
+                'first-release-date': '1992', 'artist-credit': [{'name': 'A.R. Rahman'}]}]
+        self.assertEqual(covers.choose_musicbrainz(it, res)['url'], 'https://coverartarchive.org/release-group/ost/front-500')
+
+    def test_myanimelist_matches_native_title_and_year(self):
+        it = {'title': 'Ghost in the Shell', 'original': '攻殻機動隊', 'year': 1995}
+        res = [
+            {'title': 'Koukaku Kidoutai: Stand Alone Complex', 'title_english': 'Ghost in the Shell: Stand Alone Complex',
+             'title_japanese': '攻殻機動隊 STAND ALONE COMPLEX', 'year': 2002, 'images': {'jpg': {'large_image_url': 'https://cdn/sac.jpg'}}},
+            {'title': 'Koukaku Kidoutai', 'title_english': 'Ghost in the Shell', 'title_japanese': '攻殻機動隊',
+             'aired': {'prop': {'from': {'year': 1995}}}, 'images': {'jpg': {'large_image_url': 'https://cdn/gits.jpg'}}},
+        ]
+        self.assertEqual(covers.choose_jikan(it, res)['url'], 'https://cdn/gits.jpg')
+
     def test_film_pick_uses_year(self):
         it = {'title': 'Oldboy', 'creator': 'Park Chan-wook', 'year': 2003}
         res = [

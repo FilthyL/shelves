@@ -6,12 +6,13 @@ published, and the site loads it from there. Each image is fetched once into
 memory to check the link works and, when Pillow is installed, to take the spine
 colours from it.
 
-Sources, none of which need a key:
-  music   iTunes Search (albums), then Deezer
-  movies  TMDB when TMDB_API_KEY is set, then IMDb title suggestions, then iTunes Search
+Each shelf asks the free community database for its medium first, then falls
+back to other free sources. None of them needs a key:
+  anime   MyAnimeList (through Jikan), then AniList
+  manga   MangaDex, one cover per owned volume, then MyAnimeList, then AniList
+  music   MusicBrainz with the Cover Art Archive, then iTunes Search, then Deezer
   books   Open Library (by isbn when the item has one), then Google Books
-  anime   AniList, then Jikan (MyAnimeList)
-  manga   MangaDex, one cover per owned volume, then AniList for the series
+  movies  TMDB when TMDB_API_KEY is set, then IMDb title suggestions, then iTunes Search
 
 Usage
   python3 tools/covers.py                  fetch whatever is missing
@@ -52,6 +53,7 @@ PACE = {
     'itunes.apple.com': 3.2, 'api.deezer.com': 0.25, 'api.themoviedb.org': 0.1,
     'openlibrary.org': 1.0, 'www.googleapis.com': 1.0, 'graphql.anilist.co': 2.2,
     'api.jikan.moe': 1.2, 'api.mangadex.org': 0.3, 'v3.sg.media-imdb.com': 0.5,
+    'musicbrainz.org': 1.1, 'coverartarchive.org': 0.3,
 }
 LOG = print
 _last = {}
@@ -162,6 +164,42 @@ def pick(cands, score):
 
 
 # ------------------------------------------------------------------ sources
+def _lucene(s):
+    return str(s or '').replace('\\', '\\\\').replace('"', '\\"')
+
+
+def music_musicbrainz(it):
+    """MusicBrainz finds the album; the Cover Art Archive holds its front cover."""
+    query = f'releasegroup:"{_lucene(it["title"])}"'
+    if it.get('creator'):
+        query += f' AND artist:"{_lucene(it["creator"])}"'
+    q = urllib.parse.urlencode({'query': query, 'fmt': 'json', 'limit': 15})
+    res = get_json(f'https://musicbrainz.org/ws/2/release-group/?{q}', headers={'Accept': 'application/json'}).get('release-groups', [])
+    return choose_musicbrainz(it, res)
+
+
+ODD_TYPES = {'Live', 'Remix', 'Compilation', 'DJ-mix', 'Demo', 'Interview', 'Mixtape/Street'}
+
+
+def choose_musicbrainz(it, res):
+    def score(g):
+        artist = ' '.join((c.get('name') or '') + (c.get('joinphrase') or '') for c in g.get('artist-credit') or [])
+        s = 0.6 * sim(it['title'], g.get('title')) + 0.3 * sim(it.get('creator'), artist) + 0.1 * year_score(it.get('year'), g.get('first-release-date'))
+        s -= variant_penalty(it['title'], g.get('title'))
+        if g.get('primary-type') not in (None, 'Album') and g.get('primary-type', '').lower() not in str(it['title']).lower():
+            s -= 0.2
+        if ODD_TYPES & set(g.get('secondary-types') or []):
+            s -= 0.2
+        return s
+    best, s = pick(res, score)
+    if best and s >= THRESHOLD:
+        artist = ''.join((c.get('name') or '') + (c.get('joinphrase') or '') for c in best.get('artist-credit') or [])
+        return {'from': 'MusicBrainz', 'url': f"https://coverartarchive.org/release-group/{best['id']}/front-500",
+                'match': f"{best.get('title')} by {artist}", 'score': s}
+    short('MusicBrainz', res, s)
+    return None
+
+
 def music_itunes(it):
     q = urllib.parse.urlencode({'term': f"{it.get('creator', '')} {it['title']}", 'entity': 'album', 'media': 'music', 'limit': 20})
     res = get_json(f'https://itunes.apple.com/search?{q}').get('results', [])
@@ -321,14 +359,22 @@ def jikan(it, kind):
     q = urllib.parse.urlencode({'q': it['title'], 'limit': 10})
     res = get_json(f'https://api.jikan.moe/v4/{"manga" if kind == "manga" else "anime"}?{q}').get('data', [])
 
+    return choose_jikan(it, res)
+
+
+def choose_jikan(it, res):
     def score(m):
-        s = 0.7 * best_sim(it['title'], [m.get('title'), m.get('title_english')] + [t.get('title') for t in m.get('titles') or []])
+        names = [m.get('title'), m.get('title_english')] + [t.get('title') for t in m.get('titles') or []]
+        s = 0.7 * best_sim(it['title'], names)
+        if it.get('original') and it['original'].strip() in (m.get('title_japanese') or '', *names):
+            s = max(s, 0.7)
         y = m.get('year') or (((m.get('aired') or m.get('published') or {}).get('prop') or {}).get('from') or {}).get('year')
-        return s + 0.3 * year_score(it.get('year'), y)
+        return s + 0.3 * year_score(it.get('year'), y) - variant_penalty(it['title'], m.get('title_english') or m.get('title'))
     best, s = pick(res, score)
     url = ((best or {}).get('images') or {}).get('jpg', {}).get('large_image_url')
     if best and s >= THRESHOLD and url:
         return {'from': 'MyAnimeList', 'url': url, 'match': best.get('title_english') or best.get('title'), 'score': s}
+    short('MyAnimeList', res, s)
     return None
 
 
@@ -389,11 +435,11 @@ def choose_volume_covers(covers, owned, prefer=None):
 
 
 SOURCES = {
-    'music': [music_itunes, music_deezer],
-    'movies': [movie_tmdb, movie_imdb, movie_itunes],
+    'anime': [lambda it: jikan(it, 'anime'), lambda it: anilist(it, 'anime')],
+    'manga': [mangadex, lambda it: jikan(it, 'manga'), lambda it: anilist(it, 'manga')],
+    'music': [music_musicbrainz, music_itunes, music_deezer],
     'books': [book_isbn, book_openlibrary, book_google],
-    'anime': [lambda it: anilist(it, 'anime'), lambda it: jikan(it, 'anime')],
-    'manga': [mangadex, lambda it: anilist(it, 'manga'), lambda it: jikan(it, 'manga')],
+    'movies': [movie_tmdb, movie_imdb, movie_itunes],
 }
 
 
@@ -444,15 +490,22 @@ def palette(image):
 
 # ------------------------------------------------------------------ main
 def resolve(kind, it, log):
+    """The first source whose match also serves a real image: (hit, image bytes)."""
     for src in SOURCES.get(kind, []):
         try:
             hit = src(it)
         except Exception as e:  # one source failing should not stop the others
             log(f'      {getattr(src, "__name__", "source")} failed: {e}')
             continue
-        if hit:
-            return hit
-    return None
+        if not hit:
+            continue
+        if 'vols' in hit:
+            return hit, None
+        try:
+            return hit, check(hit['url'])
+        except Exception as e:
+            log(f"      {hit['from']} matched {hit['match']} but its cover link failed: {e}")
+    return None, None
 
 
 def main(argv=None):
@@ -492,7 +545,7 @@ def main(argv=None):
                 continue
             it['_vols'] = parse_owned(it.get('owned'), it.get('total')) if kind == 'manga' else []
             log(f"  {key}: {it['title']}")
-            hit = resolve(kind, it, log)
+            hit, image = resolve(kind, it, log)
             if not hit:
                 log('      no confident match')
                 covers[key] = {'miss': True, 'tried': today}
@@ -508,14 +561,21 @@ def main(argv=None):
                 if 'vols' in hit:
                     entry['vols'] = {}
                     for v, url in hit['vols'].items():
-                        entry['vols'][v] = {'src': url, **({'pal': p} if (p := palette(check(url))) else {})}
+                        try:
+                            img = check(url)
+                        except Exception as e:
+                            log(f'      volume {v} link failed: {e}')
+                            continue
+                        entry['vols'][v] = {'src': url, **({'pal': p} if (p := palette(img)) else {})}
+                    if not entry['vols']:
+                        raise ValueError('no volume cover links worked')
                     first = entry['vols'][min(entry['vols'], key=int)]
                     entry['src'] = first['src']
                     if first.get('pal'):
                         entry['pal'] = first['pal']
                 else:
                     entry['src'] = hit['url']
-                    if (p := palette(check(hit['url']))):
+                    if (p := palette(image)):
                         entry['pal'] = p
             except Exception as e:
                 log(f'      cover link failed: {e}')
