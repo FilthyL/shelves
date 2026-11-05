@@ -48,7 +48,7 @@ python3 tools/validate.py
 
 ## Covers
 
-`tools/covers.py` finds each item's published cover and records its address in `data/covers.json`, along with spine colours taken from it. The images themselves are never stored in the repo; the site loads each one from where it is published. It uses iTunes and Deezer for albums, iTunes for films (TMDB too, if a `TMDB_API_KEY` secret is set), Open Library and Google Books for books, AniList and MyAnimeList for anime, and MangaDex for manga, with a separate cover for every owned volume. None of these needs a key.
+`tools/covers.py` finds each item's published cover and records its address in `data/covers.json`, along with spine colours taken from it. The images themselves are never stored in the repo; the site loads each one from where it is published. Each shelf asks the free community database for its medium first: MyAnimeList for anime, MangaDex for manga (a separate cover for every owned volume, then MyAnimeList for the series), MusicBrainz and the Cover Art Archive for records, Open Library for books, and IMDb's public title feed for films. AniList, iTunes, Deezer and Google Books fill any gaps, and TMDB joins in for films if you add a `TMDB_API_KEY` secret. None of the others needs a key.
 
 The deploy workflow runs it on every push and commits the updated list back to the branch, so adding an item to the JSON is enough. To run it yourself:
 
