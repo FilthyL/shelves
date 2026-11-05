@@ -1,1 +1,1813 @@
-{}
+{
+  "anime/akira": {
+    "from": "AniList",
+    "match": "Akira",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/akira.jpg",
+    "pal": [
+      "#a5cdde",
+      "#17181b",
+      "#c92229",
+      "#f8f9f3"
+    ]
+  },
+  "anime/cowboy-bebop": {
+    "from": "AniList",
+    "match": "Cowboy Bebop",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/cowboy-bebop.png",
+    "pal": [
+      "#1a0e13",
+      "#fc785b",
+      "#fc785b",
+      "#a84735"
+    ]
+  },
+  "anime/death-note": {
+    "from": "AniList",
+    "match": "Death Note",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/death-note.jpg",
+    "pal": [
+      "#040507",
+      "#677c85",
+      "#2c4858",
+      "#66777b"
+    ]
+  },
+  "anime/frieren-beyond-journey-s-end": {
+    "from": "AniList",
+    "match": "Frieren: Beyond Journey’s End",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/frieren-beyond-journey-s-end.jpg",
+    "pal": [
+      "#4a7857",
+      "#d7fe99",
+      "#98e3fe",
+      "#b7f38b"
+    ]
+  },
+  "anime/fullmetal-alchemist-brotherhood": {
+    "from": "AniList",
+    "match": "Fullmetal Alchemist: Brotherhood",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/fullmetal-alchemist-brotherhood.jpg",
+    "pal": [
+      "#16141a",
+      "#fbf8d8",
+      "#a57a57",
+      "#694845"
+    ]
+  },
+  "anime/ghost-in-the-shell": {
+    "from": "AniList",
+    "match": "Ghost in the Shell",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/ghost-in-the-shell.png",
+    "pal": [
+      "#fdfdfd",
+      "#040404",
+      "#987659",
+      "#a9a8a9"
+    ]
+  },
+  "anime/mob-psycho-100": {
+    "from": "AniList",
+    "match": "Mob Psycho 100",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/mob-psycho-100.jpg",
+    "pal": [
+      "#fefefe",
+      "#252828",
+      "#05091c",
+      "#475746"
+    ]
+  },
+  "anime/monster": {
+    "from": "AniList",
+    "match": "Monster",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/monster.jpg",
+    "pal": [
+      "#fefeff",
+      "#060607",
+      "#353c67",
+      "#060607"
+    ]
+  },
+  "anime/neon-genesis-evangelion": {
+    "from": "AniList",
+    "match": "Neon Genesis Evangelion",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/neon-genesis-evangelion.jpg",
+    "pal": [
+      "#1b1514",
+      "#fafafb",
+      "#e63a36",
+      "#fafafb"
+    ]
+  },
+  "anime/perfect-blue": {
+    "from": "AniList",
+    "match": "Perfect Blue",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/perfect-blue.jpg",
+    "pal": [
+      "#020204",
+      "#f4f0e6",
+      "#1c3564",
+      "#555c85"
+    ]
+  },
+  "anime/samurai-champloo": {
+    "from": "AniList",
+    "match": "Samurai Champloo",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/samurai-champloo.png",
+    "pal": [
+      "#fdfdfd",
+      "#851e19",
+      "#851e19",
+      "#1a1516"
+    ]
+  },
+  "anime/spirited-away": {
+    "from": "AniList",
+    "match": "Spirited Away",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/spirited-away.jpg",
+    "pal": [
+      "#554c47",
+      "#e2b897",
+      "#d8746b",
+      "#181815"
+    ]
+  },
+  "anime/steins-gate": {
+    "from": "AniList",
+    "match": "Steins;Gate",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/steins-gate.jpg",
+    "pal": [
+      "#464878",
+      "#e6e6e9",
+      "#36291a",
+      "#888788"
+    ]
+  },
+  "anime/your-name": {
+    "from": "AniList",
+    "match": "Your Name.",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/anime/your-name.png",
+    "pal": [
+      "#0598d9",
+      "#012a28",
+      "#01469c",
+      "#c9d9e7"
+    ]
+  },
+  "books/blood-meridian": {
+    "from": "Open Library",
+    "match": "Blood Meridian by Cormac McCarthy",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/blood-meridian.jpg",
+    "pal": [
+      "#020201",
+      "#fafaf2",
+      "#647b46",
+      "#fafaf2"
+    ]
+  },
+  "books/dune": {
+    "from": "Open Library",
+    "match": "Dune by Frank Herbert",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/dune.jpg",
+    "pal": [
+      "#0d0a0b",
+      "#a9a8a5",
+      "#584913",
+      "#a9a8a5"
+    ]
+  },
+  "books/godel-escher-bach": {
+    "from": "Open Library",
+    "match": "Gödel, Escher, Bach by Douglas R. Hofstadter",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/godel-escher-bach.jpg",
+    "pal": [
+      "#070908",
+      "#b56a3b",
+      "#7a4327",
+      "#b56a3b"
+    ]
+  },
+  "books/infinite-jest": {
+    "from": "Open Library",
+    "match": "Infinite Jest by David Foster Wallace",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/infinite-jest.jpg",
+    "pal": [
+      "#020226",
+      "#739705",
+      "#739705",
+      "#25548b"
+    ]
+  },
+  "books/kafka-on-the-shore": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "books/meditations": {
+    "from": "Open Library",
+    "match": "Meditations by Marcus Aurelius",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/meditations.jpg",
+    "pal": [
+      "#fefee6",
+      "#090808",
+      "#686728",
+      "#090808"
+    ]
+  },
+  "books/neuromancer": {
+    "from": "Open Library",
+    "match": "Neuromancer by William Gibson",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/neuromancer.jpg",
+    "pal": [
+      "#1979a5",
+      "#f4f0e6",
+      "#740402",
+      "#6aa7c5"
+    ]
+  },
+  "books/nineteen-eighty-four": {
+    "from": "Open Library",
+    "match": "Nineteen Eighty-Four by George Orwell",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/nineteen-eighty-four.jpg",
+    "pal": [
+      "#a49a8b",
+      "#f4f0e6",
+      "#6c6358",
+      "#e0deda"
+    ]
+  },
+  "books/one-hundred-years-of-solitude": {
+    "from": "Open Library",
+    "match": "One Hundred Years of Solitude by Gabriel Garcia Marquez",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/one-hundred-years-of-solitude.jpg",
+    "pal": [
+      "#171717",
+      "#a68b78",
+      "#861609",
+      "#a68b78"
+    ]
+  },
+  "books/sapiens": {
+    "from": "Open Library",
+    "match": "Sapiens by Yuval Noah Harari",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/sapiens.jpg",
+    "pal": [
+      "#fefaf9",
+      "#161412",
+      "#e68569",
+      "#dcb9b6"
+    ]
+  },
+  "books/siddhartha": {
+    "from": "Open Library",
+    "match": "Siddhartha by Hermann Hesse",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/siddhartha.jpg",
+    "pal": [
+      "#020202",
+      "#7a7b75",
+      "#5a5b56",
+      "#8a8a84"
+    ]
+  },
+  "books/the-brothers-karamazov": {
+    "from": "Open Library",
+    "match": "The Brothers Karamazov by Fiódor Dostoievski",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/the-brothers-karamazov.jpg",
+    "pal": [
+      "#251916",
+      "#a98876",
+      "#696621",
+      "#a98876"
+    ]
+  },
+  "books/the-god-of-small-things": {
+    "from": "Open Library",
+    "match": "The God of Small Things by Arundhati Roy",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/the-god-of-small-things.jpg",
+    "pal": [
+      "#2b2725",
+      "#f4f0e6",
+      "#666949",
+      "#a34a5a"
+    ]
+  },
+  "books/the-name-of-the-wind": {
+    "from": "Open Library",
+    "match": "The Name of the Wind by Patrick Rothfuss, Marc Simonetti",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/the-name-of-the-wind.jpg",
+    "pal": [
+      "#272525",
+      "#d68769",
+      "#85483c",
+      "#ba745a"
+    ]
+  },
+  "books/the-stranger": {
+    "from": "Open Library",
+    "match": "The Stranger, The Plague (Coles Notes) by Albert Camus",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/books/the-stranger.jpg",
+    "pal": [
+      "#db0263",
+      "#f4f0e6",
+      "#b79608",
+      "#0d0c0e"
+    ]
+  },
+  "manga/akira": {
+    "from": "MangaDex",
+    "match": "Akira",
+    "fetched": "2026-11-05",
+    "vols": {
+      "1": {
+        "src": "assets/covers/manga/akira/01.jpg",
+        "pal": [
+          "#141818",
+          "#fefefe",
+          "#d52633",
+          "#676869"
+        ]
+      },
+      "2": {
+        "src": "assets/covers/manga/akira/02.jpg",
+        "pal": [
+          "#17529c",
+          "#fdfdfd",
+          "#62b72c",
+          "#151616"
+        ]
+      },
+      "3": {
+        "src": "assets/covers/manga/akira/03.jpg",
+        "pal": [
+          "#0d1614",
+          "#fcfdfd",
+          "#0998b7",
+          "#fcfdfd"
+        ]
+      },
+      "4": {
+        "src": "assets/covers/manga/akira/04.jpg",
+        "pal": [
+          "#010202",
+          "#fbf6d8",
+          "#d70402",
+          "#fbf6d8"
+        ]
+      },
+      "5": {
+        "src": "assets/covers/manga/akira/05.jpg",
+        "pal": [
+          "#171918",
+          "#fafbfa",
+          "#687945",
+          "#fafbfa"
+        ]
+      },
+      "6": {
+        "src": "assets/covers/manga/akira/06.jpg",
+        "pal": [
+          "#070806",
+          "#f1ed77",
+          "#e63734",
+          "#f1ed77"
+        ]
+      }
+    },
+    "src": "assets/covers/manga/akira/01.jpg",
+    "pal": [
+      "#141818",
+      "#fefefe",
+      "#d52633",
+      "#676869"
+    ]
+  },
+  "manga/berserk": {
+    "from": "MangaDex",
+    "match": "Berserk",
+    "fetched": "2026-11-05",
+    "vols": {
+      "1": {
+        "src": "assets/covers/manga/berserk/01.jpg",
+        "pal": [
+          "#fcf9f7",
+          "#66585a",
+          "#a64a59",
+          "#56474a"
+        ]
+      },
+      "2": {
+        "src": "assets/covers/manga/berserk/02.jpg",
+        "pal": [
+          "#fefcfa",
+          "#593837",
+          "#593837",
+          "#985948"
+        ]
+      },
+      "3": {
+        "src": "assets/covers/manga/berserk/03.jpg",
+        "pal": [
+          "#393636",
+          "#fcfaf9",
+          "#b7a648",
+          "#fcfaf9"
+        ]
+      },
+      "4": {
+        "src": "assets/covers/manga/berserk/04.jpg",
+        "pal": [
+          "#fdfbf6",
+          "#494658",
+          "#6688b6",
+          "#494658"
+        ]
+      },
+      "5": {
+        "src": "assets/covers/manga/berserk/05.jpg",
+        "pal": [
+          "#453838",
+          "#f4ebe7",
+          "#c7441d",
+          "#676889"
+        ]
+      },
+      "6": {
+        "src": "assets/covers/manga/berserk/06.jpg",
+        "pal": [
+          "#fdfaf8",
+          "#26262b",
+          "#764629",
+          "#26262b"
+        ]
+      },
+      "7": {
+        "src": "assets/covers/manga/berserk/07.jpg",
+        "pal": [
+          "#fcf9f6",
+          "#484857",
+          "#2d3c58",
+          "#767885"
+        ]
+      },
+      "8": {
+        "src": "assets/covers/manga/berserk/08.jpg",
+        "pal": [
+          "#fdf9f6",
+          "#893928",
+          "#973926",
+          "#a8845a"
+        ]
+      },
+      "9": {
+        "src": "assets/covers/manga/berserk/09.jpg",
+        "pal": [
+          "#29262b",
+          "#fefcf8",
+          "#c9882b",
+          "#fefcf8"
+        ]
+      },
+      "10": {
+        "src": "assets/covers/manga/berserk/10.jpg",
+        "pal": [
+          "#39272b",
+          "#fefcf9",
+          "#99492a",
+          "#fefcf9"
+        ]
+      },
+      "11": {
+        "src": "assets/covers/manga/berserk/11.jpg",
+        "pal": [
+          "#272547",
+          "#fffdfb",
+          "#b5ba3c",
+          "#fffdfb"
+        ]
+      },
+      "12": {
+        "src": "assets/covers/manga/berserk/12.jpg",
+        "pal": [
+          "#37232c",
+          "#fefdf7",
+          "#d59936",
+          "#fefdf7"
+        ]
+      },
+      "13": {
+        "src": "assets/covers/manga/berserk/13.jpg",
+        "pal": [
+          "#48343c",
+          "#95aad2",
+          "#95aad2",
+          "#847799"
+        ]
+      },
+      "14": {
+        "src": "assets/covers/manga/berserk/14.jpg",
+        "pal": [
+          "#2a262c",
+          "#fffbf7",
+          "#795959",
+          "#fffbf7"
+        ]
+      }
+    },
+    "src": "assets/covers/manga/berserk/01.jpg",
+    "pal": [
+      "#fcf9f7",
+      "#66585a",
+      "#a64a59",
+      "#56474a"
+    ]
+  },
+  "manga/blame": {
+    "from": "AniList",
+    "match": "BLAME!",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/manga/blame.jpg",
+    "pal": [
+      "#474949",
+      "#bbd4d8",
+      "#b88557",
+      "#85b4ac"
+    ]
+  },
+  "manga/chainsaw-man": {
+    "from": "MangaDex",
+    "match": "Chainsaw Man",
+    "fetched": "2026-11-05",
+    "vols": {
+      "1": {
+        "src": "assets/covers/manga/chainsaw-man/01.jpg",
+        "pal": [
+          "#593738",
+          "#fde602",
+          "#fde602",
+          "#ea5823"
+        ]
+      },
+      "2": {
+        "src": "assets/covers/manga/chainsaw-man/02.jpg",
+        "pal": [
+          "#99d4bb",
+          "#682846",
+          "#fc4b89",
+          "#b78986"
+        ]
+      },
+      "3": {
+        "src": "assets/covers/manga/chainsaw-man/03.jpg",
+        "pal": [
+          "#092838",
+          "#ebd9d5",
+          "#d9d804",
+          "#ebd9d5"
+        ]
+      },
+      "4": {
+        "src": "assets/covers/manga/chainsaw-man/04.jpg",
+        "pal": [
+          "#39a8c8",
+          "#152746",
+          "#c71637",
+          "#c8d7e6"
+        ]
+      },
+      "5": {
+        "src": "assets/covers/manga/chainsaw-man/05.jpg",
+        "pal": [
+          "#fbf9b4",
+          "#071538",
+          "#ea2858",
+          "#071538"
+        ]
+      },
+      "6": {
+        "src": "assets/covers/manga/chainsaw-man/06.jpg",
+        "pal": [
+          "#d6b8b9",
+          "#010306",
+          "#010306",
+          "#e90a85"
+        ]
+      },
+      "7": {
+        "src": "assets/covers/manga/chainsaw-man/07.jpg",
+        "pal": [
+          "#048a88",
+          "#000000",
+          "#000000",
+          "#fbfdfb"
+        ]
+      },
+      "8": {
+        "src": "assets/covers/manga/chainsaw-man/08.jpg",
+        "pal": [
+          "#037a59",
+          "#f4f0e6",
+          "#f7dc06",
+          "#674856"
+        ]
+      },
+      "9": {
+        "src": "assets/covers/manga/chainsaw-man/09.jpg",
+        "pal": [
+          "#c5d6d8",
+          "#17675a",
+          "#007a65",
+          "#69a6a7"
+        ]
+      },
+      "10": {
+        "src": "assets/covers/manga/chainsaw-man/10.jpg",
+        "pal": [
+          "#ea1933",
+          "#f4f0e6",
+          "#c8c70a",
+          "#c3a7ab"
+        ]
+      },
+      "11": {
+        "src": "assets/covers/manga/chainsaw-man/11.jpg",
+        "pal": [
+          "#a8676b",
+          "#f4f0e6",
+          "#f4f0e6",
+          "#f7b688"
+        ]
+      }
+    },
+    "src": "assets/covers/manga/chainsaw-man/01.jpg",
+    "pal": [
+      "#593738",
+      "#fde602",
+      "#fde602",
+      "#ea5823"
+    ]
+  },
+  "manga/death-note": {
+    "from": "MangaDex",
+    "match": "Death Note",
+    "fetched": "2026-11-05",
+    "vols": {
+      "1": {
+        "src": "assets/covers/manga/death-note/01.jpg",
+        "pal": [
+          "#242429",
+          "#a698aa",
+          "#79394c",
+          "#a698aa"
+        ]
+      },
+      "2": {
+        "src": "assets/covers/manga/death-note/02.jpg",
+        "pal": [
+          "#e7e4ea",
+          "#a33746",
+          "#a33746",
+          "#e7b665"
+        ]
+      },
+      "3": {
+        "src": "assets/covers/manga/death-note/03.jpg",
+        "pal": [
+          "#34597b",
+          "#bccfda",
+          "#78a6c2",
+          "#282c2a"
+        ]
+      },
+      "4": {
+        "src": "assets/covers/manga/death-note/04.jpg",
+        "pal": [
+          "#477995",
+          "#f4f0e6",
+          "#0c0c14",
+          "#c6c8c7"
+        ]
+      },
+      "5": {
+        "src": "assets/covers/manga/death-note/05.jpg",
+        "pal": [
+          "#c9b728",
+          "#3b3847",
+          "#584a11",
+          "#fdfdfc"
+        ]
+      },
+      "6": {
+        "src": "assets/covers/manga/death-note/06.jpg",
+        "pal": [
+          "#b4a5ca",
+          "#15161c",
+          "#77375a",
+          "#fcfbf9"
+        ]
+      },
+      "7": {
+        "src": "assets/covers/manga/death-note/07.jpg",
+        "pal": [
+          "#dac7b7",
+          "#554c53",
+          "#554c53",
+          "#fefdf9"
+        ]
+      },
+      "8": {
+        "src": "assets/covers/manga/death-note/08.jpg",
+        "pal": [
+          "#583a48",
+          "#fbd9c8",
+          "#b75b65",
+          "#bb9799"
+        ]
+      },
+      "9": {
+        "src": "assets/covers/manga/death-note/09.jpg",
+        "pal": [
+          "#538cb7",
+          "#f4f0e6",
+          "#2b3946",
+          "#a6cae9"
+        ]
+      },
+      "10": {
+        "src": "assets/covers/manga/death-note/10.jpg",
+        "pal": [
+          "#d6a858",
+          "#473b33",
+          "#8a6847",
+          "#fefefe"
+        ]
+      },
+      "11": {
+        "src": "assets/covers/manga/death-note/11.jpg",
+        "pal": [
+          "#383628",
+          "#fcf8d5",
+          "#ba7555",
+          "#fcf8d5"
+        ]
+      },
+      "12": {
+        "src": "assets/covers/manga/death-note/12.jpg",
+        "pal": [
+          "#f9f6f4",
+          "#796757",
+          "#c5ac96",
+          "#947a65"
+        ]
+      }
+    },
+    "src": "assets/covers/manga/death-note/01.jpg",
+    "pal": [
+      "#242429",
+      "#a698aa",
+      "#79394c",
+      "#a698aa"
+    ]
+  },
+  "manga/dorohedoro": {
+    "from": "MangaDex",
+    "match": "Dorohedoro",
+    "fetched": "2026-11-05",
+    "vols": {
+      "1": {
+        "src": "assets/covers/manga/dorohedoro/01.jpg",
+        "pal": [
+          "#030601",
+          "#b6772c",
+          "#86150b",
+          "#b6772c"
+        ]
+      },
+      "2": {
+        "src": "assets/covers/manga/dorohedoro/02.jpg",
+        "pal": [
+          "#050504",
+          "#b85a77",
+          "#bc3629",
+          "#b85a77"
+        ]
+      },
+      "3": {
+        "src": "assets/covers/manga/dorohedoro/03.jpg",
+        "pal": [
+          "#27352a",
+          "#9aa695",
+          "#9aa695",
+          "#667975"
+        ]
+      },
+      "4": {
+        "src": "assets/covers/manga/dorohedoro/04.jpg",
+        "pal": [
+          "#263718",
+          "#7c9fd5",
+          "#7c9fd5",
+          "#775835"
+        ]
+      },
+      "5": {
+        "src": "assets/covers/manga/dorohedoro/05.jpg",
+        "pal": [
+          "#0a1618",
+          "#52a418",
+          "#52a418",
+          "#344868"
+        ]
+      },
+      "6": {
+        "src": "assets/covers/manga/dorohedoro/06.jpg",
+        "pal": [
+          "#562816",
+          "#b2bcb4",
+          "#ac4933",
+          "#b2bcb4"
+        ]
+      },
+      "7": {
+        "src": "assets/covers/manga/dorohedoro/07.jpg",
+        "pal": [
+          "#585635",
+          "#fbe929",
+          "#fbe929",
+          "#020506"
+        ]
+      },
+      "8": {
+        "src": "assets/covers/manga/dorohedoro/08.jpg",
+        "pal": [
+          "#686655",
+          "#f4f0e6",
+          "#1badeb",
+          "#a9aa95"
+        ]
+      }
+    },
+    "src": "assets/covers/manga/dorohedoro/01.jpg",
+    "pal": [
+      "#030601",
+      "#b6772c",
+      "#86150b",
+      "#b6772c"
+    ]
+  },
+  "manga/fullmetal-alchemist": {
+    "from": "MangaDex",
+    "match": "Fullmetal Alchemist",
+    "fetched": "2026-11-05",
+    "vols": {
+      "1": {
+        "src": "assets/covers/manga/fullmetal-alchemist/01.jpg",
+        "pal": [
+          "#060808",
+          "#fbfcfb",
+          "#a5342a",
+          "#474646"
+        ]
+      },
+      "2": {
+        "src": "assets/covers/manga/fullmetal-alchemist/02.jpg",
+        "pal": [
+          "#050606",
+          "#368779",
+          "#297868",
+          "#749c96"
+        ]
+      },
+      "3": {
+        "src": "assets/covers/manga/fullmetal-alchemist/03.jpg",
+        "pal": [
+          "#050707",
+          "#759a58",
+          "#1a4795",
+          "#759a58"
+        ]
+      },
+      "4": {
+        "src": "assets/covers/manga/fullmetal-alchemist/04.jpg",
+        "pal": [
+          "#060607",
+          "#e6b748",
+          "#e6b748",
+          "#685436"
+        ]
+      },
+      "5": {
+        "src": "assets/covers/manga/fullmetal-alchemist/05.jpg",
+        "pal": [
+          "#040504",
+          "#baa8d6",
+          "#785697",
+          "#baa8d6"
+        ]
+      },
+      "6": {
+        "src": "assets/covers/manga/fullmetal-alchemist/06.jpg",
+        "pal": [
+          "#151914",
+          "#579a47",
+          "#579a47",
+          "#979678"
+        ]
+      },
+      "7": {
+        "src": "assets/covers/manga/fullmetal-alchemist/07.jpg",
+        "pal": [
+          "#1a1c1a",
+          "#b88c83",
+          "#d63835",
+          "#883839"
+        ]
+      },
+      "8": {
+        "src": "assets/covers/manga/fullmetal-alchemist/08.jpg",
+        "pal": [
+          "#080b09",
+          "#7895ba",
+          "#459be7",
+          "#647aa6"
+        ]
+      },
+      "9": {
+        "src": "assets/covers/manga/fullmetal-alchemist/09.jpg",
+        "pal": [
+          "#191b18",
+          "#fcd578",
+          "#f6b849",
+          "#595548"
+        ]
+      },
+      "10": {
+        "src": "assets/covers/manga/fullmetal-alchemist/10.jpg",
+        "pal": [
+          "#050707",
+          "#b79a66",
+          "#a85828",
+          "#b79a66"
+        ]
+      },
+      "11": {
+        "src": "assets/covers/manga/fullmetal-alchemist/11.jpg",
+        "pal": [
+          "#050706",
+          "#888a88",
+          "#484b9a",
+          "#363a46"
+        ]
+      },
+      "12": {
+        "src": "assets/covers/manga/fullmetal-alchemist/12.jpg",
+        "pal": [
+          "#070808",
+          "#98b479",
+          "#2c5234",
+          "#667a5a"
+        ]
+      },
+      "13": {
+        "src": "assets/covers/manga/fullmetal-alchemist/13.jpg",
+        "pal": [
+          "#060607",
+          "#99838b",
+          "#652a35",
+          "#99838b"
+        ]
+      },
+      "14": {
+        "src": "assets/covers/manga/fullmetal-alchemist/14.jpg",
+        "pal": [
+          "#070b0a",
+          "#95cae7",
+          "#364859",
+          "#95cae7"
+        ]
+      },
+      "15": {
+        "src": "assets/covers/manga/fullmetal-alchemist/15.jpg",
+        "pal": [
+          "#131b17",
+          "#f6d9a6",
+          "#ca6718",
+          "#f6d9a6"
+        ]
+      },
+      "16": {
+        "src": "assets/covers/manga/fullmetal-alchemist/16.jpg",
+        "pal": [
+          "#050909",
+          "#6888a7",
+          "#476869",
+          "#6888a7"
+        ]
+      },
+      "17": {
+        "src": "assets/covers/manga/fullmetal-alchemist/17.jpg",
+        "pal": [
+          "#050607",
+          "#c6c8ca",
+          "#28628d",
+          "#c6c8ca"
+        ]
+      },
+      "18": {
+        "src": "assets/covers/manga/fullmetal-alchemist/18.jpg",
+        "pal": [
+          "#050708",
+          "#848688",
+          "#546675",
+          "#3a3c44"
+        ]
+      },
+      "19": {
+        "src": "assets/covers/manga/fullmetal-alchemist/19.jpg",
+        "pal": [
+          "#050607",
+          "#7b7787",
+          "#3d3747",
+          "#7b7787"
+        ]
+      },
+      "20": {
+        "src": "assets/covers/manga/fullmetal-alchemist/20.jpg",
+        "pal": [
+          "#040606",
+          "#5a7a95",
+          "#3a64b9",
+          "#7598b8"
+        ]
+      },
+      "21": {
+        "src": "assets/covers/manga/fullmetal-alchemist/21.jpg",
+        "pal": [
+          "#040405",
+          "#798484",
+          "#495768",
+          "#798484"
+        ]
+      },
+      "22": {
+        "src": "assets/covers/manga/fullmetal-alchemist/22.jpg",
+        "pal": [
+          "#050705",
+          "#a68879",
+          "#b8452a",
+          "#474848"
+        ]
+      },
+      "23": {
+        "src": "assets/covers/manga/fullmetal-alchemist/23.jpg",
+        "pal": [
+          "#080908",
+          "#c9973d",
+          "#c9973d",
+          "#1c3858"
+        ]
+      },
+      "24": {
+        "src": "assets/covers/manga/fullmetal-alchemist/24.jpg",
+        "pal": [
+          "#080a0d",
+          "#a6c7f6",
+          "#2b448b",
+          "#a6c7f6"
+        ]
+      },
+      "25": {
+        "src": "assets/covers/manga/fullmetal-alchemist/25.jpg",
+        "pal": [
+          "#040405",
+          "#fefefe",
+          "#1d3759",
+          "#fefefe"
+        ]
+      },
+      "26": {
+        "src": "assets/covers/manga/fullmetal-alchemist/26.jpg",
+        "pal": [
+          "#050506",
+          "#8593bb",
+          "#7c2618",
+          "#463a4a"
+        ]
+      },
+      "27": {
+        "src": "assets/covers/manga/fullmetal-alchemist/27.jpg",
+        "pal": [
+          "#040406",
+          "#acb6b7",
+          "#e8b886",
+          "#acb6b7"
+        ]
+      }
+    },
+    "src": "assets/covers/manga/fullmetal-alchemist/01.jpg",
+    "pal": [
+      "#060808",
+      "#fbfcfb",
+      "#a5342a",
+      "#474646"
+    ]
+  },
+  "manga/goodnight-punpun": {
+    "from": "MangaDex",
+    "match": "Oyasumi Punpun",
+    "fetched": "2026-11-05",
+    "vols": {
+      "1": {
+        "src": "assets/covers/manga/goodnight-punpun/01.jpg",
+        "pal": [
+          "#fdd937",
+          "#161412",
+          "#a6912d",
+          "#a6912d"
+        ]
+      },
+      "2": {
+        "src": "assets/covers/manga/goodnight-punpun/02.jpg",
+        "pal": [
+          "#5dceaa",
+          "#161412",
+          "#f0ece2",
+          "#f0ece2"
+        ]
+      },
+      "3": {
+        "src": "assets/covers/manga/goodnight-punpun/03.jpg",
+        "pal": [
+          "#fa198a",
+          "#f4f0e6",
+          "#f0ece2",
+          "#f0ece2"
+        ]
+      },
+      "4": {
+        "src": "assets/covers/manga/goodnight-punpun/04.jpg",
+        "pal": [
+          "#229828",
+          "#f4f0e6",
+          "#f0ece2",
+          "#f0ece2"
+        ]
+      },
+      "5": {
+        "src": "assets/covers/manga/goodnight-punpun/05.jpg",
+        "pal": [
+          "#fe6a2a",
+          "#f4f0e6",
+          "#f0ece2",
+          "#f0ece2"
+        ]
+      },
+      "6": {
+        "src": "assets/covers/manga/goodnight-punpun/06.jpg",
+        "pal": [
+          "#881bc4",
+          "#f4f0e6",
+          "#541277",
+          "#541277"
+        ]
+      },
+      "7": {
+        "src": "assets/covers/manga/goodnight-punpun/07.jpg",
+        "pal": [
+          "#d3eb12",
+          "#161412",
+          "#839213",
+          "#839213"
+        ]
+      }
+    },
+    "src": "assets/covers/manga/goodnight-punpun/01.jpg",
+    "pal": [
+      "#fdd937",
+      "#161412",
+      "#a6912d",
+      "#a6912d"
+    ]
+  },
+  "manga/monster": {
+    "from": "AniList",
+    "match": "Monster",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/manga/monster.jpg",
+    "pal": [
+      "#fefefe",
+      "#3758a5",
+      "#3758a5",
+      "#8799c5"
+    ]
+  },
+  "manga/one-piece": {
+    "from": "MangaDex",
+    "match": "One Piece",
+    "fetched": "2026-11-05",
+    "vols": {
+      "1": {
+        "src": "assets/covers/manga/one-piece/01.jpg",
+        "pal": [
+          "#e9d59d",
+          "#060100",
+          "#060100",
+          "#f9f8f9"
+        ]
+      },
+      "2": {
+        "src": "assets/covers/manga/one-piece/02.jpg",
+        "pal": [
+          "#fbfbfa",
+          "#4a4426",
+          "#4a4426",
+          "#b7bb64"
+        ]
+      },
+      "3": {
+        "src": "assets/covers/manga/one-piece/03.jpg",
+        "pal": [
+          "#fdbb8c",
+          "#694935",
+          "#773524",
+          "#b98766"
+        ]
+      },
+      "4": {
+        "src": "assets/covers/manga/one-piece/04.jpg",
+        "pal": [
+          "#c3bde9",
+          "#060101",
+          "#060101",
+          "#aa957b"
+        ]
+      },
+      "5": {
+        "src": "assets/covers/manga/one-piece/05.jpg",
+        "pal": [
+          "#fcfcfd",
+          "#78573c",
+          "#764c2d",
+          "#c8b9b7"
+        ]
+      },
+      "6": {
+        "src": "assets/covers/manga/one-piece/06.jpg",
+        "pal": [
+          "#020202",
+          "#c9c5b7",
+          "#365827",
+          "#c9c5b7"
+        ]
+      },
+      "7": {
+        "src": "assets/covers/manga/one-piece/07.jpg",
+        "pal": [
+          "#fd2a37",
+          "#030202",
+          "#030202",
+          "#c8b49a"
+        ]
+      },
+      "8": {
+        "src": "assets/covers/manga/one-piece/08.jpg",
+        "pal": [
+          "#fdcb59",
+          "#684748",
+          "#984a3a",
+          "#fcfbf9"
+        ]
+      },
+      "9": {
+        "src": "assets/covers/manga/one-piece/09.jpg",
+        "pal": [
+          "#83e8b1",
+          "#46392a",
+          "#46392a",
+          "#e8d7b6"
+        ]
+      },
+      "10": {
+        "src": "assets/covers/manga/one-piece/10.jpg",
+        "pal": [
+          "#126cfd",
+          "#f4f0e6",
+          "#0d46a8",
+          "#fbfbfa"
+        ]
+      },
+      "11": {
+        "src": "assets/covers/manga/one-piece/11.jpg",
+        "pal": [
+          "#fc73bd",
+          "#030303",
+          "#b55488",
+          "#030303"
+        ]
+      },
+      "12": {
+        "src": "assets/covers/manga/one-piece/12.jpg",
+        "pal": [
+          "#fc9b4c",
+          "#040304",
+          "#040304",
+          "#c7a994"
+        ]
+      }
+    },
+    "src": "assets/covers/manga/one-piece/01.jpg",
+    "pal": [
+      "#e9d59d",
+      "#060100",
+      "#060100",
+      "#f9f8f9"
+    ]
+  },
+  "manga/vagabond": {
+    "from": "MangaDex",
+    "match": "Vagabond",
+    "fetched": "2026-11-05",
+    "vols": {
+      "1": {
+        "src": "assets/covers/manga/vagabond/01.jpg",
+        "pal": [
+          "#fbf8e7",
+          "#555769",
+          "#131c26",
+          "#555769"
+        ]
+      },
+      "2": {
+        "src": "assets/covers/manga/vagabond/02.jpg",
+        "pal": [
+          "#fefdf6",
+          "#775b88",
+          "#fa3526",
+          "#966a98"
+        ]
+      },
+      "3": {
+        "src": "assets/covers/manga/vagabond/03.jpg",
+        "pal": [
+          "#293a67",
+          "#faf9ea",
+          "#a4c527",
+          "#faf9ea"
+        ]
+      },
+      "4": {
+        "src": "assets/covers/manga/vagabond/04.jpg",
+        "pal": [
+          "#fcfae9",
+          "#26241c",
+          "#e98558",
+          "#26241c"
+        ]
+      },
+      "5": {
+        "src": "assets/covers/manga/vagabond/05.jpg",
+        "pal": [
+          "#763b4a",
+          "#fdb30a",
+          "#f9a909",
+          "#eb746b"
+        ]
+      },
+      "6": {
+        "src": "assets/covers/manga/vagabond/06.jpg",
+        "pal": [
+          "#fcf9e7",
+          "#655a2b",
+          "#655a2b",
+          "#171b23"
+        ]
+      },
+      "7": {
+        "src": "assets/covers/manga/vagabond/07.jpg",
+        "pal": [
+          "#383a78",
+          "#fbf6e5",
+          "#fa2809",
+          "#fbf6e5"
+        ]
+      },
+      "8": {
+        "src": "assets/covers/manga/vagabond/08.jpg",
+        "pal": [
+          "#faf8ea",
+          "#675757",
+          "#047db6",
+          "#f8c697"
+        ]
+      },
+      "9": {
+        "src": "assets/covers/manga/vagabond/09.jpg",
+        "pal": [
+          "#fefdf4",
+          "#5a6a78",
+          "#d84b66",
+          "#5a6a78"
+        ]
+      },
+      "10": {
+        "src": "assets/covers/manga/vagabond/10.jpg",
+        "pal": [
+          "#fefdf7",
+          "#463947",
+          "#160619",
+          "#463947"
+        ]
+      },
+      "11": {
+        "src": "assets/covers/manga/vagabond/11.jpg",
+        "pal": [
+          "#39434c",
+          "#fdf7e7",
+          "#02b498",
+          "#798688"
+        ]
+      },
+      "12": {
+        "src": "assets/covers/manga/vagabond/12.jpg",
+        "pal": [
+          "#fcfaea",
+          "#1c2736",
+          "#1c2736",
+          "#465858"
+        ]
+      }
+    },
+    "src": "assets/covers/manga/vagabond/01.jpg",
+    "pal": [
+      "#fbf8e7",
+      "#555769",
+      "#131c26",
+      "#555769"
+    ]
+  },
+  "manga/vinland-saga": {
+    "from": "MangaDex",
+    "match": "Vinland Saga",
+    "fetched": "2026-11-05",
+    "vols": {
+      "1": {
+        "src": "assets/covers/manga/vinland-saga/01.jpg",
+        "pal": [
+          "#e5d3ca",
+          "#993a29",
+          "#aa432b",
+          "#b67769"
+        ]
+      },
+      "2": {
+        "src": "assets/covers/manga/vinland-saga/02.jpg",
+        "pal": [
+          "#b8cbd9",
+          "#484a4b",
+          "#2c679b",
+          "#c95635"
+        ]
+      },
+      "3": {
+        "src": "assets/covers/manga/vinland-saga/03.jpg",
+        "pal": [
+          "#fc9756",
+          "#394637",
+          "#996648",
+          "#f6eae4"
+        ]
+      },
+      "4": {
+        "src": "assets/covers/manga/vinland-saga/04.jpg",
+        "pal": [
+          "#a5bbbc",
+          "#444a43",
+          "#bb5856",
+          "#fbfdfd"
+        ]
+      },
+      "5": {
+        "src": "assets/covers/manga/vinland-saga/05.jpg",
+        "pal": [
+          "#3a4b57",
+          "#f8f3e8",
+          "#e98867",
+          "#987468"
+        ]
+      },
+      "6": {
+        "src": "assets/covers/manga/vinland-saga/06.jpg",
+        "pal": [
+          "#886a76",
+          "#f4f0e6",
+          "#fbb77a",
+          "#e6d8da"
+        ]
+      },
+      "7": {
+        "src": "assets/covers/manga/vinland-saga/07.jpg",
+        "pal": [
+          "#385775",
+          "#c8dae4",
+          "#c85175",
+          "#678bc5"
+        ]
+      },
+      "8": {
+        "src": "assets/covers/manga/vinland-saga/08.jpg",
+        "pal": [
+          "#f9f9fa",
+          "#484748",
+          "#e6bb69",
+          "#b8bbc9"
+        ]
+      },
+      "9": {
+        "src": "assets/covers/manga/vinland-saga/09.jpg",
+        "pal": [
+          "#596558",
+          "#e5e9e5",
+          "#c6ba89",
+          "#e5e9e5"
+        ]
+      },
+      "10": {
+        "src": "assets/covers/manga/vinland-saga/10.jpg",
+        "pal": [
+          "#5a5555",
+          "#d6d6d8",
+          "#aa8765",
+          "#d6d6d8"
+        ]
+      }
+    },
+    "src": "assets/covers/manga/vinland-saga/01.jpg",
+    "pal": [
+      "#e5d3ca",
+      "#993a29",
+      "#aa432b",
+      "#b67769"
+    ]
+  },
+  "movies/2001-a-space-odyssey": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "movies/arrival": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "movies/blade-runner": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "movies/gangs-of-wasseypur": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "movies/in-the-mood-for-love": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "movies/mulholland-drive": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "movies/oldboy": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "movies/parasite": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "movies/pulp-fiction": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "movies/seven-samurai": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "movies/stalker": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "movies/taxi-driver": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "movies/the-godfather": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "movies/there-will-be-blood": {
+    "miss": true,
+    "tried": "2026-11-05"
+  },
+  "music/blonde": {
+    "from": "Deezer",
+    "match": "Blonde by Frank Ocean",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/blonde.jpg",
+    "pal": [
+      "#e3e3e4",
+      "#5a5757",
+      "#351c15",
+      "#5a5757"
+    ]
+  },
+  "music/currents": {
+    "from": "iTunes",
+    "match": "Currents B-Sides & Remixes - EP by Tame Impala",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/currents.jpg",
+    "pal": [
+      "#5a5365",
+      "#e1e6f2",
+      "#1a1c23",
+      "#929499"
+    ]
+  },
+  "music/discovery": {
+    "from": "iTunes",
+    "match": "Discovery by Daft Punk",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/discovery.jpg",
+    "pal": [
+      "#030303",
+      "#cacbd5",
+      "#6d5718",
+      "#666965"
+    ]
+  },
+  "music/kid-a": {
+    "from": "iTunes",
+    "match": "Kid A by Radiohead",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/kid-a.jpg",
+    "pal": [
+      "#0b0b09",
+      "#e9eaea",
+      "#6a3b18",
+      "#e9eaea"
+    ]
+  },
+  "music/kind-of-blue": {
+    "from": "iTunes",
+    "match": "Kind of Blue by Miles Davis",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/kind-of-blue.jpg",
+    "pal": [
+      "#17181a",
+      "#898b87",
+      "#5b5449",
+      "#898b87"
+    ]
+  },
+  "music/madvillainy": {
+    "from": "iTunes",
+    "match": "Madvillainy Instrumentals by Madvillain",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/madvillainy.jpg",
+    "pal": [
+      "#020202",
+      "#fefefe",
+      "#00bdff",
+      "#fefefe"
+    ]
+  },
+  "music/mezzanine": {
+    "from": "iTunes",
+    "match": "Mezzanine (Deluxe) by Massive Attack",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/mezzanine.jpg",
+    "pal": [
+      "#fefefe",
+      "#050404",
+      "#050404",
+      "#383735"
+    ]
+  },
+  "music/modal-soul": {
+    "from": "Deezer",
+    "match": "Modal Soul by Nujabes",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/modal-soul.jpg",
+    "pal": [
+      "#cb4837",
+      "#ffffff",
+      "#08549b",
+      "#ffffff"
+    ]
+  },
+  "music/music-has-the-right-to-children": {
+    "from": "iTunes",
+    "match": "Music Has the Right to Children by Boards of Canada",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/music-has-the-right-to-children.jpg",
+    "pal": [
+      "#49a698",
+      "#0f312f",
+      "#1b5a56",
+      "#8ad2d6"
+    ]
+  },
+  "music/roja": {
+    "from": "iTunes",
+    "match": "Roja (Malayalam) [Original Motion Picture Soundtrack] by A.R. Rahman",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/roja.jpg",
+    "pal": [
+      "#44492b",
+      "#f6b67b",
+      "#f6b67b",
+      "#08090a"
+    ]
+  },
+  "music/rumours": {
+    "from": "iTunes",
+    "match": "Rumours by Fleetwood Mac",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/rumours.jpg",
+    "pal": [
+      "#fefce9",
+      "#25252a",
+      "#06050a",
+      "#c7c6b9"
+    ]
+  },
+  "music/the-dark-side-of-the-moon": {
+    "from": "Deezer",
+    "match": "The Dark Side of the Moon by Pink Floyd",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/the-dark-side-of-the-moon.jpg",
+    "pal": [
+      "#010101",
+      "#94794e",
+      "#e1611b",
+      "#39627a"
+    ]
+  },
+  "music/to-pimp-a-butterfly": {
+    "from": "iTunes",
+    "match": "To Pimp a Butterfly by Kendrick Lamar",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/to-pimp-a-butterfly.jpg",
+    "pal": [
+      "#b9b7b7",
+      "#393635",
+      "#393635",
+      "#696766"
+    ]
+  },
+  "music/unknown-pleasures": {
+    "from": "iTunes",
+    "match": "Unknown Pleasures (2019 Digital Master) by Joy Division",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/unknown-pleasures.jpg",
+    "pal": [
+      "#00121e",
+      "#f4f0e6",
+      "#5b656d",
+      "#5b656d"
+    ]
+  },
+  "music/variety": {
+    "from": "Deezer",
+    "match": "VARIETY (30th Anniversary Edition) by Mariya Takeuchi",
+    "fetched": "2026-11-05",
+    "src": "assets/covers/music/variety.jpg",
+    "pal": [
+      "#474747",
+      "#fbfbf7",
+      "#b44844",
+      "#9a9a98"
+    ]
+  }
+}
