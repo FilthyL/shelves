@@ -1,0 +1,19 @@
+{
+  "items": [
+    { "title": "Dune", "creator": "Frank Herbert", "year": 1965, "format": "hardcover", "pages": 412, "rating": 9.5, "featured": true, "tags": ["sci-fi"], "note": "Read it twice. The appendices count." },
+    { "title": "Blood Meridian", "creator": "Cormac McCarthy", "year": 1985, "format": "paperback", "pages": 337, "rating": 9.5, "tags": ["western"] },
+    { "title": "The Brothers Karamazov", "original": "Братья Карамазовы", "creator": "Fyodor Dostoevsky", "year": 1880, "format": "hardcover", "pages": 796, "rating": 10, "tags": ["classic"] },
+    { "title": "Neuromancer", "creator": "William Gibson", "year": 1984, "format": "paperback", "pages": 271, "rating": 8.5, "tags": ["cyberpunk"] },
+    { "title": "One Hundred Years of Solitude", "original": "Cien años de soledad", "creator": "Gabriel García Márquez", "year": 1967, "format": "paperback", "pages": 417, "rating": 9.5, "tags": ["magical realism"] },
+    { "title": "Kafka on the Shore", "original": "海辺のカフカ", "creator": "Haruki Murakami", "year": 2002, "format": "paperback", "pages": 467, "rating": 8.5, "tags": ["surreal"] },
+    { "title": "Nineteen Eighty-Four", "creator": "George Orwell", "year": 1949, "format": "paperback", "pages": 328, "rating": 9, "tags": ["dystopia"] },
+    { "title": "The Stranger", "original": "L'Étranger", "creator": "Albert Camus", "year": 1942, "format": "paperback", "pages": 123, "rating": 9, "tags": ["absurdism"] },
+    { "title": "Infinite Jest", "creator": "David Foster Wallace", "year": 1996, "format": "paperback", "pages": 1079, "rating": 9, "status": "reading", "tags": ["postmodern"], "note": "Two bookmarks: one for the novel, one for the endnotes." },
+    { "title": "The God of Small Things", "creator": "Arundhati Roy", "year": 1997, "format": "hardcover", "pages": 340, "rating": 9, "tags": ["literary"] },
+    { "title": "Siddhartha", "creator": "Hermann Hesse", "year": 1922, "format": "paperback", "pages": 152, "rating": 8.5, "tags": ["philosophy"] },
+    { "title": "Gödel, Escher, Bach", "creator": "Douglas Hofstadter", "year": 1979, "format": "hardcover", "pages": 777, "rating": 9, "tags": ["mind", "math"] },
+    { "title": "Meditations", "creator": "Marcus Aurelius", "year": 180, "format": "paperback", "pages": 254, "rating": 9, "tags": ["stoicism"] },
+    { "title": "The Name of the Wind", "creator": "Patrick Rothfuss", "year": 2007, "format": "hardcover", "pages": 662, "rating": 8.5, "tags": ["fantasy"] },
+    { "title": "Sapiens", "creator": "Yuval Noah Harari", "year": 2011, "format": "paperback", "pages": 443, "rating": 7.5, "tags": ["history"] }
+  ]
+}

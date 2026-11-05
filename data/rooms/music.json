@@ -1,0 +1,23 @@
+{
+  "items": [
+    { "title": "Kid A", "creator": "Radiohead", "year": 2000, "format": "vinyl", "label": "Parlophone", "rating": 10, "featured": true, "tags": ["art rock", "electronic"],
+      "tracks": ["Everything in Its Right Place", "Kid A", "The National Anthem", "How to Disappear Completely", "Treefingers", "Optimistic", "In Limbo", "Idioteque", "Morning Bell", "Motion Picture Soundtrack"] },
+    { "title": "Discovery", "creator": "Daft Punk", "year": 2001, "format": "cd", "label": "Virgin", "rating": 9, "tags": ["french house"] },
+    { "title": "The Dark Side of the Moon", "creator": "Pink Floyd", "year": 1973, "format": "vinyl", "label": "Harvest", "rating": 9.5, "tags": ["prog rock"],
+      "tracks": ["Speak to Me", "Breathe", "On the Run", "Time", "The Great Gig in the Sky", "Money", "Us and Them", "Any Colour You Like", "Brain Damage", "Eclipse"] },
+    { "title": "To Pimp a Butterfly", "creator": "Kendrick Lamar", "year": 2015, "format": "vinyl", "rating": 10, "tags": ["hip hop", "jazz rap"] },
+    { "title": "Blonde", "creator": "Frank Ocean", "year": 2016, "format": "cd", "rating": 9.5, "tags": ["r&b"] },
+    { "title": "Kind of Blue", "creator": "Miles Davis", "year": 1959, "format": "vinyl", "label": "Columbia", "rating": 10, "featured": true, "tags": ["modal jazz"],
+      "tracks": ["So What", "Freddie Freeloader", "Blue in Green", "All Blues", "Flamenco Sketches"] },
+    { "title": "Modal Soul", "creator": "Nujabes", "year": 2005, "format": "cd", "label": "Hydeout Productions", "rating": 9.5, "tags": ["jazz hop"] },
+    { "title": "Unknown Pleasures", "creator": "Joy Division", "year": 1979, "format": "vinyl", "label": "Factory", "rating": 9, "tags": ["post-punk"],
+      "tracks": ["Disorder", "Day of the Lords", "Candidate", "Insight", "New Dawn Fades", "She's Lost Control", "Shadowplay", "Wilderness", "Interzone", "I Remember Nothing"] },
+    { "title": "Mezzanine", "creator": "Massive Attack", "year": 1998, "format": "cd", "rating": 9, "tags": ["trip hop"] },
+    { "title": "Music Has the Right to Children", "creator": "Boards of Canada", "year": 1998, "format": "vinyl", "label": "Warp", "rating": 9, "tags": ["idm"] },
+    { "title": "Madvillainy", "creator": "Madvillain", "year": 2004, "format": "vinyl", "label": "Stones Throw", "rating": 9.5, "tags": ["hip hop"] },
+    { "title": "Rumours", "creator": "Fleetwood Mac", "year": 1977, "format": "cassette", "label": "Warner Bros.", "rating": 8.5, "tags": ["soft rock"] },
+    { "title": "Roja", "creator": "A. R. Rahman", "year": 1992, "format": "cassette", "rating": 9.5, "tags": ["soundtrack", "tamil"], "facts": { "Type": "Original soundtrack" } },
+    { "title": "Variety", "creator": "Mariya Takeuchi", "year": 1984, "format": "vinyl", "rating": 9, "tags": ["city pop"] },
+    { "title": "Currents", "creator": "Tame Impala", "year": 2015, "format": "cd", "rating": 8.5, "tags": ["psychedelic pop"] }
+  ]
+}

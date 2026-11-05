@@ -1,0 +1,16 @@
+{
+  "items": [
+    { "title": "Berserk", "original": "ベルセルク", "creator": "Kentaro Miura", "year": 1989, "format": "tankobon", "owned": "1-14", "publisher": "Hakusensha", "rating": 10, "featured": true, "tags": ["dark fantasy", "seinen"] },
+    { "title": "Vagabond", "original": "バガボンド", "creator": "Takehiko Inoue", "year": 1998, "format": "tankobon", "owned": "1-12", "publisher": "Kodansha", "rating": 9.5, "tags": ["samurai", "seinen"] },
+    { "title": "Monster", "original": "MONSTER", "creator": "Naoki Urasawa", "year": 1994, "format": "kanzenban", "owned": 9, "total": 9, "publisher": "Shogakukan", "rating": 9.5, "tags": ["thriller", "seinen"], "facts": { "Edition": "Perfect edition" } },
+    { "title": "Akira", "original": "AKIRA", "creator": "Katsuhiro Otomo", "year": 1982, "format": "deluxe", "owned": 6, "total": 6, "publisher": "Kodansha", "rating": 10, "tags": ["cyberpunk", "seinen"] },
+    { "title": "Death Note", "original": "DEATH NOTE", "creator": "Tsugumi Ohba & Takeshi Obata", "year": 2003, "format": "tankobon", "owned": 12, "total": 12, "publisher": "Shueisha", "rating": 9, "tags": ["thriller", "shōnen"] },
+    { "title": "Goodnight Punpun", "original": "おやすみプンプン", "creator": "Inio Asano", "year": 2007, "format": "tankobon", "owned": "1-7", "total": 13, "publisher": "Shogakukan", "rating": 9.5, "status": "reading", "tags": ["drama", "seinen"] },
+    { "title": "Chainsaw Man", "original": "チェンソーマン", "creator": "Tatsuki Fujimoto", "year": 2018, "format": "tankobon", "owned": "1-11", "publisher": "Shueisha", "rating": 9, "tags": ["action", "shōnen"] },
+    { "title": "Vinland Saga", "original": "ヴィンランド・サガ", "creator": "Makoto Yukimura", "year": 2005, "format": "tankobon", "owned": "1-10", "publisher": "Kodansha", "rating": 9.5, "tags": ["historical", "seinen"] },
+    { "title": "Blame!", "id": "blame", "original": "BLAME!", "creator": "Tsutomu Nihei", "year": 1997, "format": "tankobon", "owned": 10, "total": 10, "publisher": "Kodansha", "rating": 9, "tags": ["cyberpunk", "seinen"] },
+    { "title": "Dorohedoro", "original": "ドロヘドロ", "creator": "Q Hayashida", "year": 2000, "format": "tankobon", "owned": "1-8", "total": 23, "publisher": "Shogakukan", "rating": 9, "tags": ["dark fantasy"] },
+    { "title": "Fullmetal Alchemist", "original": "鋼の錬金術師", "creator": "Hiromu Arakawa", "year": 2001, "format": "tankobon", "owned": 27, "total": 27, "publisher": "Square Enix", "rating": 9.5, "tags": ["adventure", "shōnen"] },
+    { "title": "One Piece", "original": "ONE PIECE", "creator": "Eiichiro Oda", "year": 1997, "format": "tankobon", "owned": "1-12", "publisher": "Shueisha", "rating": 9, "status": "reading", "tags": ["adventure", "shōnen"] }
+  ]
+}
