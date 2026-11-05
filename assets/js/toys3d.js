@@ -448,7 +448,7 @@ function sleeveFor(scene, hand, { reach = 330, tail = 260 } = {}) {
     dir.copy(elbow).sub(w);
     const len = dir.length();
     dir.normalize();
-    const start = w.clone().addScaledVector(dir, 16); // leave a little wrist showing
+    const start = w.clone().addScaledVector(dir, 5); // cover the cut end of the hand model, leave the wrist
     sleeve.scale.set(1, len + tail, 1);
     sleeve.position.copy(start).addScaledVector(dir, (len + tail) / 2);
     sleeve.quaternion.setFromUnitVectors(up, dir);
@@ -470,6 +470,20 @@ function easeMix(cur, target, k) {
 }
 const follow = (now, last, ms) => (now && last ? 1 - Math.exp(-(now - last) / ms) : 1);
 
+// First person: the camera is your eyes. Each scene is tipped back so your forearms come up from
+// below, towards you, and the toy sits in front of you a little below eye level. tilt is that tip
+// (about the left-right axis), cam and look are where the eyes are and what they look at.
+const POV = {
+  knife: { tilt: -40, cam: [-70, 360, 560], look: [-10, 40, 0], near: { cam: [-60, 330, 520], look: [-10, 30, 0] } },
+  karambit: { tilt: 0, cam: [-40, 50, 740], look: [10, -50, 0], near: { cam: [-30, 30, 580], look: [10, -60, 0] } },
+  cards: { tilt: -46, cam: [0, 380, 520], look: [0, 30, 0], near: { cam: [0, 350, 470], look: [0, 24, 0] } },
+};
+const viewOf = (key, near, framing) => {
+  const v = POV[key], at = near ? v.near : v;
+  return { cam: at.cam, look: at.look, orbit: !near, ...framing };
+};
+const tipped = (scene, key) => { const g = new THREE.Group(); g.rotation.x = POV[key].tilt * RAD; scene.add(g); return g; };
+
 // how the knife hand sits round the handle (turned about the handle's own axis), and how the whole
 // performance leans so the arm comes up from the lower left
 const ROLL = -28, LEAN = 34;
@@ -480,7 +494,7 @@ const MIRROR = true;
 export async function makeBalisong3D(container, { framing, near } = {}) {
   await loadThree();
   const m = MIRROR ? -1 : 1;
-  const st = stage(container, near ? { cam: [200 * m, 150, 780], look: [-40 * m, 6, 0] } : { cam: [360 * m, 250, 860], look: [-60 * m, 56, 0], orbit: true, ...framing });
+  const st = stage(container, viewOf('knife', near, framing));
   const safeFinish = anodise(rainbowTexture(0)), biteFinish = anodise(rainbowTexture(2.4));
   const gold = new THREE.MeshStandardMaterial({ color: 0xfeae34, metalness: 1, roughness: 0.28 });
   // brushed steel: the anisotropy streaks the highlight along the blade
@@ -502,7 +516,7 @@ export async function makeBalisong3D(container, { framing, near } = {}) {
   const world = new THREE.Group(), outer = new THREE.Group(), inner = new THREE.Group();
   world.rotation.z = m * LEAN * RAD;
   world.scale.x = m;
-  st.scene.add(world);
+  tipped(st.scene, 'knife').add(world);
   outer.add(inner); world.add(outer);
   const h1 = shadow(new THREE.Mesh(hGeo, safeFinish)); h1.position.z = SPAN / 2;
   const pin1 = shadow(new THREE.Mesh(pinGeo, gold));
@@ -609,7 +623,8 @@ const TURN = { L: 90, R: -90 }, TILT = { L: 10, R: -10 };
 
 export async function makeDeck3D(container, { framing, near } = {}) {
   await loadThree();
-  const st = stage(container, { cam: near ? [170, 170, 680] : [300, 280, 800], look: [10, 18, 0], floor: -230, orbit: !near, ...framing });
+  const st = stage(container, { ...viewOf('cards', near, framing), floor: -260 });
+  const table = tipped(st.scene, 'cards');
   const geo = cardGeometry();
   // card stock with a plastic coating: a soft sheen on the printing, matt white edges
   const coat = { roughness: 0.42, clearcoat: 0.55, clearcoatRoughness: 0.3 };
@@ -619,13 +634,13 @@ export async function makeDeck3D(container, { framing, near } = {}) {
     const face = new THREE.MeshPhysicalMaterial({ map: faceTexture(cardOf(i)), ...coat });
     const m = new THREE.Mesh(geo, [face, back, edge]);
     m.castShadow = true; m.receiveShadow = true;
-    st.scene.add(m);
+    table.add(m);
     return m;
   });
   const grips = { poses: CARD_POSES, contact: CARD_CONTACT }, files = await loadHandFiles();
   const hands = { L: await makeHand(files, { ...grips, side: 'left' }), R: await makeHand(files, { ...grips, side: 'right' }) }, frames = {}, held = {}, arms = {};
   for (const side of ['L', 'R']) {
-    frames[side] = new THREE.Group(); frames[side].add(hands[side].root); hands[side].root.scale.setScalar(0.92); st.scene.add(frames[side]);
+    frames[side] = new THREE.Group(); frames[side].add(hands[side].root); hands[side].root.scale.setScalar(0.92); table.add(frames[side]);
     if (hands[side].sculpted) arms[side] = sleeveFor(st.scene, hands[side]);
   }
   let last = 0;
@@ -726,21 +741,29 @@ function karambitModel() {
 // The karambit hand: palm down, index finger through the ring pointing away into the scene, the
 // other fingers tucked while it spins and wrapped round the handle when it is caught.
 const KARAMBIT_POSES = {
-  grip: { f: [[14, 22, 12], [54, 64, 32], [58, 64, 32], [62, 60, 30]], spread: 0.2, thumb: [-14, -24, 0, 30, 24] },
+  grip: { f: [[20, 30, 16], [82, 96, 52], [86, 96, 52], [90, 92, 50]], spread: 0.1, thumb: [-26, -36, 0, 52, 42] },
   spin: { f: [[2, 4, 2], [86, 98, 54], [88, 96, 52], [90, 92, 50]], spread: 0.1, thumb: [-22, -30, 0, 42, 34] },
   open: { f: [[4, 4, 2], [22, 26, 14], [24, 28, 14], [26, 28, 14]], spread: 0.6, thumb: [-4, -8, 0, 10, 8] },
 };
-const KARAMBIT_CONTACT = { grip: [-26, 98, 8], spin: [-26, 100, 0], open: [-26, 100, 0] };
+// held, the ring sits on the first joint of the index finger with the handle deep in the fist; spinning,
+// it rides out on the finger so the turning knife clears the tucked fingers
+const KARAMBIT_CONTACT = { grip: [-26, 66, 16], spin: [-26, 100, 0], open: [-26, 100, 0] };
 
 export async function makeKarambit3D(container, { framing, near } = {}) {
   await loadThree();
   const m = MIRROR ? -1 : 1;
-  const st = stage(container, near ? { cam: [60 * m, 200, 600], look: [20 * m, 0, 0] } : { cam: [90 * m, 300, 820], look: [30 * m, 90, 0], orbit: true, ...framing });
-  // the hand reaches out towards you, index finger first, so the knife spins facing you and the arm
-  // goes back into the scene behind it; spins stay about the finger because the knife turns in the same frame
+  const st = stage(container, viewOf('karambit', near, framing));
+  // Held up to show it, the way the owner asked: knife upright with the ring at the top and the index
+  // finger through it, the fist round the handle, the blade curving out at the bottom, the hand coming
+  // in from the right, seen from the front a little turned so the ring reads as an oval
   const world = new THREE.Group(), rig = new THREE.Group(), outer = new THREE.Group(), inner = new THREE.Group();
   world.scale.x = m;
-  rig.rotation.set(14 * RAD, 28 * RAD, 0, 'YXZ');
+  // from the palm-down pointing grip: a quarter turn about the finger stands the handle up, then a
+  // turn about the vertical faces the palm and the blade's curve towards you (built left-handed, mirrored)
+  rig.rotation.set(0, -40 * RAD, 90 * RAD, 'YXZ');
+  // moves (a toss, a slash) are meant on screen, so they are turned back out of the rig's frame
+  const unturn = rig.quaternion.clone().invert(), at = new THREE.Vector3();
+  const onScreen = (x, y) => at.set(x, -y, 0).applyQuaternion(unturn);
   st.scene.add(world); world.add(rig);
   outer.add(inner); rig.add(outer);
   const knife = karambitModel();
@@ -749,17 +772,16 @@ export async function makeKarambit3D(container, { framing, near } = {}) {
 
   const hand = await makeHand(await loadHandFiles(), { side: 'left', poses: KARAMBIT_POSES, contact: KARAMBIT_CONTACT });
   const hPivot = new THREE.Group(), hBase = new THREE.Group();
-  // turn the hand so the index finger points out of the scene and the palm faces down; the little
-  // finger is then on +x, where the handle lies
-  hBase.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, -1, 0)));
+  // turn the hand so the index finger points into the scene and the palm faces down
+  hBase.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(new THREE.Vector3(-1, 0, 0), new THREE.Vector3(0, 0, -1), new THREE.Vector3(0, -1, 0)));
   hPivot.add(hBase); hBase.add(hand.root); rig.add(hPivot);
-  const arm = hand.sculpted ? sleeveFor(st.scene, hand, { reach: 260, tail: 120 }) : null;
+  const arm = hand.sculpted ? sleeveFor(st.scene, hand, { reach: 260, tail: 60 }) : null;
   const pose = poseFollower({ grip: 1 });
 
   const apply = (p, now) => {
-    place(outer, p.X, p.Y, 0, p.rz, p.ry, p.rx);
+    place(outer, 0, 0, 0, p.rz, p.ry, p.rx); outer.position.copy(onScreen(p.X, p.Y));
     inner.position.set(-p.pv[0], p.pv[1], 0);
-    place(hPivot, p.hX, p.hY, 0, p.hrz, p.hry, p.hrx);
+    place(hPivot, 0, 0, 0, p.hrz, p.hry, p.hrx); hPivot.position.copy(onScreen(p.hX, p.hY));
     const air = p.air || 0, spin = p.pinch || 0;
     const { w, wf } = pose({ grip: (1 - spin) * (1 - air), spin: spin * (1 - air), open: air }, now);
     hand.setPose(w, wf);

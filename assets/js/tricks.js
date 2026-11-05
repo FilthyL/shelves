@@ -20,6 +20,8 @@ export const wrap = a => ((((a + 180) % 360) + 360) % 360) - 180;
 
 /** knife tricks play in this fraction of their written time; card moves in CARD_TEMPO */
 export const TEMPO = 0.64;
+/** gravity, in mm/s², for anything thrown */
+export const G = 9810;
 export const CARD_TEMPO = 0.78;
 
 // ============================================================ BUTTERFLY KNIFE
@@ -125,17 +127,17 @@ export const KARAMBIT_TRICKS = [
   kara('stall', 'Spin and stall', 'Intermediate', 'A turn and a half, a stop with the blade standing up, then the last half turn home.',
     [[0], [0.25], [0.6, { rz: 540 }, 'out'], [0.3], [0.3, { rz: 720 }, 'in'], [0.4]]),
   kara('inspect', 'Inspect', 'Beginner', 'The hand turns the karambit to the light: one face, a roll to show the other, and back.',
-    [[0], [0.25], [0.5, { ry: 55, rz: -25, follow: 1 }], [0.4], [0.6, { rx: 180, ry: 35, follow: 1 }], [0.4], [0.6, { rx: 360, ry: 0, rz: 0, follow: 1 }], [0.2, { follow: 0 }], [0.3]]),
+    [[0], [0.25], [0.55, { rx: 62, rz: -12, follow: 1 }], [0.45], [0.8, { rx: -62, rz: 10, follow: 1 }], [0.45], [0.55, { rx: 0, rz: 0, follow: 1 }], [0.2, { follow: 0 }], [0.3]]),
   kara('toss-catch', 'Toss and catch', 'Intermediate', 'Flicked up off the finger, two turns in the air, and caught back on the ring.',
-    [[0], [0.25], [0.15, { Y: 16 }, 'in'], [0.45, { Y: -150, rz: 360 }, 'out'], [0.45, { Y: 0, rz: 720 }, 'in'], [0.12, { Y: 8 }], [0.2, { Y: 0 }], [0.4]]),
+    [[0], [0.25], [0.15, { Y: 16 }, 'in'], [0.45, { Y: -115, rz: 360 }, 'out'], [0.45, { Y: 0, rz: 720 }, 'in'], [0.12, { Y: 8 }], [0.2, { Y: 0 }], [0.4]]),
   kara('grip-switch', 'Grip switch', 'Beginner', 'A half turn flips it into a forward grip with the blade up, then a half turn back.',
     [[0], [0.25], [0.35, { rz: 180 }, 'out'], [0.5], [0.35, { rz: 360 }, 'out'], [0.4]]),
   kara('slash', 'Hook and pull', 'Beginner', 'A short reverse-grip slash: hook forward, pull back, the way the blade is meant to cut.',
     [[0], [0.2], [0.18, { X: -40, Y: -20, rz: -35, follow: 1 }, 'out'], [0.22, { X: 50, Y: 20, rz: 30, follow: 1 }, 'out'], [0.3, { X: 0, Y: 0, rz: 0, follow: 1 }], [0.2, { follow: 0 }], [0.3]]),
   kara('figure-eight', 'Figure eight', 'Advanced', 'Two spins while the hand tips the knife in and out of the plane, tracing an eight.',
     [[0], [0.25], [0.45, { rz: 360, ry: 40 }, 'lin'], [0.45, { rz: 720, ry: -40 }, 'lin'], [0.3, { ry: 0 }], [0.4]]),
-  kara('wrist-roll', 'Wrist roll', 'Beginner', 'The whole hand rolls over and back, the karambit held on the ring the whole way.',
-    [[0], [0.25], [0.7, { rx: 180, follow: 1 }], [0.3], [0.7, { rx: 360, follow: 1 }], [0.2, { follow: 0 }], [0.3]]),
+  kara('wrist-roll', 'Wrist roll', 'Beginner', 'The whole hand rolls one way and the other, the karambit held on the ring the whole way.',
+    [[0], [0.25], [0.6, { rx: 80, follow: 1 }], [0.25], [0.8, { rx: -80, follow: 1 }], [0.25], [0.5, { rx: 0, follow: 1 }], [0.2, { follow: 0 }], [0.3]]),
   kara('behind-spin', 'Behind-the-hand spin', 'Intermediate', 'A spin that tips back so the blade passes behind the hand, then rolls forward again.',
     [[0], [0.25], [0.5, { rz: 360, ry: 70 }], [0.5, { rz: 720, ry: 0 }], [0.4]]),
   kara('spin-flurry', 'Spin flurry', 'Advanced', 'Three quick single spins, each caught and let go again.',
@@ -169,6 +171,26 @@ function steps(trick) {
   if (out.length > 2 && same(out[1].p, out[0].p)) out.splice(1, 1);
   if (out.length > 2 && same(out.at(-1).p, out.at(-2).p)) out.pop();
   return out;
+}
+
+/**
+ * Make a trick's tosses physical. A key whose knife is well up between two keys in the hand is the
+ * top of a throw: the climb and the fall take the time gravity gives for those heights, and the
+ * spin and drift at the top are where steady motion would have them, since nothing turns the
+ * knife once it has left the hand. Everything else keeps its written timing (scaled by TEMPO).
+ */
+function physical(st) {
+  const dts = st.map(x => x.dt * TEMPO), kinds = st.map(() => null), ps = st.map(x => ({ ...x.p }));
+  for (let i = 1; i < st.length - 1; i++) {
+    const a = st[i - 1].p, b = st[i].p, c = st[i + 1].p;
+    if (!(b.Y < -60 && a.Y > -40 && c.Y > -40)) continue;
+    dts[i] = Math.sqrt((2 * (a.Y - b.Y)) / G);
+    dts[i + 1] = Math.sqrt((2 * (c.Y - b.Y)) / G);
+    kinds[i] = 'up'; kinds[i + 1] = 'down';
+    const u = dts[i] / (dts[i] + dts[i + 1]);
+    for (const k of ['X', 'rz', 'ry', 'rx']) ps[i][k] = lerp(a[k], c[k], u);
+  }
+  return { dts, kinds, ps };
 }
 
 /** the order the knife actually needs: open it before a trick that starts open, close it before one that starts closed */
@@ -213,7 +235,10 @@ export function knifeRoutine(ids, { from = null, loop = false, lead = 0.2, tail 
     let off = {};
     if (!cur) { cur = withPv(st[0].p); push(cur); t += lead; push(cur); } else off = moveTo(withPv(st[0].p));
     const t0 = t;
-    if (!step.idle) for (let i = 1; i < st.length; i++) { t += Math.max(0.03, st[i].dt * TEMPO); push(shift(withPv(st[i].p), off), st[i].e); }
+    if (!step.idle) {
+      const { dts, kinds, ps } = physical(st);
+      for (let i = 1; i < st.length; i++) { t += Math.max(0.03, dts[i]); push(shift(withPv(ps[i]), off), kinds[i] || st[i].e); }
+    }
     cur = keys.at(-1).p;
     if (!step.idle) segs.push({ trick: step.trick, auto: step.auto, ci: step.ci, t0, t1: t });
   }
@@ -265,6 +290,9 @@ function handTrack(keys, start) {
  * One channel as cubic pieces. Tangents keep each run monotone (no overshoot), a flick launches
  * fast, and a blade or handle reaching a stop speeds into it and bounces off it a little.
  */
+const SPINS = new Set(['rz', 'ry', 'rx', 'b', 'd']);
+const DRIFTS = new Set(['X', 'rz', 'ry', 'rx']);
+
 function curve(keys, ch, snap) {
   const n = keys.length, T = keys.map(k => k.t), V = keys.map(k => k.p[ch]);
   const s = [], m = new Array(n).fill(0), seg = [], bumps = [];
@@ -274,7 +302,15 @@ function curve(keys, ch, snap) {
     let m0 = m[i], m1 = m[i + 1];
     const e = keys[i + 1].e, moved = Math.abs(V[i + 1] - V[i]) > 1;
     const stops = snap && moved && fold(V[i + 1], 180) < 1 && !(i + 1 < n - 1 && s[i + 1] * s[i] > 0);
-    if (stops) {
+    const alone = !(i > 0 && s[i - 1] * s[i] > 0 && Math.abs(V[i] - V[i - 1]) > 1) && !(i + 1 < n - 1 && s[i + 1] * s[i] > 0 && Math.abs(V[i + 2] - V[i + 1]) > 1);
+    if (e === 'up' || e === 'down') {
+      // in the air: height is a parabola under gravity, turning and drifting are steady
+      if (ch === 'Y') { m0 = e === 'up' ? 2 * s[i] : 0; m1 = e === 'up' ? 0 : 2 * s[i]; } else if (DRIFTS.has(ch)) { m0 = m1 = s[i]; }
+    } else if (SPINS.has(ch) && alone && Math.abs(V[i + 1] - V[i]) >= 300 && e !== 'in' && e !== 'out') {
+      // a spin: the flick gives it speed at once, friction takes some away, and the catch stops it
+      m0 = 1.45 * s[i]; m1 = 0.65 * s[i];
+      bumps.push({ t: T[i + 1], dir: -Math.sign(s[i]), a: Math.min(5, Math.abs(m1) * 0.003) });
+    } else if (stops) {
       m0 = Math.sign(s[i]) * Math.min(Math.abs(m0), Math.abs(s[i]));
       m1 = 2 * s[i];
       bumps.push({ t: T[i + 1], dir: -Math.sign(s[i]), a: Math.min(7, Math.abs(m1) * 0.0035) });
@@ -306,9 +342,21 @@ function valueAt(c, t) {
   return v;
 }
 
+function bumpAt(c, t) {
+  let v = 0;
+  for (const b of c.bumps) { const d = t - b.t; if (d > 0 && d < 0.3) v += b.dir * b.a * Math.exp(-d / 0.05) * Math.sin((d * 2 * Math.PI) / 0.11); }
+  return v;
+}
+
 function trackOf(keys, segs, dur) {
   const curves = Object.fromEntries(CHANNELS.map(ch => [ch, curve(keys, ch, ch === 'b' || ch === 'd')]));
-  const raw = t => { const o = {}; for (const ch of CHANNELS) o[ch] = valueAt(curves[ch], t); return o; };
+  const raw = t => {
+    const o = {};
+    for (const ch of CHANNELS) o[ch] = valueAt(curves[ch], t);
+    const kick = 0.35 * (bumpAt(curves.b, t) + bumpAt(curves.d, t)); // the hand feels the latch slap
+    o.rz += kick; o.hrz += kick;
+    return o;
+  };
   return {
     kind: 'knife', keys, segs, dur,
     /** the knife and the hand at time t */
@@ -385,7 +433,7 @@ export const CARD_MOVES = [
     const toRight = sm(t, 0, 0.3), back = sm(t, 1.9, 2.4), j = n - 1 - i;
     const t0 = 0.35 + j * 0.035, u = win(t, t0, t0 + 0.42);
     const x = u <= 0 ? 85 * toRight : u >= 1 ? -85 : lerp(85, -85, u);
-    const y = u > 0 && u < 1 ? -78 * Math.sin(Math.PI * u) : 0;
+    const y = u > 0 && u < 1 ? -78 * 4 * u * (1 - u) : 0; // thrown: a parabola
     const z = u >= 1 ? j * 0.45 : i * 0.45;
     return { x: back ? lerp(x, 0, back) : x, y, z, rz: u > 0 && u < 1 ? lerp(12, -12, u) : 0, ry: 0, rx: u > 0 && u < 1 ? 25 : 0 };
   }),
