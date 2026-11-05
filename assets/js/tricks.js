@@ -384,7 +384,7 @@ export function cardOf(i) {
 // of grips: hold, squeeze, pinch, catch, spread, point, relax.
 const H = (x, y, rz = 0, w = { hold: 1 }) => ({ x, y, rz, w });
 export const HOME_L = H(-4, 16, 0, { hold: 1 });
-export const REST_R = H(160, 150, 0, { relax: 1 });
+export const REST_R = H(150, 205, -10, { relax: 1 });
 export function mixH(a, b, u) {
   const w = {};
   for (const k of new Set([...Object.keys(a.w), ...Object.keys(b.w)])) w[k] = lerp(a.w[k] || 0, b.w[k] || 0, u);

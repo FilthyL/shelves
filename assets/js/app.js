@@ -846,6 +846,7 @@ function openPlay(room, itemId, comboStr) {
     <div class="play-stage">
       <div class="play-anchor" style="--sc:${toy.scale}"></div>
       <div class="play-now" aria-live="polite"><b>Picking it up…</b><i></i></div>
+      <p class="play-hint">Drag to look around</p>
       <div class="play-ui">
         <div class="combo">
           <span class="combo-label">Your combo</span>

@@ -11,7 +11,7 @@ export async function loadThree() { return (THREE ||= await import(THREE_URL)); 
 const RAD = Math.PI / 180;
 
 // ------------------------------------------------------------ stage: renderer, camera, light, table
-function stage(container, { cam = [260, 230, 1060], look = [0, -10, 0], fov = 30, floor = -250 } = {}) {
+function stage(container, { cam = [260, 230, 1060], look = [0, -10, 0], fov = 30, floor = -250, orbit = false } = {}) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -28,9 +28,29 @@ function stage(container, { cam = [260, 230, 1060], look = [0, -10, 0], fov = 30
   const env = pmrem.fromScene(studio(), 0.03, 1, 2000).texture; // the studio is 500 across; the default far plane (100) would clip it
   scene.environment = env;
 
-  const camera = new THREE.PerspectiveCamera(fov, 1, 10, 6000);
-  camera.position.set(...cam);
-  camera.lookAt(...look);
+  const camera = new THREE.PerspectiveCamera(fov, 1, 20, 6000);
+  // the camera sits on a sphere round the target; dragging moves it round (within limits)
+  const target = new THREE.Vector3(...look), offset = new THREE.Vector3(...cam).sub(target);
+  const dist = offset.length();
+  let yaw = Math.atan2(offset.x, offset.z), pitch = Math.asin(offset.y / dist);
+  const aim = () => {
+    camera.position.set(target.x + dist * Math.cos(pitch) * Math.sin(yaw), target.y + dist * Math.sin(pitch), target.z + dist * Math.cos(pitch) * Math.cos(yaw));
+    camera.lookAt(target);
+  };
+  aim();
+  if (orbit) {
+    canvas.classList.add('can-orbit');
+    let drag = null;
+    canvas.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY, yaw, pitch }; canvas.setPointerCapture(e.pointerId); canvas.classList.add('is-orbiting'); });
+    canvas.addEventListener('pointermove', e => {
+      if (!drag) return;
+      yaw = Math.max(-1.2, Math.min(1.2, drag.yaw - (e.clientX - drag.x) * 0.006));
+      pitch = Math.max(-0.05, Math.min(1.05, drag.pitch + (e.clientY - drag.y) * 0.005));
+      aim(); renderer.render(scene, camera);
+    });
+    const end = () => { drag = null; canvas.classList.remove('is-orbiting'); };
+    canvas.addEventListener('pointerup', end); canvas.addEventListener('pointercancel', end);
+  }
 
   scene.add(new THREE.HemisphereLight(0xc0cbdc, 0x262b44, 0.55));
   const key = new THREE.DirectionalLight(0xffffff, 1.7);
@@ -107,12 +127,12 @@ function roundRect(path, x0, y0, x1, y1, r) {
   return path;
 }
 
+// Solid handles, machined from one piece: rounded ends and a wide chamfer all round.
+const HANDLE_T = 8.4; // thickness of one handle, mm
 function handleGeometry() {
-  const shape = roundRect(new THREE.Shape(), -9, -9, 141, 9, 6);
-  for (const [a, b] of [[26, 46], [52, 72], [78, 98], [104, 122]]) shape.holes.push(roundRect(new THREE.Path(), a, -4, b, 4, 4));
-  const pin = new THREE.Path(); pin.absarc(0, 0, 3, 0, Math.PI * 2, true); shape.holes.push(pin);
-  const g = new THREE.ExtrudeGeometry(shape, { depth: 4.6, bevelEnabled: true, bevelThickness: 0.7, bevelSize: 0.7, bevelSegments: 2, curveSegments: 8 });
-  g.translate(0, 0, -2.3);
+  const shape = roundRect(new THREE.Shape(), -10, -10, 142, 10, 9);
+  const g = new THREE.ExtrudeGeometry(shape, { depth: HANDLE_T - 3, bevelEnabled: true, bevelThickness: 1.5, bevelSize: 1.5, bevelSegments: 4, curveSegments: 12 });
+  g.translate(0, 0, -(HANDLE_T - 3) / 2);
   return g;
 }
 
@@ -123,8 +143,9 @@ function bladeGeometry() {
   s.bezierCurveTo(70, -15, 30, -16, 8, -15); s.lineTo(-2, -15);
   s.quadraticCurveTo(-6, -15, -6, -11); s.lineTo(-6, 3); s.quadraticCurveTo(-6, 7, -5, 7);
   s.holes.push(roundRect(new THREE.Path(), 26, -9, 70, 1, 4));
-  const g = new THREE.ExtrudeGeometry(s, { depth: 0.8, bevelEnabled: true, bevelThickness: 0.55, bevelSize: 0.9, bevelSegments: 3, curveSegments: 16 });
-  g.translate(0, 0, -0.4);
+  // a thick blank with a wide bevel all round, so it reads as a ground edge and a rounded spine
+  const g = new THREE.ExtrudeGeometry(s, { depth: 1.4, bevelEnabled: true, bevelThickness: 0.7, bevelSize: 2.2, bevelSegments: 5, curveSegments: 20 });
+  g.translate(0, 0, -0.7);
   return g;
 }
 
@@ -150,8 +171,8 @@ function rainbowTexture(seed) {
   tex.colorSpace = THREE.SRGBColorSpace;
   tex.anisotropy = 4;
   // the handle's shape runs x -9..141, y -9..9, and extruded UVs are those raw coordinates
-  tex.repeat.set(1 / 150, 1 / 18);
-  tex.offset.set(9 / 150, 0.5);
+  tex.repeat.set(1 / 152, 1 / 20);
+  tex.offset.set(10 / 152, 0.5);
   return tex;
 }
 
@@ -173,17 +194,18 @@ const FINGERS = [ // knuckle x, y; three segment lengths; radius; how far it fan
   { x: 9, y: 45, len: [41, 26, 20], r: 8.4, spread: -4 },
   { x: 25, y: 39, len: [32, 21, 17], r: 7.4, spread: -9 },
 ];
-// f: [knuckle, middle, tip] bend per finger (index to little); thumb: [out, across, twist, middle, tip]
+// f: [knuckle, middle, tip] bend per finger (index to little); thumb: [out, across, twist, bend, tip bend],
+// all measured from the sculpted hand's rest pose (a relaxed open hand)
 const POSES = {
-  grip: { f: [[78, 96, 52], [84, 98, 54], [86, 96, 52], [88, 92, 50]], spread: 0.15, thumb: [26, 58, 40, 34, 26] },
-  pinch: { f: [[46, 52, 26], [24, 30, 16], [28, 34, 18], [34, 38, 20]], spread: 0.6, thumb: [40, 52, 34, 20, 16] },
-  open: { f: [[8, 8, 4], [6, 6, 3], [8, 8, 4], [10, 10, 5]], spread: 1, thumb: [38, 22, 10, 8, 5] },
-  hold: { f: [[12, 18, 10], [12, 18, 10], [14, 18, 10], [16, 18, 10]], spread: 0.25, thumb: [26, 64, 38, 24, 18] },
-  squeeze: { f: [[40, 52, 28], [40, 54, 28], [42, 54, 28], [44, 52, 26]], spread: 0.15, thumb: [24, 66, 38, 30, 24] },
-  catch: { f: [[24, 26, 14], [22, 24, 13], [24, 26, 14], [26, 26, 14]], spread: 0.5, thumb: [30, 42, 22, 14, 10] },
-  spread: { f: [[30, 22, 10], [18, 14, 8], [22, 18, 10], [30, 24, 12]], spread: 1.5, thumb: [38, 34, 16, 10, 8] },
-  point: { f: [[12, 10, 6], [72, 92, 52], [78, 92, 52], [82, 90, 50]], spread: 0.3, thumb: [28, 52, 30, 30, 22] },
-  relax: { f: [[26, 32, 16], [28, 36, 18], [32, 38, 18], [36, 40, 20]], spread: 0.5, thumb: [22, 42, 20, 18, 14] },
+  grip: { f: [[78, 96, 52], [84, 98, 54], [86, 96, 52], [88, 92, 50]], spread: 0.15, thumb: [-25, -30, 0, 45, 40] },
+  pinch: { f: [[46, 52, 26], [24, 30, 16], [28, 34, 18], [34, 38, 20]], spread: 0.6, thumb: [-10, -20, 0, 25, 20] },
+  open: { f: [[8, 8, 4], [6, 6, 3], [8, 8, 4], [10, 10, 5]], spread: 1, thumb: [2, 0, 0, 4, 4] },
+  hold: { f: [[12, 18, 10], [12, 18, 10], [14, 18, 10], [16, 18, 10]], spread: 0.25, thumb: [-12, -22, 0, 22, 18] },
+  squeeze: { f: [[40, 52, 28], [40, 54, 28], [42, 54, 28], [44, 52, 26]], spread: 0.15, thumb: [-16, -26, 0, 32, 26] },
+  catch: { f: [[24, 26, 14], [22, 24, 13], [24, 26, 14], [26, 26, 14]], spread: 0.5, thumb: [4, 0, 0, 10, 8] },
+  spread: { f: [[30, 22, 10], [18, 14, 8], [22, 18, 10], [30, 24, 12]], spread: 1.5, thumb: [10, 4, 0, 6, 5] },
+  point: { f: [[12, 10, 6], [72, 92, 52], [78, 92, 52], [82, 90, 50]], spread: 0.3, thumb: [-25, -30, 0, 45, 40] },
+  relax: { f: [[26, 32, 16], [28, 36, 18], [32, 38, 18], [36, 40, 20]], spread: 0.5, thumb: [-6, -10, 0, 12, 10] },
 };
 const CONTACT = {
   grip: [0, 34, 27], pinch: [-22, 74, 20], open: [0, 32, 36], hold: [0, 50, 20], squeeze: [0, 48, 20],
@@ -193,26 +215,26 @@ const CONTACT = {
 // Hands on the cards hold the deck by its side edge: thumb on the front face, fingers wrapped round
 // behind it, palm against the edge. The contact here is the middle of the deck.
 const CARD_POSES = {
-  hold: { f: [[40, 50, 26], [44, 52, 28], [46, 52, 28], [48, 50, 26]], spread: 0.2, thumb: [30, 36, 20, 10, 8] },
-  squeeze: { f: [[52, 60, 30], [54, 62, 30], [56, 62, 30], [58, 60, 28]], spread: 0.15, thumb: [26, 42, 24, 16, 12] },
-  catch: { f: [[24, 28, 14], [24, 28, 14], [26, 28, 14], [28, 28, 14]], spread: 0.5, thumb: [44, 26, 14, 8, 6] },
-  spread: { f: [[20, 18, 10], [14, 14, 8], [18, 16, 10], [24, 20, 12]], spread: 1.4, thumb: [44, 30, 14, 8, 6] },
-  pinch: { f: [[46, 40, 20], [56, 60, 30], [60, 62, 30], [64, 60, 28]], spread: 0.3, thumb: [34, 40, 26, 14, 10] },
-  point: { f: [[6, 6, 4], [70, 90, 50], [76, 90, 50], [80, 88, 48]], spread: 0.3, thumb: [24, 50, 30, 30, 22] },
-  relax: { f: [[12, 16, 8], [12, 18, 9], [14, 18, 9], [16, 20, 10]], spread: 0.4, thumb: [20, 30, 14, 10, 8] },
-  open: { f: [[12, 12, 6], [10, 10, 5], [12, 12, 6], [14, 14, 7]], spread: 0.9, thumb: [40, 22, 10, 8, 5] },
+  hold: { f: [[40, 50, 26], [44, 52, 28], [46, 52, 28], [48, 50, 26]], spread: 0.2, thumb: [-12, -22, 0, 22, 18] },
+  squeeze: { f: [[52, 60, 30], [54, 62, 30], [56, 62, 30], [58, 60, 28]], spread: 0.15, thumb: [-16, -26, 0, 32, 26] },
+  catch: { f: [[24, 28, 14], [24, 28, 14], [26, 28, 14], [28, 28, 14]], spread: 0.5, thumb: [4, 0, 0, 10, 8] },
+  spread: { f: [[20, 18, 10], [14, 14, 8], [18, 16, 10], [24, 20, 12]], spread: 1.4, thumb: [10, 4, 0, 6, 5] },
+  pinch: { f: [[46, 40, 20], [56, 60, 30], [60, 62, 30], [64, 60, 28]], spread: 0.3, thumb: [-10, -26, 0, 36, 30] },
+  point: { f: [[6, 6, 4], [70, 90, 50], [76, 90, 50], [80, 88, 48]], spread: 0.3, thumb: [-25, -30, 0, 45, 40] },
+  relax: { f: [[12, 16, 8], [12, 18, 9], [14, 18, 9], [16, 20, 10]], spread: 0.4, thumb: [-6, -10, 0, 12, 10] },
+  open: { f: [[12, 12, 6], [10, 10, 5], [12, 12, 6], [14, 14, 7]], spread: 0.9, thumb: [4, 0, 0, 5, 5] },
 };
 const CARD_CONTACT = {
   hold: [-42, 40, 40], squeeze: [-42, 40, 38], catch: [-46, 44, 44], spread: [-42, 44, 40],
   pinch: [-40, 72, 10], point: [-40, 98, 8], relax: [-46, 30, 46], open: [-48, 36, 46],
 };
 
-function makeHand({ left = false, poses = POSES, contact = CONTACT } = {}) {
+function capsuleHand({ mirror = false, poses = POSES, contact = CONTACT } = {}) {
   const skin = new THREE.MeshStandardMaterial({ color: SKIN, roughness: 0.62 });
   const nailMat = new THREE.MeshStandardMaterial({ color: NAIL, roughness: 0.35 });
-  const root = new THREE.Group(), mirror = new THREE.Group(), body = new THREE.Group();
-  mirror.scale.x = left ? -1 : 1;
-  root.add(mirror); mirror.add(body);
+  const root = new THREE.Group(), flip = new THREE.Group(), body = new THREE.Group();
+  flip.scale.x = mirror ? -1 : 1;
+  root.add(flip); flip.add(body);
   const mesh = (geo, mat = skin) => { const m = new THREE.Mesh(geo, mat); m.castShadow = true; m.receiveShadow = true; return m; };
   const bone = (r, len) => { const g = new THREE.CapsuleGeometry(r, len, 4, 12); g.translate(0, len / 2, 0); return g; };
 
@@ -262,25 +284,163 @@ function makeHand({ left = false, poses = POSES, contact = CONTACT } = {}) {
     root,
     /** show a mix of poses, e.g. { grip: 0.7, pinch: 0.3 } */
     setPose(w) {
-      let tot = 0;
-      for (const k in w) if (poses[k]) tot += Math.max(0, w[k] || 0);
-      if (tot < 1e-6) { w = { relax: 1 }; tot = 1; }
-      const f = FINGERS.map(() => [0, 0, 0]), th = [0, 0, 0, 0, 0], c = [0, 0, 0];
-      let spread = 0;
-      for (const k in w) {
-        const a = Math.max(0, w[k] || 0) / tot, p = poses[k];
-        if (!a || !p) continue;
-        p.f.forEach((row, i) => row.forEach((v, j) => { f[i][j] += v * a; }));
-        p.thumb.forEach((v, j) => { th[j] += v * a; });
-        contact[k].forEach((v, j) => { c[j] += v * a; });
-        spread += p.spread * a;
-      }
+      const { f, th, c, spread } = mixPose(w, poses, contact);
       fingers.forEach(({ base, js, f: F }, i) => { base.rotation.z = F.spread * spread * RAD; js.forEach((j, k) => { j.rotation.x = f[i][k] * RAD; }); });
       thumb.rotation.set(th[1] * RAD, th[2] * RAD, th[0] * RAD, 'ZXY');
       tMid.rotation.x = th[3] * RAD; tTip.rotation.x = th[4] * RAD;
       body.position.set(-c[0], -c[1], -c[2]);
     },
   };
+}
+
+// ------------------------------------------------------------ sculpted hands
+// Real hand models: the WebXR generic hands (MIT, Amazon and the Immersive Web group), fetched from
+// jsDelivr like Three itself, so nothing is stored here. They are rigged with a bone per joint.
+// Each bone is bent about axes worked out from the rest pose (knuckle line, finger line, palm), so
+// a pose means the same on every finger, and the model is turned into the same frame as the capsule
+// hand above: palm +z, fingers +y, knuckles at y 45. If the models can't load, capsules stand in.
+const HAND_URL = side => `https://cdn.jsdelivr.net/npm/@webxr-input-profiles/assets@1.0.20/dist/profiles/generic-hand/${side}.glb`;
+const LOADER_URL = 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
+let handFiles = null;
+function loadHandFiles() {
+  handFiles ||= (async () => {
+    const { GLTFLoader } = await import(LOADER_URL);
+    const get = s => fetch(HAND_URL(s)).then(r => { if (!r.ok) throw new Error(`hand model ${r.status}`); return r.arrayBuffer(); });
+    const [left, right] = await Promise.all([get('left'), get('right')]);
+    return { loader: new GLTFLoader(), left, right };
+  })();
+  return handFiles.catch(e => { handFiles = null; console.warn('Hand models are unavailable, using simple hands.', e); return null; });
+}
+
+let skinMat = null;
+const skin = () => (skinMat ||= new THREE.MeshPhysicalMaterial({
+  color: SKIN, roughness: 0.5, sheen: 0.7, sheenRoughness: 0.45, sheenColor: new THREE.Color(0xf6757a),
+  clearcoat: 0.06, clearcoatRoughness: 0.7,
+}));
+
+async function sculptedHand(files, { side = 'left', poses = POSES, contact = CONTACT } = {}) {
+  const model = (await files.loader.parseAsync(files[side].slice(0), '')).scene;
+  model.updateMatrixWorld(true);
+  const bone = n => model.getObjectByName(n);
+  const at = n => bone(n).getWorldPosition(new THREE.Vector3());
+  const wrist = at('wrist'), iP = at('index-finger-phalanx-proximal'), pP = at('pinky-finger-phalanx-proximal'), mP = at('middle-finger-phalanx-proximal');
+  const F = mP.clone().sub(wrist).normalize();                              // along the fingers
+  const A = pP.clone().sub(iP); A.addScaledVector(F, -A.dot(F)).normalize(); // index to little finger
+  // measured from the models: these hands rest with the fingers bent slightly back, but the thumb sits on
+  // the palm side, which for a left hand is (index to little) x (along the fingers), and the reverse for a right
+  const s = side === 'left' ? 1 : -1;
+  const N = s > 0 ? new THREE.Vector3().crossVectors(A, F) : new THREE.Vector3().crossVectors(F, A); // out of the palm
+  const X = A.clone().multiplyScalar(s);
+  const toH = new THREE.Matrix4().makeBasis(X, F, N).invert();
+  model.traverse(o => { if (o.isMesh) { o.material = skin(); o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
+
+  // The model's bones all hang straight off the armature (WebXR moves each joint on its own), so
+  // bending is done here: each chain is walked from the knuckle out, every joint turned by the
+  // turns of the joints before it, in the armature's own space.
+  const rest = n => bone(n).position.clone();
+  const fl = rest('middle-finger-phalanx-proximal').sub(rest('wrist')).normalize();
+  const al = rest('pinky-finger-phalanx-proximal').sub(rest('index-finger-phalanx-proximal')); al.addScaledVector(fl, -al.dot(fl)).normalize();
+  const nl = s > 0 ? new THREE.Vector3().crossVectors(al, fl) : new THREE.Vector3().crossVectors(fl, al);
+  const curl = new THREE.Vector3().crossVectors(fl, nl).normalize();
+  const tl = rest('thumb-tip').sub(rest('thumb-metacarpal')).normalize();
+  // the thumb bends in the plane its joints already curve in at rest
+  const t1 = rest('thumb-phalanx-proximal').sub(rest('thumb-metacarpal')), t2 = rest('thumb-tip').sub(rest('thumb-phalanx-proximal'));
+  const tFlex = new THREE.Vector3().crossVectors(t1, t2);
+  if (tFlex.length() < 1e-6) tFlex.crossVectors(tl, nl);
+  tFlex.normalize();
+  const chain = names => names.map(n => { const b = bone(n); return { b, P: b.position.clone(), Q: b.quaternion.clone() }; });
+  const fingers = ['index', 'middle', 'ring', 'pinky'].map(f => chain(['phalanx-proximal', 'phalanx-intermediate', 'phalanx-distal', 'tip'].map(x => `${f}-finger-${x}`)));
+  const thumb = chain(['thumb-metacarpal', 'thumb-phalanx-proximal', 'thumb-phalanx-distal', 'thumb-tip']);
+  const C = new THREE.Quaternion(), D = new THREE.Quaternion(), v = new THREE.Vector3(), here = new THREE.Vector3();
+  const run = (ch, turns) => {
+    C.identity();
+    here.copy(ch[0].P);
+    ch.forEach((j, k) => {
+      if (k) here.add(v.copy(j.P).sub(ch[k - 1].P).applyQuaternion(C));
+      for (const [axis, deg] of turns[k] || []) C.multiply(D.setFromAxisAngle(axis, deg * RAD));
+      j.b.position.copy(here);
+      j.b.quaternion.copy(C).multiply(j.Q);
+    });
+  };
+  const wristB = bone('wrist'), knuckleB = bone('middle-finger-phalanx-proximal');
+  // only now turn the model into the hand frame: the axes above are measured in the model's own space
+  const align = new THREE.Group();
+  align.add(model);
+  align.quaternion.setFromRotationMatrix(toH);
+  align.scale.setScalar(1000);
+  const k = iP.clone().add(pP).multiplyScalar(0.5).applyMatrix4(toH).multiplyScalar(1000);
+  align.position.set(-k.x, 45 - k.y, -k.z);
+
+  const root = new THREE.Group(), body = new THREE.Group();
+  root.add(body); body.add(align);
+  const SPREAD = [6, 1, -4, -9];
+  return {
+    root,
+    sculpted: true,
+    setPose(w) {
+      const m = mixPose(w, poses, contact);
+      fingers.forEach((ch, i) => run(ch, [[[nl, s * SPREAD[i] * m.spread], [curl, m.f[i][0]]], [[curl, m.f[i][1]]], [[curl, m.f[i][2]]]]));
+      // thumb: out (positive spreads it from the fingers), across (positive brings it over the palm), twist, then the two bends
+      run(thumb, [[[nl, s * m.th[0]], [fl, s * m.th[1]], [tl, -s * m.th[2]]], [[tFlex, m.th[3]]], [[tFlex, m.th[4]]]]);
+      body.position.set(-m.c[0], -m.c[1], -m.c[2]);
+    },
+    /** where the wrist and the middle knuckle are now, in the scene */
+    wrist: out => wristB.getWorldPosition(out),
+    knuckle: out => knuckleB.getWorldPosition(out),
+  };
+}
+
+/** blend a mix of poses into joint angles and a contact point */
+function mixPose(w, poses, contact) {
+  let tot = 0;
+  for (const k in w) if (poses[k]) tot += Math.max(0, w[k] || 0);
+  if (tot < 1e-6) { w = { relax: 1 }; tot = 1; }
+  const f = [0, 1, 2, 3].map(() => [0, 0, 0]), th = [0, 0, 0, 0, 0], c = [0, 0, 0];
+  let spread = 0;
+  for (const k in w) {
+    const a = Math.max(0, w[k] || 0) / tot, p = poses[k];
+    if (!a || !p) continue;
+    p.f.forEach((row, i) => row.forEach((v, j) => { f[i][j] += v * a; }));
+    p.thumb.forEach((v, j) => { th[j] += v * a; });
+    contact[k].forEach((v, j) => { c[j] += v * a; });
+    spread += p.spread * a;
+  }
+  return { f, th, c, spread };
+}
+
+/**
+ * A sleeve from a fixed elbow to the wrist, so the arm swings from the elbow as the hand moves.
+ * The elbow is set the first time, back along the forearm from where the hand starts.
+ */
+function sleeveFor(scene, hand) {
+  const mat = new THREE.MeshStandardMaterial({ color: SLEEVE, roughness: 0.92 });
+  const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(40, 46, 1, 28, 1, true), mat);
+  const cuff = new THREE.Mesh(new THREE.TorusGeometry(40, 5.5, 10, 32), new THREE.MeshStandardMaterial({ color: CUFF, roughness: 0.85 }));
+  const inside = new THREE.Mesh(new THREE.CircleGeometry(38, 28), new THREE.MeshStandardMaterial({ color: 0x181425, roughness: 1 }));
+  for (const m of [sleeve, cuff]) { m.castShadow = true; m.receiveShadow = true; scene.add(m); }
+  scene.add(inside);
+  let elbow = null;
+  const w = new THREE.Vector3(), kn = new THREE.Vector3(), dir = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0);
+  return () => {
+    hand.root.updateMatrixWorld(true);
+    hand.wrist(w); hand.knuckle(kn);
+    if (!elbow) elbow = w.clone().add(w.clone().sub(kn).normalize().multiplyScalar(330));
+    dir.copy(elbow).sub(w);
+    const len = dir.length();
+    dir.normalize();
+    const start = w.clone().addScaledVector(dir, 16); // leave a little wrist showing
+    sleeve.scale.set(1, len + 260, 1);
+    sleeve.position.copy(start).addScaledVector(dir, (len + 260) / 2);
+    sleeve.quaternion.setFromUnitVectors(up, dir);
+    cuff.position.copy(start); cuff.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir);
+    inside.position.copy(start).addScaledVector(dir, 1); inside.quaternion.copy(cuff.quaternion);
+  };
+}
+
+/** a hand for a rig: sculpted when the models load, capsules when they don't */
+async function makeHand(files, opts = {}) {
+  if (files) { try { return await sculptedHand(files, opts); } catch (e) { console.warn('Could not build a sculpted hand.', e); } }
+  return capsuleHand({ ...opts, mirror: opts.side === 'right' });
 }
 
 /** ease a mix of poses towards a target, by k (0 stays, 1 jumps) */
@@ -293,37 +453,56 @@ const follow = (now, last, ms) => (now && last ? 1 - Math.exp(-(now - last) / ms
 // how the knife hand sits round the handle (turned about the handle's own axis), and how the whole
 // performance leans so the arm comes up from the lower left
 const ROLL = -28, LEAN = 34;
+// The tricks and the hand are built left-handed; the whole knife scene is drawn mirrored, so on screen it
+// is a right hand, with its arm coming up from the lower right.
+const MIRROR = true;
 
 export async function makeBalisong3D(container, { framing, near } = {}) {
   await loadThree();
-  const st = stage(container, near ? { cam: [130, 130, 800], look: [-40, 6, 0] } : { cam: [210, 190, 1040], look: [-30, 16, 0], ...framing });
+  const m = MIRROR ? -1 : 1;
+  const st = stage(container, near ? { cam: [200 * m, 150, 780], look: [-40 * m, 6, 0] } : { cam: [360 * m, 250, 860], look: [-60 * m, 56, 0], orbit: true, ...framing });
   const safeFinish = anodise(rainbowTexture(0)), biteFinish = anodise(rainbowTexture(2.4));
   const gold = new THREE.MeshStandardMaterial({ color: 0xfeae34, metalness: 1, roughness: 0.28 });
-  const steel = new THREE.MeshStandardMaterial({ color: 0xe8eef5, metalness: 1, roughness: 0.3, envMapIntensity: 1.6 });
-  const hGeo = handleGeometry(), pinGeo = new THREE.CylinderGeometry(3.4, 3.4, 13.5, 20);
+  // brushed steel: the anisotropy streaks the highlight along the blade
+  const steel = new THREE.MeshPhysicalMaterial({ color: 0xe8eef5, metalness: 1, roughness: 0.26, envMapIntensity: 1.6, anisotropy: 0.7, anisotropyRotation: 0 });
+  const hGeo = handleGeometry(), SPAN = 2 * (1.5 + 0.5 + HANDLE_T / 2); // handle centres either side of the blade
+  const pinGeo = new THREE.CylinderGeometry(3.2, 3.2, SPAN + HANDLE_T + 1, 20);
   pinGeo.rotateX(Math.PI / 2);
+  // a pivot screw head on each outside face, with a dark socket
+  const headGeo = new THREE.CylinderGeometry(5, 5.2, 1.6, 28); headGeo.rotateX(Math.PI / 2);
+  const socketGeo = new THREE.CylinderGeometry(2, 2, 0.6, 6); socketGeo.rotateX(Math.PI / 2);
+  const socketMat = new THREE.MeshStandardMaterial({ color: 0x3e2731, metalness: 0.6, roughness: 0.6 });
+  const screws = parent => [1, -1].forEach(side => {
+    const head = new THREE.Mesh(headGeo, gold), socket = new THREE.Mesh(socketGeo, socketMat);
+    head.position.z = side * (SPAN / 2 + HANDLE_T / 2 + 0.6); socket.position.z = side * (SPAN / 2 + HANDLE_T / 2 + 1.3);
+    head.castShadow = true; parent.add(head, socket);
+  });
   const shadow = m => { m.castShadow = true; m.receiveShadow = true; return m; };
 
   const world = new THREE.Group(), outer = new THREE.Group(), inner = new THREE.Group();
-  world.rotation.z = LEAN * RAD;
+  world.rotation.z = m * LEAN * RAD;
+  world.scale.x = m;
   st.scene.add(world);
   outer.add(inner); world.add(outer);
-  const h1 = shadow(new THREE.Mesh(hGeo, safeFinish)); h1.position.z = 3.4;
+  const h1 = shadow(new THREE.Mesh(hGeo, safeFinish)); h1.position.z = SPAN / 2;
   const pin1 = shadow(new THREE.Mesh(pinGeo, gold));
   const blade = new THREE.Group();
   const bladeMesh = shadow(new THREE.Mesh(bladeGeometry(), steel));
   const h2 = new THREE.Group(); h2.position.set(0, -8, 0);
-  const h2Mesh = shadow(new THREE.Mesh(hGeo, biteFinish)); h2Mesh.position.z = -3.4;
+  const h2Mesh = shadow(new THREE.Mesh(hGeo, biteFinish)); h2Mesh.position.z = -SPAN / 2;
   const pin2 = shadow(new THREE.Mesh(pinGeo, gold));
-  const latch = shadow(new THREE.Mesh(new THREE.BoxGeometry(12, 13, 2.4), steel)); latch.position.set(134, 0, -6.6);
+  const latch = shadow(new THREE.Mesh(new THREE.BoxGeometry(14, 15, 3), steel)); latch.position.set(134, 0, -SPAN / 2 - HANDLE_T / 2 - 1.5);
   h2.add(h2Mesh, pin2, latch);
+  screws(h2);
   blade.add(bladeMesh, h2);
   inner.add(h1, pin1, blade);
+  screws(inner);
 
   // the hand: its contact point rides on the track's hand position, turned with the hand's angles
-  const hand = makeHand(), hPivot = new THREE.Group(), hRoll = new THREE.Group();
+  const hand = await makeHand(await loadHandFiles(), { side: 'left' }), hPivot = new THREE.Group(), hRoll = new THREE.Group();
   hRoll.rotation.x = ROLL * RAD;
   hPivot.add(hRoll); hRoll.add(hand.root); world.add(hPivot);
+  const arm = hand.sculpted ? sleeveFor(st.scene, hand) : null;
   const mix = { grip: 1 };
   let last = 0;
 
@@ -332,12 +511,16 @@ export async function makeBalisong3D(container, { framing, near } = {}) {
     inner.position.set(-p.pv[0], p.pv[1], 0);
     blade.rotation.z = -p.b * RAD;
     h2.rotation.z = -p.d * RAD;
-    place(hPivot, p.hX, p.hY, 0, p.hrz, p.hry, p.hrx);
+    // while the knife spins in the fingers the wrist and fingers pump with it, twice a turn
+    const beat = (p.pinch || 0) * (1 - (p.air || 0)), phase = 2 * (p.rz + p.ry + p.rx) * RAD;
+    place(hPivot, p.hX, p.hY + beat * 3 * Math.cos(phase), 0, p.hrz + beat * 7 * Math.sin(phase), p.hry, p.hrx + beat * 4 * Math.cos(phase));
     // the grip loosens to a pinch while the knife turns in the fingers, and opens flat to catch it
     const air = p.air || 0, pinch = p.pinch || 0;
-    easeMix(mix, { grip: (1 - pinch) * (1 - air), pinch: pinch * (1 - air), open: air }, follow(now, last, 40));
+    const push = pinch * (1 - air) * 0.22 * (1 + Math.sin(2 * (p.rz + p.ry + p.rx) * RAD));
+    easeMix(mix, { grip: (1 - pinch) * (1 - air) + push, pinch: pinch * (1 - air), open: air }, follow(now, last, 40));
     last = now || 0;
     hand.setPose(mix);
+    arm?.();
     st.render();
   };
   return {
@@ -349,16 +532,32 @@ export async function makeBalisong3D(container, { framing, near } = {}) {
 }
 
 // ------------------------------------------------------------ deck of cards
-function cardCanvas(draw) {
+/** a card's printing; the face is drawn mirrored because it is seen from the back of its geometry */
+function cardCanvas(draw, mirrored = false) {
   const c = document.createElement('canvas');
   c.width = 280; c.height = 392;
   const g = c.getContext('2d');
-  g.beginPath(); g.roundRect(2, 2, 276, 388, 22); g.closePath();
-  g.save(); g.clip(); draw(g); g.restore();
+  if (mirrored) { g.translate(280, 0); g.scale(-1, 1); }
+  draw(g);
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
   tex.anisotropy = 4;
+  // extruded caps take the shape's own coordinates as UVs: -35..35 by -49..49
+  tex.repeat.set(1 / 70, 1 / 98);
+  tex.offset.set(0.5, 0.5);
   return tex;
+}
+
+/** One card: a rounded slab with real thickness. Its groups: the face (-z), the back (+z), the edge. */
+function cardGeometry() {
+  const g = new THREE.ExtrudeGeometry(roundRect(new THREE.Shape(), -35, -49, 35, 49, 4.5), { depth: 0.36, bevelEnabled: false, curveSegments: 6 });
+  g.translate(0, 0, -0.18);
+  const [caps, sides] = g.groups; // the caps hold the bottom faces first, then the top faces
+  g.clearGroups();
+  g.addGroup(caps.start, caps.count / 2, 0);
+  g.addGroup(caps.start + caps.count / 2, caps.count / 2, 1);
+  g.addGroup(sides.start, sides.count, 2);
+  return g;
 }
 
 function backTexture() {
@@ -383,7 +582,7 @@ function faceTexture({ rank, suit, red }) {
     corner();
     g.save(); g.translate(280, 392); g.rotate(Math.PI); corner(); g.restore();
     g.font = '150px Georgia, serif'; g.textBaseline = 'middle'; g.fillText(suit, 140, 200);
-  });
+  }, true);
 }
 
 // Seen from the front, the hand on the left of the screen is the performer's right hand. Each hand is
@@ -392,21 +591,25 @@ const TURN = { L: 90, R: -90 }, TILT = { L: 10, R: -10 };
 
 export async function makeDeck3D(container, { framing, near } = {}) {
   await loadThree();
-  const st = stage(container, { cam: near ? [110, 140, 700] : [160, 170, 900], look: [10, 18, 0], floor: -230, ...framing });
-  const geo = new THREE.BoxGeometry(70, 98, 0.42);
-  const edge = new THREE.MeshStandardMaterial({ color: 0xf4f1ea, roughness: 0.85 });
-  const back = new THREE.MeshStandardMaterial({ map: backTexture(), roughness: 0.5, alphaTest: 0.5 });
+  const st = stage(container, { cam: near ? [170, 170, 680] : [300, 280, 800], look: [10, 18, 0], floor: -230, orbit: !near, ...framing });
+  const geo = cardGeometry();
+  // card stock with a plastic coating: a soft sheen on the printing, matt white edges
+  const coat = { roughness: 0.42, clearcoat: 0.55, clearcoatRoughness: 0.3 };
+  const edge = new THREE.MeshStandardMaterial({ color: 0xf4f1ea, roughness: 0.8 });
+  const back = new THREE.MeshPhysicalMaterial({ map: backTexture(), ...coat });
   const cards = Array.from({ length: N }, (_, i) => {
-    const face = new THREE.MeshStandardMaterial({ map: faceTexture(cardOf(i)), roughness: 0.55, alphaTest: 0.5 });
-    // box faces: +x, -x, +y, -y, +z (towards you: the back design), -z (the face)
-    const m = new THREE.Mesh(geo, [edge, edge, edge, edge, back, face]);
+    const face = new THREE.MeshPhysicalMaterial({ map: faceTexture(cardOf(i)), ...coat });
+    const m = new THREE.Mesh(geo, [face, back, edge]);
     m.castShadow = true; m.receiveShadow = true;
     st.scene.add(m);
     return m;
   });
-  const grips = { poses: CARD_POSES, contact: CARD_CONTACT };
-  const hands = { L: makeHand(grips), R: makeHand({ ...grips, left: true }) }, frames = {}, held = {};
-  for (const side of ['L', 'R']) { frames[side] = new THREE.Group(); frames[side].add(hands[side].root); hands[side].root.scale.setScalar(0.88); st.scene.add(frames[side]); }
+  const grips = { poses: CARD_POSES, contact: CARD_CONTACT }, files = await loadHandFiles();
+  const hands = { L: await makeHand(files, { ...grips, side: 'left' }), R: await makeHand(files, { ...grips, side: 'right' }) }, frames = {}, held = {}, arms = {};
+  for (const side of ['L', 'R']) {
+    frames[side] = new THREE.Group(); frames[side].add(hands[side].root); hands[side].root.scale.setScalar(0.92); st.scene.add(frames[side]);
+    if (hands[side].sculpted) arms[side] = sleeveFor(st.scene, hands[side]);
+  }
   let last = 0;
   const putCard = (m, p) => place(m, p.x, p.y, p.z, p.rz, p.ry, p.rx);
   const putHand = (side, h, k) => {
@@ -421,12 +624,30 @@ export async function makeDeck3D(container, { framing, near } = {}) {
     const k = follow(now, last, 55);
     last = now || 0;
     putHand('L', s.L, k); putHand('R', s.R, k);
+    arms.L?.(); arms.R?.();
     st.render();
   };
   return {
     three: true,
     render: apply,
     pose: s => apply(s, 0),
+    destroy: st.destroy,
+  };
+}
+
+/** a hand on its own, for checking poses by eye: pose(mix) then look from a side */
+export async function handStage(container, { side = 'left', cards = false } = {}) {
+  await loadThree();
+  const st = stage(container, { cam: [0, 60, 520], look: [0, 40, 0], floor: -400 });
+  const hand = await makeHand(await loadHandFiles(), cards ? { side, poses: CARD_POSES, contact: CARD_CONTACT } : { side });
+  const holder = new THREE.Group();
+  holder.add(hand.root); st.scene.add(holder);
+  return {
+    pose(w, turnY = 0, raw = null) {
+      const table = cards ? CARD_POSES : POSES, at = cards ? CARD_CONTACT : CONTACT;
+      if (raw) { table.raw = raw; at.raw = [0, 0, 0]; w = { raw: 1 }; }
+      hand.setPose(w); holder.rotation.set(0, turnY * RAD, 0); hand.root.children[0].position.set(0, 0, 0); st.render();
+    },
     destroy: st.destroy,
   };
 }

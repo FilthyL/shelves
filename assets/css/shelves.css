@@ -413,6 +413,10 @@ input.field { width: 180px; }
 .play-stage { position: relative; min-width: 0; min-height: 0; perspective: 1600px; overflow: hidden; }
 .play-anchor { top: 54%; }
 .play-stage > .toy-canvas { height: auto; bottom: var(--ui, 132px); }
+.toy-canvas.can-orbit { cursor: grab; touch-action: none; }
+.toy-canvas.is-orbiting { cursor: grabbing; }
+.play-hint { position: absolute; right: 24px; top: max(28px, env(safe-area-inset-top, 0px)); margin: 0; font: 400 13px/1 var(--f-pix); color: var(--slate); pointer-events: none; }
+@media (max-width: 860px) { .play-hint { display: none; } }
 .play-now { position: absolute; left: 24px; top: max(24px, env(safe-area-inset-top, 0px)); margin: 0; display: grid; gap: 4px; pointer-events: none; }
 .play-now b { font: 400 clamp(40px, 5vw, 64px)/0.85 var(--f-big); color: var(--sand); }
 .play-now i { font: 400 14px/1.3 var(--f-pix); font-style: normal; color: var(--steel); }

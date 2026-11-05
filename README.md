@@ -81,7 +81,7 @@ The basement holds toys you can play with instead of shelves. Each toy is a real
 - **Butterfly knife** (a trainer): 24 tricks, from the basic opening and closing through fans, the Y2K and Zen rollovers, Chaplin, helix, aerials, the ladder and the tornado. The blade and bite handle swing on their own pins, so the knife opens and closes the way the real linkage does.
 - **Deck of cards**: 13 cardistry moves, including the thumb fan, Charlier, swivel, revolution and Sybil cuts, the spring, waterfall, ribbon spread with turnover, riffle shuffle and bridge, pinwheel, scissor cut, boomerang throw and anaconda dribble.
 
-Hands do the tricks: one hand flips the knife, two hands work the deck, each holding it from the side with the thumb on the front. The knife hand works itself out from each trick: it grips the safe handle and turns with the knife, loosens to let the knife spin in its fingers, and opens flat under a toss.
+Real hands do the tricks: sculpted, rigged hand models with a bone in every joint. A right hand flips the knife and two hands work the deck, each holding it from the side with the thumb on the front. The knife has solid chamfered handles, screw-head pivots and a thick ground blade; the cards have real thickness, rounded corners and a coated finish. Drag the play table to look around them. The knife hand works itself out from each trick: it grips the safe handle and turns with the knife, loosens to let the knife spin in its fingers, and opens flat under a toss.
 
 Pick a toy to open the play table, then **build a combo**: pick one of the suggested combos, or tap tricks on the card to add them in order, and press **Run the combo** (or Enter). The hand runs the whole sequence in one flow. Where a trick needs the knife open or closed and it isn't, the hand opens or closes it on the way. Speeds are 0.5×, 1× and 2×, **Repeat** keeps going, and Backspace takes the last trick out. A trick you add while the hand is resting plays right away, and one you add during a run joins the end of it. The combo is in the link, so it can be shared: `#tricks--butterfly-knife--basic-opening+chaplin+basic-closing`.
 
@@ -125,5 +125,6 @@ python3 -m unittest discover -s tools
 - Colours: [ENDESGA 32](https://lospec.com/palette-list/endesga-32) by Endesga. Every colour in the house, the rooms and the interface comes from it.
 - Type: Jersey 10, Pixelify Sans, Archivo, Bodoni Moda and IBM Plex Mono from Google Fonts.
 - 3D: [Three.js](https://threejs.org) (MIT), loaded from jsDelivr.
+- Hands: the generic hand models from [WebXR Input Profiles](https://github.com/immersive-web/webxr-input-profiles) (MIT, Amazon), loaded from jsDelivr. Nothing 3D is stored in this repo.
 - The interface was cleaned up with the [unslop](https://github.com/heydamir/unslop) guidance by Damir Sokolovsky (CC BY 4.0).
 - Cover art belongs to its publishers and is shown to identify each item in a personal collection.
