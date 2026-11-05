@@ -1,25 +1,14 @@
 import { loadHouse, hash, esc, roomStats, countLine } from './model.js';
 import { spineHTML, spineClass, frameHTML, backHTML, mediaHTML, coverHTML, palVars, volumeLine } from './art.js';
+import { createStreet, decorSprite, wallTile } from './pixel.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const SWING = 'cubic-bezier(0.65, 0.02, 0.25, 1)';
+const SWING = 'cubic-bezier(0.22, 1, 0.36, 1)';
 
-// House geometry in unscaled px. The house is drawn once and scaled to the viewport.
-const G = { W: 600, roofH: 210, floorH: 200, slab: 12, stairX: 258, stairW: 84, base: 34, cellW: 244 };
-const GLOW = { music: '#ffb35a', movies: '#ff8a6b', books: '#ffd27a', anime: '#ff6fb5', manga: '#ffc27a' };
-const DECOR = {
-  plant: ['<i class="pot"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i>', 46, 74],
-  candle: ['<i class="wax"></i><i class="flame"></i>', 22, 70],
-  bookend: ['<i class="be"></i>', 18, 64],
-  speaker: ['<i class="cab"></i><i class="cone"></i><i class="tw"></i>', 50, 76],
-  reel: ['<i class="can"></i>', 64, 66],
-  globe: ['<i class="ball"></i><i class="stand"></i><i class="base"></i>', 52, 84],
-  daruma: ['<i class="body"></i><i class="face"></i>', 44, 50],
-};
-
-const S = { house: null, scene: null, room: null, sort: 'shelf', fmt: null, q: '', order: [], insp: null, wrap: null };
+const S = { house: null, scene: null, room: null, sort: 'shelf', fmt: null, q: '', order: [], insp: null };
+const MEDIA_ROOMS = new Set(['music', 'movies', 'anime']);
 
 boot();
 
@@ -66,193 +55,99 @@ function route() {
 
 function go(hashName) { location.hash = hashName; }
 
-// ============================================================ STREET + HOUSE
-function layout() {
-  const rooms = S.house.rooms;
-  const attic = rooms.length % 2 === 1;
-  const floors = Math.max(1, Math.ceil((rooms.length - (attic ? 1 : 0)) / 2));
-  const cells = [];
-  let i = 0;
-  if (attic) {
-    const h = G.roofH - 20, half = h / 0.7;
-    cells.push({ room: rooms[i++], attic: true, x: G.W / 2 - half, y: 20, w: half * 2, h, where: 'Attic' });
-  }
-  for (let f = 0; f < floors; f++) {
-    const y = G.roofH + f * G.floorH + G.slab;
-    const level = floors - 1 - f;
-    const name = level === 0 ? 'Ground floor' : level === 1 ? 'First floor' : level === 2 ? 'Second floor' : `Floor ${level}`;
-    cells.push({ room: rooms[i++] || null, x: 14, y, w: G.cellW, h: G.floorH - G.slab, where: `${name} · West`, level });
-    cells.push({ room: rooms[i++] || null, x: G.W - 14 - G.cellW, y, w: G.cellW, h: G.floorH - G.slab, where: `${name} · East`, level });
-  }
-  for (const c of cells) if (c.room) c.room.where = c.where;
-  return { cells, floors, H: G.roofH + floors * G.floorH + G.base };
+// ============================================================ STREET + HOUSE (pixel art)
+const ST = { scene: null, k: 4, ctx: null, raf: 0, last: 0, t0: performance.now(), open: 0, target: 0, hover: null, hoverHouse: false };
+
+function floorName(f, floors) {
+  const level = floors - 1 - f;
+  return level === 0 ? 'Ground floor' : level === 1 ? 'First floor' : level === 2 ? 'Second floor' : `Floor ${level}`;
 }
 
 function buildStreet() {
   const H = S.house;
-  const L = layout();
-  S.layout = L;
+  ST.scene = createStreet({ rooms: H.rooms, name: H.name, number: H.number });
+  const { cells, L } = ST.scene;
+  for (const c of cells) if (c.room) c.room.where = c.attic ? 'Attic' : `${floorName(c.floor, L.floors)} · ${c.x > 50 ? 'East' : 'West'}`;
   const totalStats = H.rooms.map(r => `<span><b>${r.kind === 'manga' ? r.objects.length : r.items.length}</b> ${r.kind === 'manga' ? 'volumes' : r.K.many}</span>`).join('');
-  const skyline = Array.from({ length: 26 }, (_, i) => {
-    const h = 18 + (hash('sky' + i) % 62);
-    return `<span style="height:${h}%;flex-grow:${1 + (hash('w' + i) % 3)}"></span>`;
-  }).join('');
 
   $('#street').innerHTML = `
-    <div class="stars"></div><div class="stars s2"></div><div class="moon"></div>
-    <div class="skyline" aria-hidden="true">${skyline}</div>
+    <canvas class="street-canvas" aria-hidden="true"></canvas>
     <header class="street-head">
       <p class="eyebrow">No. ${esc(H.number || '7')} · Est. ${esc(H.established || new Date().getFullYear())} · A private collection</p>
       <h1 class="wordmark">${esc(H.name)}</h1>
       <p class="tagline">${esc(H.tagline || '')}</p>
     </header>
-    <div class="lot">
-      <div class="ground"></div>
-      <div class="lamp-post" aria-hidden="true"></div>
-      ${houseHTML(L)}
+    <div class="hits">
+      <button class="hit-house" type="button" aria-label="Open the front of ${esc(H.name)}"></button>
+      ${cells.filter(c => c.room).map(c => `<button class="hit-room${c.attic ? ' attic' : ''}" type="button" data-room="${c.room.id}" aria-label="Enter ${esc(c.room.name)}, ${esc(countLine(c.room))}">
+        <span class="hit-label"><b>${esc(c.room.name.replace(/^The\s+/i, ''))}</b><i>${esc(countLine(c.room))}</i></span></button>`).join('')}
     </div>
     <footer class="street-foot">
       <span class="hint">Click the house to let yourself in</span>
-      <button class="btn-search btn-close" type="button">Close the front</button>
+      <button class="btn btn-close" type="button">Close the front</button>
       <span class="stats">${totalStats}</span>
-      <button class="btn-search js-search" type="button" aria-label="Search the collection">${searchIcon()}<span>Search</span><kbd>/</kbd></button>
+      <button class="btn js-search" type="button" aria-label="Search the collection">${searchIcon()}<span>Search</span><kbd>/</kbd></button>
     </footer>`;
 
   const street = $('#street');
-  $('.facade', street).addEventListener('click', () => go('house'));
+  ST.ctx = $('.street-canvas', street).getContext('2d');
+  const hh = $('.hit-house', street);
+  const set = (k, v) => () => { ST[k] = v; drawStreet(); };
+  hh.addEventListener('click', () => go('house'));
+  hh.addEventListener('pointerenter', set('hoverHouse', true));
+  hh.addEventListener('pointerleave', set('hoverHouse', false));
+  hh.addEventListener('focus', set('hoverHouse', true));
+  hh.addEventListener('blur', set('hoverHouse', false));
+  $$('.hit-room', street).forEach(b => {
+    const on = set('hover', b.dataset.room), off = set('hover', null);
+    b.addEventListener('pointerenter', on); b.addEventListener('pointerleave', off);
+    b.addEventListener('focus', on); b.addEventListener('blur', off);
+    b.addEventListener('click', () => zoomInto(b, S.house.byId[b.dataset.room]));
+  });
   $('.btn-close', street).addEventListener('click', () => go(''));
   $('.js-search', street).addEventListener('click', openSearch);
-  $$('.cell[data-room]', street).forEach(c => c.addEventListener('click', () => zoomInto(c, S.house.byId[c.dataset.room])));
-  fitHouse();
-}
-
-function houseHTML(L) {
-  const { W, roofH, floorH } = G;
-  const facadeH = L.H - G.base;
-  const name = esc(S.house.name);
-
-  const slabs = Array.from({ length: L.floors }, (_, f) => `<div class="slab" style="top:${roofH + f * floorH}px"></div>`).join('');
-  const cells = L.cells.map(cellHTML).join('');
-
-  // windows on the front, one per room, placed over that room
-  let wins = '';
-  for (const c of L.cells) {
-    const glow = c.room ? GLOW[c.room.kind] : '#3a3040';
-    if (c.attic) {
-      wins += `<span class="win oculus" style="left:${W / 2 - 46}px;top:${roofH - 128}px;width:92px;height:92px;--glow:${glow}"></span>`;
-    } else {
-      const ww = 104, wh = 116;
-      wins += `<span class="win" style="left:${c.x + (c.w - ww) / 2}px;top:${c.y + 30}px;width:${ww}px;height:${wh}px;--glow:${glow}"><span class="flowers"></span></span>`;
-    }
-  }
-  const trims = Array.from({ length: L.floors }, (_, f) =>
-    `<span class="trim" style="left:0;right:0;top:${roofH + f * floorH - (f === 0 ? 8 : 4)}px;height:${f === 0 ? 14 : 8}px"></span>`).join('');
-  const doorTop = facadeH - 132;
-
-  return `
-  <div class="house-wrap" style="--wrap-w:${W + 120}px;--wrap-h:${L.H + 70}px">
-    <div class="house" style="--W:${W}px;--H:${L.H}px;--roofH:${roofH}px;--base:${G.base}px;--off-x:60px;--off-y:66px">
-      <div class="house-glow"></div>
-      <div class="chimney"></div>
-      <div class="roof"></div>
-      <div class="roof-inner"></div>
-      <div class="body-shell"></div>
-      <div class="stair" style="left:${G.stairX}px;top:${roofH + G.slab}px;width:${G.stairW}px;height:${L.floors * floorH - G.slab}px">${stairSVG(L.floors)}</div>
-      ${slabs}
-      ${cells}
-      <div class="foundation"></div>
-      <div class="steps" style="left:${W / 2 - 55}px"></div>
-      <button class="facade" type="button" aria-label="Open the front of ${name}">
-        <span class="facade-face">
-          <span class="gable"></span>
-          <svg viewBox="0 0 ${W} ${facadeH}" width="${W}" height="${facadeH}" style="position:absolute;inset:0" aria-hidden="true">
-            <polyline points="0,${roofH} ${W / 2},0 ${W},${roofH}" fill="none" stroke="#e6dcc6" stroke-width="16"/>
-            <polyline points="0,${roofH + 4} ${W / 2},4 ${W},${roofH + 4}" fill="none" stroke="rgba(0,0,0,.35)" stroke-width="3"/>
-          </svg>
-          ${trims}
-          <span class="trim corner" style="left:0"></span><span class="trim corner" style="right:0"></span>
-          ${wins}
-          <span class="nameplate" style="left:${W / 2}px;top:${doorTop - 34}px;transform:translateX(-50%)">${name}</span>
-          <span class="door" style="left:${W / 2 - 37}px"></span>
-          <span class="sconce" style="left:${W / 2 - 66}px;top:${doorTop + 18}px"></span>
-          <span class="sconce" style="left:${W / 2 + 54}px;top:${doorTop + 18}px"></span>
-          <span class="housenum" style="left:${W / 2 + 50}px;top:${doorTop + 52}px">${esc(S.house.number || '7')}</span>
-          <span class="mailbox" style="left:${W / 2 - 80}px;top:${doorTop + 64}px">POST</span>
-        </span>
-        <span class="facade-back"></span>
-      </button>
-    </div>
-  </div>`;
-}
-
-function stairSVG(floors) {
-  const w = G.stairW, fh = G.floorH, n = 9;
-  let out = '';
-  for (let f = 0; f < floors; f++) {
-    const top = f * fh, bottom = top + fh - G.slab - 1;
-    const sw = (w - 8) / n, sh = (fh - G.slab - 18) / n;
-    const ltr = (floors - 1 - f) % 2 === 0;
-    let x = ltr ? 4 : w - 4, y = bottom;
-    let pts = `${x},${y}`;
-    for (let k = 0; k < n; k++) { y -= sh; pts += ` ${x},${y.toFixed(1)}`; x += ltr ? sw : -sw; pts += ` ${x.toFixed(1)},${y.toFixed(1)}`; }
-    pts += ` ${ltr ? w - 4 : 4},${bottom}`;
-    out += `<polygon points="${pts}" fill="#4b301c" stroke="#7a5232" stroke-width="1.5"/>`;
-    out += `<line x1="${ltr ? 6 : w - 6}" y1="${bottom - 30}" x2="${ltr ? w - 6 : 6}" y2="${top + 8}" stroke="#a07a4a" stroke-width="2"/>`;
-  }
-  return `<svg viewBox="0 0 ${w} ${floors * fh - G.slab}" preserveAspectRatio="none" aria-hidden="true">${out}</svg>`;
-}
-
-function cellHTML(c) {
-  const r = c.room;
-  const style = `left:${c.x}px;top:${c.y}px;width:${c.w}px;height:${c.h}px`;
-  if (!r) {
-    return `<div class="cell" style="${style};--wall:#1a1410;--wood:#3a2a1e;--wood-2:#21170f;--light:#665"><span class="cell-floor"></span><span class="cell-label"><b>Vacant</b><i>Room for more</i></span></div>`;
-  }
-  const mw = c.attic ? 150 : 118, rows = c.attic ? 2 : 3;
-  const mx = c.attic ? c.w / 2 - 168 : 16;
-  return `<button class="cell theme-${r.kind}${c.attic ? ' attic' : ''}" type="button" style="${style}" data-room="${r.id}" aria-label="Enter ${esc(r.name)}, ${esc(countLine(r))}">
-    <span class="mini-case" style="left:${mx}px;width:${mw}px">${miniRows(r, rows, mw - 16)}</span>
-    ${propHTML(r.kind, c)}
-    <span class="cell-floor"></span>
-    <span class="cell-label"><b>${esc(r.name)}</b><i>${esc(countLine(r))}</i></span>
-    <span class="cell-enter">Enter →</span>
-  </button>`;
-}
-
-function miniRows(room, rows, width) {
-  const out = []; let cur = '', used = 0, objs = room.objects, i = 0;
-  while (out.length < rows) {
-    const o = objs[i % objs.length]; i++;
-    if (!o) break;
-    const w = Math.max(2, Math.min(8, Math.round(o.d * 0.24)));
-    const h = Math.max(12, Math.min(28, Math.round(o.h * 0.105)));
-    if (used + w + 1 > width) { out.push(cur); cur = ''; used = 0; if (i > objs.length * 3) break; continue; }
-    const col = (o.pal || o.item.pal)[0];
-    cur += `<i style="width:${w}px;height:${h}px;background:${col}" data-k="${esc(o.key)}"></i>`;
-    used += w + 1;
-  }
-  return out.map(r => `<span class="mini-row">${r}</span>`).join('');
-}
-
-function propHTML(kind, c) {
-  const left = c.attic ? `left:${c.w / 2 + 10}px` : '';
-  const P = {
-    music: '<i class="console"></i><i class="deck"></i><i class="platter"></i><i class="arm"></i><i class="spk"></i>',
-    movies: '<i class="screen"></i><i class="couch"></i>',
-    books: '<i class="flamp"></i><i class="chair"></i>',
-    anime: '<i class="neon">アニメ</i><i class="crt"></i><i class="bean"></i>',
-    manga: '<i class="kotatsu"></i><i class="lantern"></i>',
-  };
-  return `<span class="prop prop-${kind}" style="${left}">${P[kind] || ''}</span>`;
 }
 
 function fitHouse() {
-  const lot = $('#street .lot'), wrap = $('#street .house-wrap');
-  if (!lot || !wrap) return;
-  const ww = G.W + 120, wh = S.layout.H + 70;
-  const s = Math.max(0.3, Math.min(1.08, (lot.clientWidth - 16) / ww, (lot.clientHeight - 64) / wh));
-  wrap.style.setProperty('--s', s.toFixed(4));
-  $('#street').style.setProperty('--lamp-x', `${(G.W * s) / 2 + 190}px`);
+  const street = $('#street');
+  if (!ST.scene || street.hidden) return;
+  const vw = street.clientWidth, vh = street.clientHeight;
+  const head = $('.street-head', street).offsetHeight, foot = $('.street-foot', street).offsetHeight;
+  const need = ST.scene.L.totalH + 12;
+  let k = Math.min((vh - head - foot - 12) / need, (vw - 8) / 150, 6);
+  k = k >= 3 ? Math.floor(k) : Math.max(1.5, Math.floor(k * 4) / 4);
+  const W = Math.ceil(vw / k), H = Math.ceil(vh / k);
+  const ground = H - Math.ceil(foot / k) - 7;
+  ST.k = k;
+  ST.scene.resize(W, H, ground);
+  const cv = $('.street-canvas', street);
+  cv.width = W; cv.height = H;
+  cv.style.width = `${W * k}px`; cv.style.height = `${H * k}px`;
+  const { S: geo, cells } = ST.scene, b = ST.scene.box;
+  const place = (el, x, y, w, h) => Object.assign(el.style, { left: `${x * k}px`, top: `${y * k}px`, width: `${w * k}px`, height: `${h * k}px` });
+  place($('.hit-house', street), b.x, b.y, b.w, b.h);
+  for (const c of cells) {
+    const el = c.room && $(`.hit-room[data-room="${c.room.id}"]`, street);
+    if (el) place(el, geo.hx + c.x, geo.hy + c.y, c.w, c.h);
+  }
+  street.style.setProperty('--k', k);
+  drawStreet();
+}
+
+function drawStreet(now = performance.now()) {
+  if (!ST.scene || !ST.ctx || !ST.scene.S.bg) return;
+  ST.scene.compose(ST.ctx, (now - ST.t0) / 1000, { open: ST.open, hover: ST.hover, hoverHouse: ST.hoverHouse });
+}
+
+function loop(now) {
+  ST.raf = 0;
+  if (S.scene !== 'street') return;
+  const dt = Math.min(0.1, (now - (ST.last || now)) / 1000);
+  if (ST.open !== ST.target) {
+    ST.open = reduced ? ST.target : Math.max(0, Math.min(1, ST.open + Math.sign(ST.target - ST.open) * dt / 0.9));
+    ST.last = now; drawStreet(now);
+  } else if (!reduced && now - ST.last > 90) { ST.last = now; drawStreet(now); }
+  if (!reduced || ST.open !== ST.target) ST.raf = requestAnimationFrame(loop);
 }
 
 function showStreet(open) {
@@ -262,41 +157,32 @@ function showStreet(open) {
   room.hidden = true; room.innerHTML = '';
   street.hidden = false;
   document.title = open ? `${S.house.name} · Choose a room` : S.house.name;
-  fitHouse();
-  const house = $('.house', street);
-  if (fromRoom || reduced) house.classList.add('no-anim');
+  const cv = $('.street-canvas', street);
+  cv.getAnimations().forEach(a => a.cancel());
+  ST.target = open ? 1 : 0;
+  if (fromRoom || reduced) ST.open = ST.target;
   street.classList.toggle('is-open', open);
-  house.classList.toggle('is-open', open);
-  if (house.classList.contains('no-anim')) {
-    const f = $('.facade', house); f.style.transition = 'none';
-    requestAnimationFrame(() => requestAnimationFrame(() => { f.style.transition = ''; house.classList.remove('no-anim'); }));
-  }
+  fitHouse();
+  if (!ST.raf) { ST.last = 0; ST.raf = requestAnimationFrame(loop); }
   window.scrollTo(0, 0);
 }
 
-function zoomInto(cell, room) {
+function zoomInto(btn, room) {
   if (reduced) return go(room.id);
-  const r = cell.getBoundingClientRect();
+  const street = $('#street'), cv = $('.street-canvas', street);
+  const r = btn.getBoundingClientRect(), cr = cv.getBoundingClientRect();
+  const ox = r.left + r.width / 2 - cr.left, oy = r.top + r.height / 2 - cr.top;
+  const zoom = Math.min(innerWidth / r.width, innerHeight / r.height) * 1.1;
+  street.classList.add('zooming');
   const veil = document.createElement('div');
   veil.className = `zoom-veil theme-${room.kind}`;
   document.body.append(veil);
-  const from = { left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px`, opacity: 0.0 };
-  const to = { left: '0px', top: '0px', width: `${innerWidth}px`, height: `${innerHeight}px`, opacity: 1 };
-  const wrap = $('#street .house-wrap');
-  const s = +getComputedStyle(wrap).getPropertyValue('--s') || 1;
-  const wr = wrap.getBoundingClientRect();
-  const ox = r.left + r.width / 2 - wr.left, oy = r.top + r.height / 2 - wr.top;
-  wrap.animate([
-    { transform: `translateX(-50%) scale(${s})`, transformOrigin: '50% 100%' },
-    { transform: `translateX(-50%) scale(${s})`, transformOrigin: '50% 100%', offset: 0.001 },
-  ], { duration: 1 });
-  wrap.style.transformOrigin = `${ox / s}px ${oy / s}px`;
-  wrap.animate([{ transform: `translateX(-50%) scale(${s})` }, { transform: `translateX(-50%) scale(${s * 2.4})` }], { duration: 700, easing: SWING, fill: 'forwards' });
-  veil.animate([from, { ...from, opacity: 0.85, offset: 0.25 }, to], { duration: 700, easing: SWING, fill: 'forwards' }).onfinish = () => {
-    wrap.getAnimations().forEach(a => a.cancel());
-    wrap.style.transformOrigin = '';
+  cv.style.transformOrigin = `${ox}px ${oy}px`;
+  cv.animate([{ transform: 'scale(1)' }, { transform: `scale(${zoom})` }], { duration: 650, easing: SWING, fill: 'forwards' });
+  veil.animate([{ opacity: 0 }, { opacity: 0, offset: 0.55 }, { opacity: 1 }], { duration: 650, fill: 'forwards' }).onfinish = () => {
+    street.classList.remove('zooming');
     go(room.id);
-    requestAnimationFrame(() => veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 420, fill: 'forwards' }).onfinish = () => veil.remove());
+    requestAnimationFrame(() => veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 380, fill: 'forwards' }).onfinish = () => veil.remove());
   };
 }
 
@@ -308,6 +194,9 @@ function showRoom(room) {
   const sec = $('#room');
   sec.hidden = false;
   sec.className = `scene scene-room theme-${room.kind}`;
+  const tile = wallTile(room.kind);
+  sec.style.setProperty('--wallpaper', `url(${tile.url})`);
+  sec.style.setProperty('--tile', `${tile.n * 4}px`);
   document.title = `${room.name} · ${S.house.name}`;
 
   const stats = roomStats(room);
@@ -322,7 +211,7 @@ function showRoom(room) {
     <nav class="room-nav" aria-label="Rooms">
       <a class="nav-mark" href="#house" title="Back to the house">${esc(S.house.name)}</a>
       <div class="nav-rooms">${S.house.rooms.map(r => `<a href="#${r.id}"${r === room ? ' aria-current="page"' : ''}>${esc(r.name.replace(/^The\s+/i, ''))}</a>`).join('')}</div>
-      <button class="btn-search js-search" type="button" aria-label="Search the collection">${searchIcon()}<span>Search</span><kbd>/</kbd></button>
+      <button class="btn js-search" type="button" aria-label="Search the collection">${searchIcon()}<span>Search</span><kbd>/</kbd></button>
     </nav>
     <header class="room-head">
       <div>
@@ -338,7 +227,7 @@ function showRoom(room) {
           <option value="title">A to Z</option><option value="creator">By ${esc(room.K.by.toLowerCase().replace('directed by', 'director'))}</option>
           <option value="rating">Highest rated</option>
         </select>
-        <input id="room-q" class="field" type="search" placeholder="Find on these shelves" aria-label="Find on these shelves" autocomplete="off">
+        <input id="room-q" class="field" type="search" placeholder="Find a ${esc(room.K.one)}" aria-label="Find on these shelves" autocomplete="off">
       </div>
     </header>
     <div class="wall"><div class="case" id="case"></div></div>
@@ -382,40 +271,67 @@ function packShelves() {
   const inner = kase.clientWidth - 40 - 16;
   const fit = Math.max(0.52, Math.min(1, (inner + 56) / 1180));
   const scale = room.K.scale * fit;
-  const faceOK = S.sort === 'shelf';
-  const rows = []; let row = null;
+  const ds = fit > 0.8 ? 4 : 3; // size of one decor pixel
+  const shelved = S.sort === 'shelf';
+  const objs = sortedObjects(room);
 
-  for (const o of sortedObjects(room)) {
-    const face = faceOK && o.face;
-    const w = face ? o.w * scale : Math.max(o.d * scale, (o.fmt.minSpine || 9) * Math.max(fit, 0.8));
-    const h = o.h * scale;
-    if (!row || (row.items.length && row.w + w + 2 > inner)) { row = { items: [], w: 0, h: 0 }; rows.push(row); }
-    const prev = row.items[row.items.length - 1];
-    const gap = !prev ? 0 : (face || prev.face) ? 12 : hash(o.key) % 3;
-    row.items.push({ o, face, w, h, gap });
-    row.w += w + gap;
-    row.h = Math.max(row.h, h);
+  // records, discs and tapes are usually kept with their own format
+  let groups = [objs];
+  if (shelved && MEDIA_ROOMS.has(room.kind)) {
+    const by = new Map();
+    for (const o of objs) { if (!by.has(o.item.format)) by.set(o.item.format, []); by.get(o.item.format).push(o); }
+    groups = [...by.values()];
+  }
+  const mk = (o, face) => ({ o, face, h: o.h * scale, w: face ? o.w * scale : Math.max(o.d * scale, (o.fmt.minSpine || 9) * Math.max(fit, 0.8)) });
+  const gapOf = (a, b) => (a.face || b.face) ? 14 : hash(b.o.key) % 3;
+  const widthOf = items => items.reduce((s, x, i) => s + x.w + (i ? gapOf(items[i - 1], x) : 0), 0);
+
+  let rows = [];
+  for (const g of groups) {
+    let row = [];
+    for (const o of g) {
+      const x = mk(o, shelved && o.face);
+      if (row.length && widthOf([...row, x]) > inner) { rows.push(row); row = []; }
+      row.push(x);
+    }
+    if (row.length) rows.push(row);
+  }
+  // a bookcase has at least three shelves: split the fullest one until it does
+  while (rows.length < 3) {
+    let at = -1, most = 1;
+    rows.forEach((r, i) => { if (r.length > most) { most = r.length; at = i; } });
+    if (at < 0) { rows.push([]); continue; }
+    const r = rows[at], half = Math.ceil(r.length / 2);
+    rows.splice(at, 1, r.slice(0, half), r.slice(half));
+  }
+  // a shelf with room to spare turns its best pieces face-out, like a shop display
+  for (const r of rows) {
+    const cands = r.filter(x => !x.face).sort((a, b) =>
+      (a.o.vol > 1) - (b.o.vol > 1) || (b.o.item.rating ?? 0) - (a.o.item.rating ?? 0) || a.o.item.order - b.o.item.order);
+    for (const c of cands) {
+      if (widthOf(r) > inner * 0.66) break;
+      const i = r.indexOf(c), trial = r.slice(); trial[i] = mk(c.o, true);
+      if (widthOf(trial) <= inner * 0.94) r[i] = trial[i];
+    }
   }
 
   S.order = [];
-  const decorKinds = room.K.decor;
+  const decorKinds = room.K.decor, used = new Set();
   const html = rows.map((r, ri) => {
-    let left = inner - r.w;
+    const rh = Math.max(r.length ? Math.max(...r.map(x => x.h)) + 26 : 0, 104 * fit, 96);
+    let left = inner - widthOf(r);
     const deco = [];
-    const pick = n => DECOR[decorKinds[(hash(room.id + ri) + n) % decorKinds.length]];
-    const name = n => decorKinds[(hash(room.id + ri) + n) % decorKinds.length];
-    for (let n = 0; n < 2; n++) {
-      const d = pick(n);
-      if (left > d[1] + 40 && d[2] < r.h + 10) { deco.push(`<span class="decor d-${name(n)}" style="width:${d[1]}px;height:${d[2]}px">${d[0]}</span>`); left -= d[1] + 30; }
-      if (left < 120) break;
+    // each piece of decor appears once per room, in a seeded order
+    const order = decorKinds.map((_, n) => decorKinds[(hash(room.id + ri) + n) % decorKinds.length]);
+    for (const name of order) {
+      if (deco.length >= 2 || left < 60 || used.has(name)) continue;
+      const sp = decorSprite(name), w = sp.w * ds, h = sp.h * ds;
+      if (left > w + 36 && h < rh - 12) { used.add(name); deco.push(`<img class="decor" src="${sp.url}" alt="" width="${w}" height="${h}">`); left -= w + 22; }
     }
-    // the last spine leans into the gap when there is room for it
-    const last = r.items[r.items.length - 1];
-    if (last && !last.face && left > 26 && ri === rows.length - 1 ? true : left > 60) {
-      if (last && !last.face) last.lean = Math.min(9, (Math.atan((left - 14) / last.h) * 180) / Math.PI).toFixed(1);
-    }
-    const objs = r.items.map(x => { S.order.push(x.o.key); return objHTML(x); }).join('');
-    return `<div class="bay"><div class="row" style="--row-h:${Math.max(r.h + 26, 96).toFixed(0)}px">${objs}${deco.join('')}</div></div><div class="plank"></div>`;
+    const last = r[r.length - 1];
+    if (last && !last.face && left > 30) last.lean = Math.min(9, (Math.atan((left - 18) / last.h) * 180) / Math.PI).toFixed(1);
+    const objsHTML = r.map((x, i) => { S.order.push(x.o.key); x.gap = i ? gapOf(r[i - 1], x) : 0; return objHTML(x); }).join('');
+    return `<div class="bay"><div class="row" style="--row-h:${rh.toFixed(0)}px">${objsHTML}${deco.join('')}</div></div><div class="plank"></div>`;
   }).join('');
   kase.innerHTML = html + '<div class="case-foot"></div>';
   applyFilter();
@@ -559,7 +475,7 @@ function obj3dHTML(o, z) {
 
 function buildInspect(o) {
   const el = document.createElement('div');
-  el.className = 'inspect';
+  el.className = `inspect theme-${S.room.kind}`;
   el.setAttribute('role', 'dialog');
   el.setAttribute('aria-modal', 'true');
   el.setAttribute('aria-label', o.item.title);
@@ -717,13 +633,22 @@ function closeInspect(instant) {
     { duration: 640, easing: SWING, fill: 'forwards' }).onfinish = done;
 }
 
+const STAR = ['...1...', '..111..', '1111111', '.11111.', '..111..', '.11.11.', '.1...1.'];
+function starSVG(fill) {
+  let rects = '';
+  STAR.forEach((row, y) => [...row].forEach((c, x) => {
+    if (c === '1') rects += `<rect x="${x}" y="${y}" width="1" height="1" fill="${fill >= 1 || (fill > 0 && x <= 3) ? '#feae34' : '#3a4466'}"/>`;
+  }));
+  return `<svg width="21" height="21" viewBox="0 0 7 7" shape-rendering="crispEdges" aria-hidden="true">${rects}</svg>`;
+}
+
 function cardHTML(o) {
   const it = o.item, K = S.room.K;
   const rows = [];
   const add = (k, v) => { if (v !== undefined && v !== null && v !== '') rows.push([k, v]); };
   add('Year', it.year);
   add('Format', it.fmt.label + (o.vol ? ` · Vol. ${o.vol}` : ''));
-  if (it.kind === 'manga') { add('Volumes', volumeLine(it)); add('Publisher', it.publisher); }
+  if (it.kind === 'manga') { add('Owned', volumeLine(it)); add('Publisher', it.publisher); }
   add('Label', it.label);
   if (Array.isArray(it.tracks)) add('Tracks', it.tracks.length);
   add('Runtime', it.runtime && `${it.runtime} min`);
@@ -732,24 +657,26 @@ function cardHTML(o) {
   add('Country', it.country);
   for (const [k, v] of Object.entries(it.facts || {})) add(k, v);
   add('Status', it.status && it.status[0].toUpperCase() + it.status.slice(1));
-  add('Shelfmark', it.cat + (o.vol ? `·${String(o.vol).padStart(2, '0')}` : ''));
 
   const r = typeof it.rating === 'number' ? it.rating : null;
-  const dots = r === null ? '' : `<span class="dots" aria-hidden="true">${[1, 2, 3, 4, 5].map(i => `<i class="${r / 2 >= i ? 'on' : r / 2 >= i - 0.5 ? 'half' : ''}"></i>`).join('')}</span>`;
   const verb = it.status && /ing$/i.test(it.status) ? 'In progress' : K.verb;
-  const stamp = r === null ? `<span class="stamp">${esc(verb)}</span>` : `<span class="stamp">${r % 1 ? r.toFixed(1) : r}<small>${esc(verb)} · out of 10</small></span>`;
-  const src = it.cover ? (it.source ? `Cover art from ${esc(it.source)}` : 'Cover art linked') : 'Cover art generated until a real one is fetched';
+  const stars = r === null ? '' : `<span class="stars" role="img" aria-label="${r} out of 10">${[1, 2, 3, 4, 5].map(i => starSVG(r / 2 >= i ? 1 : r / 2 >= i - 0.5 ? 0.5 : 0)).join('')}</span>`;
+  const score = r === null ? '' : `<span class="score">${r % 1 ? r.toFixed(1) : r}<small>/10</small></span>`;
+  const src = it.cover ? (it.source ? `Cover art: ${esc(it.source)}` : 'Cover art: linked') : 'Cover art: generated until the real one is fetched';
+  const shelfmark = it.cat + (o.vol ? `·${String(o.vol).padStart(2, '0')}` : '');
 
   return `<article class="card">
-    <div class="card-top"><span>${esc(S.room.name)}</span><span>${esc(it.cat)}</span></div>
-    <h2 class="card-title">${esc(it.title)}${o.vol ? `, Vol. ${o.vol}` : ''}</h2>
-    ${it.original && it.original !== it.title ? `<p class="card-orig">${esc(it.original)}</p>` : ''}
-    ${it.creator ? `<p class="card-by"><span>${esc(K.by)}</span> ${esc(it.creator)}</p>` : ''}
-    <dl class="card-facts">${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
-    <div class="card-rating">${stamp}${dots}</div>
-    ${it.note ? `<p class="card-note">${esc(it.note)}</p>` : ''}
-    ${it.tags.length ? `<ul class="card-tags">${it.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
-    <p class="card-src">${src}</p>
+    <div class="card-bar"><span>${esc(shelfmark)}</span><span>${esc(S.room.name.replace(/^The\s+/i, ''))}</span></div>
+    <div class="card-body">
+      <h2 class="card-title">${esc(it.title)}${o.vol ? ` <span>${o.vol}</span>` : ''}</h2>
+      ${it.original && it.original !== it.title ? `<p class="card-orig">${esc(it.original)}</p>` : ''}
+      ${it.creator ? `<p class="card-by"><span>${esc(K.by)}</span>${esc(it.creator)}</p>` : ''}
+      <dl class="card-facts">${rows.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
+      <div class="card-rating">${score}${stars}<span class="stamp">${esc(verb)}</span></div>
+      ${it.note ? `<p class="card-note"><span class="card-label">My take</span>${esc(it.note)}</p>` : ''}
+      ${it.tags.length ? `<ul class="card-tags">${it.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
+      <p class="card-src">${src}</p>
+    </div>
   </article>`;
 }
 
@@ -763,8 +690,8 @@ function openSearch() {
   const el = document.createElement('div');
   el.id = 'search'; el.className = 'search';
   el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', 'Search the collection');
-  el.innerHTML = `<div class="search-box"><label for="search-q">Card catalogue · every room</label>
-    <input id="search-q" type="search" placeholder="Title, creator, year, tag" autocomplete="off">
+  el.innerHTML = `<div class="search-box"><label for="search-q">Search every room</label>
+    <input id="search-q" type="search" placeholder="Search" autocomplete="off">
     <ul class="results" role="listbox"></ul></div>`;
   document.body.append(el);
   const input = $('#search-q'), list = $('.results', el);
