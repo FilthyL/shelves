@@ -30,6 +30,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body { height: 100%; }
+#app { height: 100%; }
 body {
   margin: 0;
   background: var(--night-0);
@@ -110,7 +111,7 @@ a { color: inherit; }
 
 .street-head {
   position: relative; z-index: 3;
-  padding-block: clamp(18px, 4.5vh, 44px) 0;
+  padding-block: clamp(16px, 4vh, 40px) 0;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   text-align: center;
@@ -123,7 +124,8 @@ a { color: inherit; }
   font-weight: 500;
   font-style: italic;
   font-size: clamp(40px, 7.4vw, 96px);
-  line-height: 0.95;
+  line-height: 1.05;
+  padding: 0 0.08em 0.06em;
   letter-spacing: -0.015em;
   text-wrap: balance;
   background: linear-gradient(180deg, var(--brass-hi) 10%, var(--brass) 55%, var(--brass-lo) 100%);

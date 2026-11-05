@@ -161,16 +161,27 @@ function buildRoom(meta, rawItems, covers, index) {
     const pal = Array.isArray(raw.colors) && raw.colors.length >= 2
       ? [raw.colors[0], raw.colors[1], raw.colors[2] || raw.colors[1], raw.colors[3] || raw.colors[2] || raw.colors[1]]
       : PALETTES[seed % PALETTES.length];
+    // covers.json is written by tools/covers.py: { src, from, pal, vols: { "3": { src, pal } } }
     const entry = covers[`${room.id}/${id}`];
-    const fetched = typeof entry === 'string' ? { src: entry } : (entry && entry.src ? entry : null);
-    const cover = raw.cover === false ? null : (raw.cover || fetched?.src || null);
-    const volCovers = raw.cover === false ? {} : (fetched?.vols || {});
+    const fetched = typeof entry === 'string' ? { src: entry } : (entry && (entry.src || entry.vols) ? entry : null);
+    const useFetched = raw.cover === undefined || raw.cover === null;
+    const volCovers = {}, coverPal = {};
+    if (useFetched && fetched) {
+      if (fetched.pal) coverPal.src = fetched.pal;
+      for (const [v, e] of Object.entries(fetched.vols || {})) {
+        const src = typeof e === 'string' ? e : e?.src;
+        if (src) volCovers[v] = src;
+        if (e?.pal) coverPal[v] = e.pal;
+      }
+    }
+    const firstVol = Object.keys(volCovers).sort((a, b) => a - b)[0];
+    const cover = raw.cover === false ? null : (raw.cover || (useFetched && (fetched?.src || volCovers[firstVol])) || null);
 
     const item = {
       ...raw, id, kind, room: room.id, format, fmt: FORMATS[format], seed, pal, cover,
       cat: `FR-${K.code}-${String(n + 1).padStart(3, '0')}`,
       tags: Array.isArray(raw.tags) ? raw.tags : [],
-      order: n, volCovers, source: raw.cover ? null : fetched?.from || null,
+      order: n, volCovers, coverPal, source: useFetched && fetched ? fetched.from || null : null,
     };
     if (kind === 'manga') {
       item.vols = parseOwned(raw.owned, raw.total);

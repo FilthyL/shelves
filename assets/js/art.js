@@ -11,8 +11,8 @@ const COMPS = {
 
 const STYLES = ['serif', 'cond', 'wide', 'serif', 'cond'];
 
-export function palVars(item) {
-  const p = item.pal;
+export function palVars(x) {
+  const p = Array.isArray(x) ? x : x.pal;
   return `--bg:${p[0]};--ink:${p[1]};--ac:${p[2]};--ex:${p[3]}`;
 }
 
@@ -76,7 +76,6 @@ export function coverHTML(obj) {
   } else if (it.kind === 'books') {
     extra = `<span class="art-colophon">FR</span>`;
   }
-  if (it.kind === 'manga') extra += '';
 
   const art = `<div class="art art-${comp} k-${it.kind}" style="${vars}"><span class="art-shape">${shape}</span>${type}${extra}</div>`;
   if (!obj.cover) return art;
@@ -170,7 +169,7 @@ export function backHTML(obj) {
   }
   const spec = [it.fmt.label, it.year, it.runtime && `${it.runtime} min`, it.episodes && `${it.episodes} eps`, it.pages && `${it.pages} pp`,
     obj.vol && `Vol. ${obj.vol}`].filter(Boolean).map(esc).join(' · ');
-  return `<div class="back k-${it.kind} bk-${it.fmt.group}" style="${palVars(it)}">
+  return `<div class="back k-${it.kind} bk-${it.fmt.group}" style="${palVars(obj.pal || it.pal)}">
     <div class="bk-head"><b>${esc(it.title)}</b><i>${esc(it.creator || '')}</i></div>
     ${body}
     <div class="bk-foot">${barcode(it.seed)}<span class="bk-meta"><b>${esc(it.cat)}${obj.vol ? `·${String(obj.vol).padStart(2, '0')}` : ''}</b><i>${spec}</i><i>Filthy Residency Collection</i></span></div>
@@ -179,15 +178,15 @@ export function backHTML(obj) {
 
 /** The disc / record / tape that slides out in the inspector. */
 export function mediaHTML(obj) {
-  const it = obj.item;
+  const it = obj.item, pv = palVars(obj.pal || it.pal);
   if (it.format === 'vinyl') {
-    return `<span class="media media-vinyl" style="${palVars(it)}"><span class="vinyl-spin"><span class="vinyl-label"><b>${esc(it.creator || '')}</b><i>${esc(it.title)}</i><em>33⅓ RPM</em></span></span></span>`;
+    return `<span class="media media-vinyl" style="${pv}"><span class="vinyl-spin"><span class="vinyl-label"><b>${esc(it.creator || '')}</b><i>${esc(it.title)}</i><em>33⅓ RPM</em></span></span></span>`;
   }
   if (it.format === 'cd') {
-    return `<span class="media media-cd" style="${palVars(it)}"><span class="cd-spin"><span class="cd-print"><b>${esc(it.title)}</b></span></span></span>`;
+    return `<span class="media media-cd" style="${pv}"><span class="cd-spin"><span class="cd-print"><b>${esc(it.title)}</b></span></span></span>`;
   }
   if (it.format === 'cassette') {
-    return `<span class="media media-tape" style="${palVars(it)}"><span class="tape-label"><b>${esc(it.title)}</b><i>A</i></span><span class="tape-win"><i></i><i></i></span></span>`;
+    return `<span class="media media-tape" style="${pv}"><span class="tape-label"><b>${esc(it.title)}</b><i>A</i></span><span class="tape-win"><i></i><i></i></span></span>`;
   }
   return '';
 }
