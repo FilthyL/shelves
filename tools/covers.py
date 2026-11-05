@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Fetch the real, published cover art for everything on the shelves.
 
-Covers are downloaded into assets/covers/ and listed in data/covers.json, which
-the site reads. Spine colours are taken from each cover when Pillow is installed.
+Nothing is stored in the repo: data/covers.json records where each cover is
+published, and the site loads it from there. Each image is fetched once into
+memory to check the link works and, when Pillow is installed, to take the spine
+colours from it.
 
 Sources, none of which need a key:
   music   iTunes Search (albums), then Deezer
@@ -18,13 +20,14 @@ Usage
   python3 tools/covers.py --refresh        fetch again and replace
   python3 tools/covers.py --retry-misses   retry items that matched nothing last time
   python3 tools/covers.py --dry-run        print the matches, download nothing
-  python3 tools/covers.py --prune          drop covers for items no longer in the data
+  python3 tools/covers.py --prune          drop entries for items no longer in the data
 
 To pin a cover yourself, give the item "cover": "<url or path>". To keep the
 generated art instead, give it "cover": false.
 """
 import argparse
 import datetime as dt
+import io
 import json
 import os
 import re
@@ -38,10 +41,9 @@ from difflib import SequenceMatcher
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from shelflib import DATA, ROOT, load_house, load_json, parse_owned  # noqa: E402
+from shelflib import DATA, load_house, load_json, parse_owned  # noqa: E402
 
 COVERS_JSON = DATA / 'covers.json'
-COVERS_DIR = ROOT / 'assets' / 'covers'
 UA = 'FilthyResidency-shelves/1.0 (+https://github.com/FilthyL/shelves)'
 THRESHOLD = 0.72
 
@@ -396,25 +398,22 @@ SOURCES = {
 
 
 # ------------------------------------------------------------------ images
-def download(url, dest_stem):
+def check(url):
+    """Fetch the image into memory to make sure the link serves a real cover. Nothing is written."""
     body, ctype = http(url)
     if not ctype.startswith('image/') or len(body) < 2000:
         raise ValueError(f'not an image ({ctype}, {len(body)} bytes)')
-    ext = {'image/png': '.png', 'image/webp': '.webp', 'image/gif': '.gif'}.get(ctype.split(';')[0], '.jpg')
-    dest = dest_stem.with_suffix(ext)
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_bytes(body)
-    return dest
+    return body
 
 
-def palette(path):
+def palette(image):
     """[ground, ink, accent, extra] from the cover, the same recipe the site uses."""
     try:
         from PIL import Image
     except ImportError:
         return None
     try:
-        im = Image.open(path).convert('RGB').resize((28, 28))
+        im = Image.open(io.BytesIO(image) if isinstance(image, bytes) else image).convert('RGB').resize((28, 28))
     except Exception:
         return None
     bins = {}
@@ -441,10 +440,6 @@ def palette(path):
     extra = next((c[1] for c in far if dist(c[1], accent) > 70), accent)
     hx = lambda c: '#' + ''.join(f'{round(v):02x}' for v in c)  # noqa: E731
     return [hx(bg), hx(ink), hx(accent if contrast(accent, bg) > 1.6 else ink), hx(extra)]
-
-
-def rel(p):
-    return p.relative_to(ROOT).as_posix()
 
 
 # ------------------------------------------------------------------ main
@@ -513,19 +508,17 @@ def main(argv=None):
                 if 'vols' in hit:
                     entry['vols'] = {}
                     for v, url in hit['vols'].items():
-                        dest = download(url, COVERS_DIR / room['id'] / it['_id'] / f'{int(v):02d}')
-                        entry['vols'][v] = {'src': rel(dest), **({'pal': p} if (p := palette(dest)) else {})}
+                        entry['vols'][v] = {'src': url, **({'pal': p} if (p := palette(check(url))) else {})}
                     first = entry['vols'][min(entry['vols'], key=int)]
                     entry['src'] = first['src']
                     if first.get('pal'):
                         entry['pal'] = first['pal']
                 else:
-                    dest = download(hit['url'], COVERS_DIR / room['id'] / it['_id'])
-                    entry['src'] = rel(dest)
-                    if (p := palette(dest)):
+                    entry['src'] = hit['url']
+                    if (p := palette(check(hit['url']))):
                         entry['pal'] = p
             except Exception as e:
-                log(f'      download failed: {e}')
+                log(f'      cover link failed: {e}')
                 covers[key] = {'miss': True, 'tried': today, 'error': str(e)[:200]}
                 stats['missed'] += 1
                 save()
@@ -537,9 +530,6 @@ def main(argv=None):
     if args.prune:
         for key in [k for k in covers if k not in live]:
             log(f'  pruning {key}')
-            room_id, item_id = key.split('/', 1)
-            for f in sorted((COVERS_DIR / room_id).glob(f'{item_id}.*')) + sorted((COVERS_DIR / room_id / item_id).glob('*')):
-                f.unlink()
             covers.pop(key)
         save()
 

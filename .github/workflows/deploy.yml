@@ -41,7 +41,7 @@ jobs:
       - name: Install Pillow for spine colours
         run: pip install --quiet pillow
 
-      - name: Fetch cover art
+      - name: Find cover art
         env:
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
           GOOGLE_BOOKS_API_KEY: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
@@ -50,15 +50,15 @@ jobs:
             ${{ inputs.refresh && '--refresh' || '' }} \
             ${{ inputs.retry_misses && '--retry-misses' || '' }}
 
-      - name: Commit new covers
+      - name: Commit the cover list
         run: |
           git config user.name "shelves-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/covers.json assets/covers 2>/dev/null || git add data/covers.json
+          git add data/covers.json
           if git diff --cached --quiet; then
             echo "No new covers"
           else
-            git commit -m "Fetch cover art"
+            git commit -m "Update cover links"
             for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break; sleep 5; done
           fi
 
