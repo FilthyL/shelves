@@ -22,7 +22,9 @@ A static site at https://filthyl.github.io/shelves/ (repo FilthyL/shelves). A pi
 | `assets/js/pixel.js` | Canvas pixel renderer: street, house exterior and cutaway (attic + floors + basement), dither dissolve, decor sprites, wallpaper tiles |
 | `assets/js/app.js` | Routing, street scene, room shelves (packing, face-out promotion), inspector (3D object in hand), search, Trick Room, play table, logging glue |
 | `assets/js/log.js` | Logging new entries from the site: suggestions (AniList, Open Library, MusicBrainz, IMDb) and a commit through GitHub's contents API with a fine-grained token kept in localStorage |
-| `assets/js/toys.js` | Toy rigs and tricks: butterfly knife (24 tricks), deck of cards (13 moves), the `player` that drives them |
+| `assets/js/toys.js` | Tricks: butterfly knife (24), deck of cards (13); flat CSS fallback rigs; per-trick sounds derived from motion; the `player` that drives a rig (and its sound) |
+| `assets/js/toys3d.js` | The real 3D toys: Three.js 0.160.0 imported from jsDelivr on demand, extruded knife, box cards with canvas faces, PMREM studio reflections, shadows |
+| `assets/js/sound.js` | All sound, synthesized with Web Audio (no files): one-shots via `play(name)`, continuous noise `bed()`s; wakes on first gesture; toggle `M`, stored in localStorage `fm-sound` |
 | `data/house.json` | House name, number, repo/branch for logging, rooms (id, name, kind, file) in house order: attic first, then floors two at a time, a leftover room goes in the basement |
 | `data/rooms/*.json` | `{ "items": [...] }`, one entry per line; order = shelf order |
 | `data/covers.json` | Written by `tools/covers.py`: `room/id` → `{ src, from, match, pal, vols? }` or `{ miss: true }` |
@@ -45,6 +47,9 @@ A static site at https://filthyl.github.io/shelves/ (repo FilthyL/shelves). A pi
 - `.card` is the catalogue card in the inspector; playing cards use `.pcard`. Check class names don't collide.
 - Container-query units on an element resolve against the nearest container ancestor, or the viewport if there is none (the back-cover padding bug). Use % for an element's own padding.
 - `.scene-room` sets `image-rendering: pixelated` (inherited); real cover images reset it with `.art-img { image-rendering: auto }`.
+- `PMREMGenerator.fromScene(scene, sigma, near, far)` defaults far to 100; a bigger studio scene is clipped and metal renders black. Pass the far plane.
+- WebGL in headless Chromium here needs `--enable-unsafe-swiftshader --use-gl=angle --use-angle=swiftshader`; route the jsDelivr Three.js URL to `scratchpad/three/package/build/three.module.min.js` (npm registry works, jsDelivr is blocked). SwiftShader is slow, so trick time lags real time in tests; wait on the progress bar, not a fixed delay.
+- Sounds: never add audio files. New sounds are recipes in `SOUNDS` (sound.js); toy sounds come from `knifeEvents`/`cardEvents` in toys.js. Test by counting `AudioBufferSourceNode.prototype.start` calls in Playwright.
 - Python output in CI needs flushing (`PYTHONUNBUFFERED=1`, `print(..., flush=True)`) or the log looks hung.
 - `GITHUB_TOKEN` pushes don't trigger workflows; `gh workflow run` (workflow_dispatch) does.
 

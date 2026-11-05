@@ -1,9 +1,11 @@
 // The Trick Room: fidget toys you can play with. Each toy is a rig of parts moved in 3D by a
 // trick, and each trick is a timeline sampled every frame. Nothing here is a video or a GIF.
 
+import { play, bed } from './sound.js';
+
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-const lerp = (a, b, u) => a + (b - a) * u;
-const EASE = {
+export const lerp = (a, b, u) => a + (b - a) * u;
+export const EASE = {
   lin: u => u,
   io: u => u * u * (3 - 2 * u),
   out: u => 1 - (1 - u) * (1 - u),
@@ -19,8 +21,8 @@ const sm = (t, a, b) => EASE.io(win(t, a, b));
 const L = 132; // handle length from its pin
 const OPEN = { b: 180, d: 180 };
 const CLOSED = { b: 0, d: 0 };
-const BASE = { X: 0, Y: 0, rz: 90, ry: 0, rx: 0, b: 180, d: 180 };
-const GRIP = [L * 0.55, 0];
+export const BASE = { X: 0, Y: 0, rz: 90, ry: 0, rx: 0, b: 180, d: 180 };
+export const GRIP = [L * 0.55, 0];
 
 function seq(frames) {
   let t = 0, cur = { ...BASE };
@@ -83,7 +85,7 @@ export const BALISONG_TRICKS = [
     [[0, OPEN], [0.3], [0.2, { d: 0 }], [0.45, { b: 110 }], [0.45, { b: 250 }], [0.45, { b: 130 }], [0.45, { b: 180 }], [0.3, { d: 180 }, 'out'], [0.5]]),
 ];
 
-function sampleBali(trick, time) {
+export function sampleBali(trick, time) {
   const { keys } = trick;
   if (time <= 0) return keys[0].p;
   for (let k = 1; k < keys.length; k++) {
@@ -159,10 +161,10 @@ function makeBalisong(stage, { ghosts = 2 } = {}) {
 }
 
 // ============================================================ DECK OF CARDS
-const N = 26;
+export const N = 26;
 const SUITS = [['♠', 0], ['♥', 1], ['♦', 1], ['♣', 0]];
 const RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-const REST = i => ({ x: 0, y: 0, z: i * 0.45, rz: 0, ry: 0, rx: 0 });
+export const REST = i => ({ x: 0, y: 0, z: i * 0.45, rz: 0, ry: 0, rx: 0 });
 
 function rot([x, y], deg) {
   const a = (deg * Math.PI) / 180, c = Math.cos(a), s = Math.sin(a);
@@ -267,6 +269,12 @@ export const CARD_MOVES = [
   }),
 ];
 
+/** which card sits at position i in the deck */
+export function cardOf(i) {
+  const k = i * 5 + 3, [suit, red] = SUITS[k % 4];
+  return { rank: RANKS[(k * 7) % 13], suit, red: !!red };
+}
+
 function cardFace(k) {
   const [suit, red] = SUITS[k % 4];
   const rank = RANKS[(k * 7) % 13];
@@ -288,17 +296,134 @@ function makeDeck(stage) {
   };
 }
 
+// ============================================================ SOUND
+// Every trick takes its sounds from its own motion, worked out once and cached on the trick. The knife
+// clacks when the blade or a handle reaches a stop, rattles as a handle comes off one, and lands in
+// the palm after a toss; cards tap as each one leaves the hand or lands, and a whole packet snaps.
+// Two beds run underneath: air past whatever is moving fast, and cards sliding over each other.
+const fold = (v, m) => { const r = ((v % m) + m) % m; return Math.min(r, m - r); };
+const ramp = (v, a, b) => EASE.io(clamp((v - a) / (b - a)));
+const RAD = Math.PI / 180;
+
+/** merge events that land together: the loudest wins, a crowd of taps becomes one snap */
+function settle(raw, { crowd = 6, gap = 0.012 } = {}) {
+  raw.sort((a, b) => a.t - b.t);
+  const out = [];
+  for (let i = 0; i < raw.length;) {
+    let j = i, v = 0;
+    while (j < raw.length && raw[j].t - raw[i].t <= gap && raw[j].s === raw[i].s) v = Math.max(v, raw[j++].v);
+    const n = j - i, e = raw[i];
+    if (e.lift && n >= crowd) { i = j; continue; } // a whole deck lifting together makes no sound
+    out.push(n >= crowd && e.s === 'tap' ? { t: e.t, s: 'snap', v: clamp(0.4 + n / 40, 0.4, 1) } : { t: e.t, s: e.s, v: Math.min(1, v + (n - 1) * 0.08) });
+    i = j;
+  }
+  return out;
+}
+
+function knifeEvents(trick) {
+  const k = trick.keys, raw = [];
+  for (let i = 1; i < k.length; i++) {
+    const a = k[i - 1].p, b = k[i].p, c = k[i + 1]?.p, z = k[i - 2]?.p, dt = k[i].t - k[i - 1].t;
+    if (dt <= 0) continue;
+    for (const j of ['b', 'd']) {
+      const mv = b[j] - a[j];
+      if (Math.abs(mv) < 1) continue;
+      const goesOn = c && Math.abs(c[j] - b[j]) > 1 && Math.sign(c[j] - b[j]) === Math.sign(mv);
+      if (fold(b[j], 180) < 1 && !goesOn) raw.push({ t: k[i].t, s: 'clack', v: clamp(0.5 + Math.abs(mv) / dt / 1500, 0.5, 1) });
+      const wasStill = !z || Math.abs(a[j] - z[j]) < 1;
+      if (fold(a[j], 180) < 1 && wasStill) raw.push({ t: k[i - 1].t + 0.02, s: 'rattle', v: 0.8 });
+    }
+    if (b.Y - a.Y > 100) raw.push({ t: k[i].t, s: 'catch', v: 1 }); // falling back into the hand
+  }
+  return settle(raw, { crowd: 99 });
+}
+
+function cardSpeed(p, q, fps) {
+  return (Math.hypot(q.x - p.x, q.y - p.y, q.z - p.z) + (Math.abs(q.rz - p.rz) + Math.abs(q.ry - p.ry) + Math.abs(q.rx - p.rx)) * 0.8) * fps;
+}
+
+function cardEvents(trick) {
+  const fps = 120, steps = Math.ceil(trick.dur * fps), raw = [];
+  for (let i = 0; i < N; i++) {
+    let prev = trick.f(0, i, N), moving = false, peak = 0;
+    for (let s = 1; s <= steps; s++) {
+      const t = Math.min(s / fps, trick.dur), p = trick.f(t, i, N), v = cardSpeed(prev, p, fps);
+      if (!moving && v > 60) { moving = true; peak = v; raw.push({ t, s: 'tap', v: 0.4, lift: true }); }
+      else if (moving) {
+        peak = Math.max(peak, v);
+        if (v < 12) { moving = false; if (peak > 120) raw.push({ t, s: 'tap', v: clamp(peak / 900, 0.35, 1) }); }
+      }
+      prev = p;
+    }
+  }
+  return settle(raw);
+}
+
+const eventsOf = (trick, make) => (trick.sfx ||= make(trick));
+
+/** How loud the air and the sliding are at time t of a trick, played at `rate` times normal speed. */
+function knifeMotion(trick, t, rate) {
+  const h = 1 / 120, p = sampleBali(trick, t), q = sampleBali(trick, Math.min(trick.dur, t + h));
+  const w = (Math.abs(q.rz - p.rz) + (Math.abs(q.ry - p.ry) + Math.abs(q.rx - p.rx)) * 0.8 + Math.abs(q.b - p.b) * 0.7 + Math.abs(q.d - p.d) * 0.3 + Math.abs(q.Y - p.Y) * 1.2) / h * rate;
+  const whup = 0.35 + 0.65 * Math.abs(Math.sin((p.rz + p.ry + p.rx + p.b) * RAD)); // blade, then handles, past the ear
+  return { air: ramp(w, 150, 1300) * 0.3 * whup, airF: 380 + Math.min(w, 2200) * 0.75 };
+}
+
+function deckMotion(trick, t, rate) {
+  const h = 1 / 120, t1 = Math.min(trick.dur, t + h);
+  let fast = 0, rub = 0, a0 = trick.f(t, 0, N), a1 = trick.f(t1, 0, N);
+  for (let i = 1; i < N; i++) {
+    const b0 = trick.f(t, i, N), b1 = trick.f(t1, i, N);
+    fast = Math.max(fast, cardSpeed(b0, b1, 1 / h));
+    if (Math.abs(b0.z - a0.z) < 3 && Math.hypot(b0.x - a0.x, b0.y - a0.y) < 70) { // touching: they rub
+      rub += (Math.hypot((b1.x - b0.x) - (a1.x - a0.x), (b1.y - b0.y) - (a1.y - a0.y)) + Math.abs((b1.rz - b0.rz) - (a1.rz - a0.rz)) * 0.6) / h;
+    }
+    a0 = b0; a1 = b1;
+  }
+  return { air: ramp(fast * rate, 300, 2600) * 0.16, airF: 700 + Math.min(fast * rate, 3000) * 0.5, rub: ramp(rub * rate, 40, 900) * 0.14 };
+}
+
+function toySound(events, motion, withRub) {
+  const air = bed({ q: 0.9 }), rub = withRub ? bed({ type: 'highpass', q: 0.5 }) : null;
+  return {
+    step(trick, a, b, rate) {
+      for (const e of eventsOf(trick, events)) if (e.t > a && e.t <= b) play(e.s, e.v);
+      const m = motion(trick, b, rate);
+      air.set(m.air, m.airF);
+      rub?.set(m.rub, 2600);
+    },
+    hush() { air.set(0); rub?.set(0); },
+    stop() { air.stop(); rub?.stop(); },
+  };
+}
+/** the one-shot sounds of a trick, for checking them by hand */
+export const trickSounds = trick => eventsOf(trick, trick.keys ? knifeEvents : cardEvents);
+const knifeSound = () => toySound(knifeEvents, knifeMotion, false);
+const deckSound = () => toySound(cardEvents, deckMotion, true);
+
 // ============================================================ REGISTRY + PLAYER
+/** Build a toy in real 3D; if Three.js cannot load, fall back to the flat CSS rig. Resolves to the rig. */
+async function make3d(name, flat, { container, anchor }, opts = {}) {
+  try {
+    const m = await import('./toys3d.js');
+    return await m[name](container, opts);
+  } catch (e) {
+    console.warn('3D toys are unavailable, showing the flat version.', e);
+    return flat(anchor, opts);
+  }
+}
+
 export const TOYS = {
-  balisong: { make: makeBalisong, tricks: BALISONG_TRICKS, preview: 'forward-fan', scale: 1.2 },
-  cards: { make: makeDeck, tricks: CARD_MOVES, preview: 'thumb-fan', scale: 1.35 },
+  balisong: { make: (where, o) => make3d('makeBalisong3D', makeBalisong, where, o), sound: knifeSound, tricks: BALISONG_TRICKS, preview: 'forward-fan', scale: 1.2 },
+  cards: { make: (where, o) => make3d('makeDeck3D', makeDeck, where, o), sound: deckSound, tricks: CARD_MOVES, preview: 'thumb-fan', scale: 1.35 },
 };
 export const trickCount = room => room.items.reduce((s, it) => s + (TOYS[it.toy]?.tricks.length || 0), 0);
 export const durOf = trick => trick.dur;
 
-/** Drive a rig: play one trick, optionally loop it or move on to the next. */
-export function player(rig, { onTrick, onTick } = {}) {
+/** Drive a rig: play one trick, optionally loop it or move on to the next. `sound` hears it. */
+export function player(rig, { onTrick, onTick, sound } = {}) {
   let idx = 0, t = 0, last = 0, raf = 0, playing = false, speed = 1, mode = 'all'; // all | loop | once
+  let heard = -1; // trick time up to which sounds have played
   const tricks = rig.tricks;
   const frame = now => {
     raf = 0;
@@ -308,11 +433,14 @@ export function player(rig, { onTrick, onTick } = {}) {
       t += dt;
       const trick = tricks[idx];
       if (t >= trick.dur) {
+        sound?.step(trick, heard, trick.dur, speed);
+        heard = -1;
         if (mode === 'loop') t = 0;
         else if (mode === 'all') { idx = (idx + 1) % tricks.length; t = 0; onTrick?.(idx); }
-        else { t = trick.dur; playing = false; onTick?.(); }
+        else { t = trick.dur; playing = false; sound?.hush(); onTick?.(); }
       }
       rig.render(tricks[idx], t, playing);
+      if (playing && sound) { sound.step(tricks[idx], heard, t, speed); heard = t; }
     }
     onTick?.(t / tricks[idx].dur);
     if (playing) raf = requestAnimationFrame(frame);
@@ -323,10 +451,14 @@ export function player(rig, { onTrick, onTick } = {}) {
     get playing() { return playing; },
     get speed() { return speed; },
     get mode() { return mode; },
-    go(i) { idx = (i + tricks.length) % tricks.length; t = 0; playing = true; rig.render(tricks[idx], 0, true); onTrick?.(idx); kick(); },
-    toggle() { playing = !playing; if (playing) { if (t >= tricks[idx].dur) t = 0; kick(); } else rig.render(tricks[idx], t, false); onTick?.(); },
+    go(i) { idx = (i + tricks.length) % tricks.length; t = 0; heard = -1; playing = true; rig.render(tricks[idx], 0, true); onTrick?.(idx); kick(); },
+    toggle() {
+      playing = !playing;
+      if (playing) { if (t >= tricks[idx].dur) { t = 0; heard = -1; } kick(); } else { rig.render(tricks[idx], t, false); sound?.hush(); }
+      onTick?.();
+    },
     setSpeed(s) { speed = s; },
     setMode(m) { mode = m; },
-    stop() { playing = false; cancelAnimationFrame(raf); raf = 0; },
+    stop() { playing = false; cancelAnimationFrame(raf); raf = 0; sound?.stop(); },
   };
 }

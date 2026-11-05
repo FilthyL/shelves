@@ -76,12 +76,16 @@ If it picks the wrong edition, set `"cover"` on the item to the image you want. 
 
 ## The Trick Room
 
-The basement holds toys you can play with instead of shelves. Each toy is a 3D rig moved by a timeline, so nothing is a video:
+The basement holds toys you can play with instead of shelves. Each toy is a real 3D model (drawn with [Three.js](https://threejs.org), loaded from jsDelivr only when you go down there) moved by a timeline, so nothing is a video. If Three.js can't load, the toys fall back to a flat CSS version of the same tricks.
 
 - **Butterfly knife** (a trainer): 24 tricks, from the basic opening and closing through fans, the Y2K and Zen rollovers, Chaplin, helix, aerials, the ladder and the tornado. The blade and bite handle swing on their own pins, so the knife opens and closes the way the real linkage does.
 - **Deck of cards**: 13 cardistry moves, including the thumb fan, Charlier, swivel, revolution and Sybil cuts, the spring, waterfall, ribbon spread with turnover, riffle shuffle and bridge, pinwheel, scissor cut, boomerang throw and anaconda dribble.
 
-Pick a toy to open the play table. Arrow keys change the trick, space pauses, and every trick has its own link, like `#tricks--butterfly-knife--y2k-rollover`. Tricks live in `assets/js/toys.js`; toys are listed in `data/rooms/tricks.json`.
+Pick a toy to open the play table. Arrow keys change the trick, space pauses, and every trick has its own link, like `#tricks--butterfly-knife--y2k-rollover`. Tricks live in `assets/js/toys.js`, the 3D models in `assets/js/toys3d.js`; toys are listed in `data/rooms/tricks.json`.
+
+## Sound
+
+The house makes small sounds: the front door, a case or a book coming off the shelf and going back, and in the Trick Room the knife's clacks and pin rattle, the air off a fan, cards tapping, snapping and sliding over each other. None of it is a recording. `assets/js/sound.js` shapes noise and short tones with Web Audio as things happen, and each trick works out its own sounds from its motion, so no audio files are stored or downloaded. Sound starts after your first click or key press (browsers require that). The speaker button or **M** turns it off, and the site remembers the choice.
 
 ## Log from the site
 
@@ -116,5 +120,6 @@ python3 -m unittest discover -s tools
 
 - Colours: [ENDESGA 32](https://lospec.com/palette-list/endesga-32) by Endesga. Every colour in the house, the rooms and the interface comes from it.
 - Type: Jersey 10, Pixelify Sans, Archivo, Bodoni Moda and IBM Plex Mono from Google Fonts.
+- 3D: [Three.js](https://threejs.org) (MIT), loaded from jsDelivr.
 - The interface was cleaned up with the [unslop](https://github.com/heydamir/unslop) guidance by Damir Sokolovsky (CC BY 4.0).
 - Cover art belongs to its publishers and is shown to identify each item in a personal collection.

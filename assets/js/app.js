@@ -3,13 +3,14 @@ import { spineHTML, spineClass, frameHTML, backHTML, mediaHTML, coverHTML, palVa
 import { createStreet, decorSprite, wallTile } from './pixel.js';
 import { openLog, canLog, applyPending } from './log.js';
 import { TOYS, trickCount, player } from './toys.js';
+import { play, soundOn, toggleSound, onSound } from './sound.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const SWING = 'cubic-bezier(0.22, 1, 0.36, 1)';
 
-const S = { house: null, scene: null, room: null, sort: 'shelf', fmt: null, q: '', order: [], insp: null };
+const S = { house: null, scene: null, room: null, sort: 'shelf', fmt: null, q: '', order: [], insp: null, play: null, toyRigs: [] };
 const MEDIA_ROOMS = new Set(['music', 'movies', 'anime']);
 
 boot();
@@ -30,6 +31,8 @@ async function boot() {
   addEventListener('hashchange', route);
   addEventListener('resize', debounce(onResize, 120));
   document.addEventListener('keydown', onKey);
+  document.addEventListener('click', e => { if (e.target.closest('.js-sound')) toggleSound(); });
+  onSound(syncSound);
   // a cover that fails to load falls back to the generated art underneath it
   document.addEventListener('error', e => { if (e.target?.classList?.contains('art-img')) e.target.remove(); }, true);
   route();
@@ -95,6 +98,7 @@ function buildStreet() {
       <button class="btn btn-close" type="button">Close the front</button>
       <span class="stats">${totalStats}</span>
       ${logButton()}
+      ${soundButton()}
       <button class="btn js-search" type="button" aria-label="Search the collection">${searchIcon()}<span>Search</span><kbd>/</kbd></button>
     </footer>`;
 
@@ -161,6 +165,7 @@ function loop(now) {
 }
 
 function showStreet(open) {
+  disposeToys();
   const street = $('#street'), room = $('#room');
   const fromRoom = S.scene === 'room';
   S.scene = 'street'; S.room = null;
@@ -169,6 +174,7 @@ function showStreet(open) {
   document.title = open ? `${S.house.name} · Choose a room` : S.house.name;
   const cv = $('.street-canvas', street);
   cv.getAnimations().forEach(a => a.cancel());
+  if (open && !fromRoom && ST.target === 0) play('door');
   ST.target = open ? 1 : 0;
   if (fromRoom || reduced) ST.open = ST.target;
   street.classList.toggle('is-open', open);
@@ -178,6 +184,7 @@ function showStreet(open) {
 }
 
 function zoomInto(btn, room) {
+  play('step');
   if (reduced) return go(room.id);
   const street = $('#street'), cv = $('.street-canvas', street);
   const r = btn.getBoundingClientRect(), cr = cv.getBoundingClientRect();
@@ -201,6 +208,7 @@ function showRoom(room) {
   if (room.kind === 'toys') return showToyRoom(room);
   closeInspect(true);
   closePlay();
+  disposeToys();
   S.scene = 'room'; S.room = room; S.sort = 'shelf'; S.fmt = null; S.q = '';
   $('#street').hidden = true;
   const sec = $('#room');
@@ -454,6 +462,7 @@ function openInspect(key) {
   const o = room.objects.find(x => x.key === key);
   if (!o) { history.replaceState(null, '', `#${room.id}`); return; }
   if (S.insp?.o === o) return;
+  play(['books', 'manga'].includes(room.kind) ? 'paper' : 'case', S.insp ? 0.6 : 1);
   if (S.insp) return swapInspect(o);
   buildInspect(o);
 }
@@ -599,6 +608,7 @@ function flip() {
   const o3 = $('.obj3d', I.el);
   const from = `rotateX(${I.rotX}deg) rotateY(${I.rotY}deg)`;
   I.rotY += 180;
+  play('turn');
   o3.animate([{ transform: from }, { transform: `rotateX(${I.rotX}deg) rotateY(${I.rotY}deg)` }], { duration: reduced ? 1 : 700, easing: SWING }).onfinish = setRot;
 }
 
@@ -628,7 +638,9 @@ function closeInspect(instant) {
   document.body.style.overflow = '';
   const shelfEl = $(`.obj[data-key="${cssEsc(I.o.key)}"]`);
   const done = () => { I.el.remove(); shelfEl?.classList.remove('is-out'); shelfEl?.focus({ preventScroll: true }); };
-  if (instant || reduced || !shelfEl) return done();
+  if (instant) return done();
+  play('set', 0.8, reduced ? 0 : 0.5);
+  if (reduced || !shelfEl) return done();
   const r = shelfEl.getBoundingClientRect();
   const holder = $('.holder', I.el), o3 = $('.obj3d', I.el);
   const a = $('.stage-anchor', I.el).getBoundingClientRect();
@@ -743,13 +755,20 @@ function navHTML(room) {
       <a class="nav-mark" href="#house" title="Back to the house">${esc(S.house.name)}</a>
       <div class="nav-rooms">${S.house.rooms.map(r => `<a href="#${r.id}"${r === room ? ' aria-current="page"' : ''}>${esc(r.name.replace(/^The\s+/i, ''))}</a>`).join('')}</div>
       ${logButton()}
+      ${soundButton()}
       <button class="btn js-search" type="button" aria-label="Search the collection">${searchIcon()}<span>Search</span><kbd>/</kbd></button>
     </nav>`;
+}
+
+function disposeToys() {
+  for (const { rig, pl } of S.toyRigs) { pl.stop(); rig.destroy(); }
+  S.toyRigs = [];
 }
 
 function showToyRoom(room) {
   closeInspect(true);
   closePlay();
+  disposeToys();
   S.scene = 'room'; S.room = room;
   $('#street').hidden = true;
   const sec = $('#room');
@@ -781,15 +800,19 @@ function showToyRoom(room) {
   $$('.js-log', sec).forEach(b => b.addEventListener('click', startLog));
   $$('.toy-station', sec).forEach(btn => {
     const it = room.items.find(i => i.id === btn.dataset.key), toy = TOYS[it.toy];
-    const rig = toy.make($('.toy-anchor', btn), { ghosts: 0 });
-    rig.pose();
-    const pl = player(rig);
-    pl.setMode('loop'); pl.setSpeed(0.8);
-    const on = () => { if (!reduced) pl.go(Math.max(0, toy.tricks.findIndex(t => t.id === toy.preview))); };
-    const off = () => { pl.stop(); rig.pose(); };
+    let pl = null, rig = null;
+    const on = () => { if (pl && !reduced) pl.go(Math.max(0, toy.tricks.findIndex(t => t.id === toy.preview))); };
+    const off = () => { if (pl) { pl.stop(); rig.pose(); } };
     btn.addEventListener('pointerenter', on); btn.addEventListener('pointerleave', off);
     btn.addEventListener('focus', on); btn.addEventListener('blur', off);
     btn.addEventListener('click', () => { off(); S.pushed = true; go(`${room.id}--${it.id}`); });
+    toy.make({ container: $('.toy-case', btn), anchor: $('.toy-anchor', btn) }, { ghosts: 0, near: true }).then(r => {
+      if (S.room !== room || !btn.isConnected) return r.destroy();
+      rig = r; rig.pose();
+      pl = player(rig); pl.setMode('loop'); pl.setSpeed(0.8);
+      S.toyRigs.push({ rig, pl });
+      if (btn.matches(':hover, :focus')) on();
+    });
   });
   window.scrollTo(0, 0);
 }
@@ -799,7 +822,7 @@ function openPlay(room, itemId, trickId) {
   const toy = it && TOYS[it.toy];
   if (!toy) { history.replaceState(null, '', `#${room.id}`); return closePlay(); }
   const want = Math.max(0, toy.tricks.findIndex(t => t.id === trickId));
-  if (S.play?.item === it) { if (trickId && want !== S.play.pl.index) S.play.pl.go(want); return; }
+  if (S.play?.item === it) { if (trickId && S.play.pl && want !== S.play.pl.index) S.play.pl.go(want); return; }
   closePlay();
   const el = document.createElement('div');
   el.className = `play theme-${room.kind}`;
@@ -820,6 +843,7 @@ function openPlay(room, itemId, trickId) {
           <span class="play-gap"></span>
           ${[0.5, 1, 2].map(s => `<button class="chip js-speed" type="button" data-s="${s}" aria-pressed="${s === 1}">${s}×</button>`).join('')}
           <button class="chip js-mode" type="button" aria-pressed="false" title="Repeat this trick instead of moving on">Repeat</button>
+          ${soundButton('round')}
         </div>
       </div>
     </div>
@@ -837,9 +861,22 @@ function openPlay(room, itemId, trickId) {
     <button class="round btn-x" type="button" aria-label="Put it down">✕</button>`;
   document.body.append(el);
   document.body.style.overflow = 'hidden';
-  const rig = toy.make($('.play-anchor', el), { ghosts: reduced ? 0 : 2 });
+  S.play = { el, item: it, room, rig: null, pl: null };
+  play(it.toy === 'cards' ? 'snap' : 'rattle', 0.7);
+  $('.play-now b', el).textContent = 'Picking it up…';
+  toy.make({ container: $('.play-stage', el), anchor: $('.play-anchor', el) }, { ghosts: reduced ? 0 : 2 }).then(rig => {
+    if (S.play?.el !== el) return rig.destroy(); // put down before it finished loading
+    startPlay(el, it, room, toy, rig, want);
+  });
+  $('.inspect-backdrop', el).addEventListener('click', putBackPlay);
+  $('.btn-x', el).addEventListener('click', putBackPlay);
+  $('.btn-x', el).focus({ preventScroll: true });
+}
+
+function startPlay(el, it, room, toy, rig, want) {
   const bar = $('.play-progress i', el), toggleBtn = $('.js-toggle', el);
   const pl = player(rig, {
+    sound: toy.sound?.(),
     onTrick(i) {
       const t = toy.tricks[i];
       $('.play-now b', el).textContent = t.name;
@@ -855,9 +892,7 @@ function openPlay(room, itemId, trickId) {
       toggleBtn.setAttribute('aria-label', pl.playing ? 'Pause' : 'Play');
     },
   });
-  S.play = { el, item: it, room, rig, pl };
-  $('.inspect-backdrop', el).addEventListener('click', putBackPlay);
-  $('.btn-x', el).addEventListener('click', putBackPlay);
+  Object.assign(S.play, { rig, pl });
   $('.js-prev', el).addEventListener('click', () => pl.go(pl.index - 1));
   $('.js-next', el).addEventListener('click', () => pl.go(pl.index + 1));
   toggleBtn.addEventListener('click', () => pl.toggle());
@@ -872,13 +907,13 @@ function openPlay(room, itemId, trickId) {
   });
   $('.tricks', el).addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (b) pl.go(+b.dataset.i); });
   pl.go(want);
-  $('.btn-x', el).focus({ preventScroll: true });
 }
 
 function closePlay() {
   if (!S.play) return;
-  S.play.pl.stop();
-  S.play.rig.destroy();
+  if (S.play.pl) play('set', 0.7);
+  S.play.pl?.stop();
+  S.play.rig?.destroy();
   S.play.el.remove();
   S.play = null;
   document.body.style.overflow = '';
@@ -886,6 +921,28 @@ function closePlay() {
 
 function putBackPlay() {
   if (S.pushed) { S.pushed = false; history.back(); } else go(S.room.id);
+}
+
+// ============================================================ SOUND
+function soundIcon(on) {
+  const wave = on
+    ? '<path d="M11 5.5c1 .8 1.5 1.6 1.5 2.5s-.5 1.7-1.5 2.5M13 3.5c1.6 1.2 2.4 2.7 2.4 4.5s-.8 3.3-2.4 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>'
+    : '<path d="M11.5 6l4 4m0-4l-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>';
+  return `<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 6h2.5l4-3.2v10.4L4 10H1.5z" fill="currentColor"/>${wave}</svg>`;
+}
+
+function soundButton(kind = 'btn btn-icon') {
+  const on = soundOn();
+  return `<button class="${kind} js-sound" type="button" aria-pressed="${on}" aria-label="Sound" title="${on ? 'Sound on' : 'Sound off'} (M)">${soundIcon(on)}</button>`;
+}
+
+function syncSound(on) {
+  $$('.js-sound').forEach(b => {
+    b.setAttribute('aria-pressed', String(on));
+    b.title = `${on ? 'Sound on' : 'Sound off'} (M)`;
+    b.innerHTML = soundIcon(on);
+  });
+  if (on) play('tick');
 }
 
 // ============================================================ LOGGING
@@ -928,8 +985,9 @@ function onKey(e) {
     if (S.scene === 'street' && location.hash === '#house') return go('');
   }
   if (e.key === '/' && !typing) { e.preventDefault(); return openSearch(); }
+  if ((e.key === 'm' || e.key === 'M') && !typing && !e.metaKey && !e.ctrlKey && !e.altKey) return toggleSound();
   if ((e.key === 'l' || e.key === 'L') && !typing && !S.insp && !S.play && !$('#search') && !$('#log')) { e.preventDefault(); return startLog(); }
-  if (S.play && !typing && !$('#search')) {
+  if (S.play?.pl && !typing && !$('#search')) {
     if (e.key === 'ArrowLeft') { e.preventDefault(); return S.play.pl.go(S.play.pl.index - 1); }
     if (e.key === 'ArrowRight') { e.preventDefault(); return S.play.pl.go(S.play.pl.index + 1); }
     if (e.key === ' ') { e.preventDefault(); return S.play.pl.toggle(); }

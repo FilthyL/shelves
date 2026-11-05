@@ -74,6 +74,8 @@ a { color: inherit; }
 .btn:hover { background: var(--navy); color: var(--white); }
 .btn kbd { font: 500 12px/1 var(--f-pix); padding: 4px 6px; background: var(--night); color: var(--steel); }
 .btn svg { flex: none; }
+.btn-icon { width: 36px; padding: 0; justify-content: center; }
+.btn-icon[aria-pressed="false"], .round.js-sound[aria-pressed="false"] { color: var(--slate); }
 
 /* ============================================================ STREET */
 .scene-street {
@@ -401,6 +403,7 @@ input.field { width: 180px; }
 .toy-case::after { content: ""; position: absolute; inset: 6px; background: linear-gradient(120deg, rgba(255, 255, 255, 0.1), transparent 30%); pointer-events: none; }
 .toy-station:hover .toy-case, .toy-station:focus-visible .toy-case { box-shadow: inset 0 0 0 4px var(--accent), inset 0 0 0 6px var(--wd0); }
 .toy-station:focus-visible { outline: none; }
+.toy-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .toy-anchor, .play-anchor { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; transform: scale(var(--sc, 1)); }
 .toy-label { display: grid; gap: 2px; }
 .toy-label b { font: 400 34px/0.9 var(--f-big); color: var(--sand); }
