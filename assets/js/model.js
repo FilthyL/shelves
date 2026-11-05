@@ -134,9 +134,22 @@ export async function loadHouse(base = 'data/') {
   ]);
   const rooms = await Promise.all(house.rooms.map(async (r, i) => {
     const data = await getJSON(base + r.file);
-    return buildRoom(r, Array.isArray(data) ? data : data.items || [], covers, i, house.name);
+    const raw = Array.isArray(data) ? data : data.items || [];
+    return Object.assign(buildRoom(r, raw, covers, i, house.name), { raw });
   }));
-  return { ...house, rooms, byId: Object.fromEntries(rooms.map(r => [r.id, r])) };
+  return { ...house, covers, rooms, byId: Object.fromEntries(rooms.map(r => [r.id, r])) };
+}
+
+/** Put a new entry on a room's shelf (at the front or the end) and rebuild that room. */
+export function putEntry(house, roomId, entry, where = 'front') {
+  const i = house.rooms.findIndex(r => r.id === roomId);
+  if (i < 0) return null;
+  const old = house.rooms[i];
+  const raw = where === 'end' ? [...old.raw, entry] : [entry, ...old.raw];
+  const room = Object.assign(buildRoom(old, raw, house.covers || {}, old.index, house.name), { raw, where: old.where });
+  house.rooms[i] = room;
+  house.byId[roomId] = room;
+  return room;
 }
 
 function buildRoom(meta, rawItems, covers, index, houseName = 'Filth Manor') {

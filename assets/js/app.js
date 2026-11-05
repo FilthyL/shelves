@@ -1,6 +1,7 @@
-import { loadHouse, hash, esc, roomStats, countLine } from './model.js';
+import { loadHouse, putEntry, hash, esc, roomStats, countLine } from './model.js';
 import { spineHTML, spineClass, frameHTML, backHTML, mediaHTML, coverHTML, palVars, volumeLine } from './art.js';
 import { createStreet, decorSprite, wallTile } from './pixel.js';
+import { openLog, canLog, applyPending } from './log.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -16,6 +17,7 @@ async function boot() {
   const app = $('#app');
   try {
     S.house = await loadHouse('data/');
+    applyPending(S.house, putEntry);
   } catch (e) {
     const local = location.protocol === 'file:';
     app.innerHTML = `<div class="loading"><p>${local
@@ -86,6 +88,7 @@ function buildStreet() {
       <span class="hint">Click the house to let yourself in</span>
       <button class="btn btn-close" type="button">Close the front</button>
       <span class="stats">${totalStats}</span>
+      ${logButton()}
       <button class="btn js-search" type="button" aria-label="Search the collection">${searchIcon()}<span>Search</span><kbd>/</kbd></button>
     </footer>`;
 
@@ -105,6 +108,7 @@ function buildStreet() {
     b.addEventListener('click', () => zoomInto(b, S.house.byId[b.dataset.room]));
   });
   $('.btn-close', street).addEventListener('click', () => go(''));
+  $$('.js-log', street).forEach(b => b.addEventListener('click', startLog));
   $('.js-search', street).addEventListener('click', openSearch);
 }
 
@@ -211,6 +215,7 @@ function showRoom(room) {
     <nav class="room-nav" aria-label="Rooms">
       <a class="nav-mark" href="#house" title="Back to the house">${esc(S.house.name)}</a>
       <div class="nav-rooms">${S.house.rooms.map(r => `<a href="#${r.id}"${r === room ? ' aria-current="page"' : ''}>${esc(r.name.replace(/^The\s+/i, ''))}</a>`).join('')}</div>
+      ${logButton()}
       <button class="btn js-search" type="button" aria-label="Search the collection">${searchIcon()}<span>Search</span><kbd>/</kbd></button>
     </nav>
     <header class="room-head">
@@ -235,9 +240,11 @@ function showRoom(room) {
     <footer class="room-foot">
       <span>Click anything to take it off the shelf. Esc puts it back.</span>
       <span>${covers ? `Cover art: ${esc(sources.join(', ') || 'linked')} · ${covers} of ${room.items.length}` : 'Cover art: generated'}</span>
+      <button class="linkish js-log" type="button">${canLog() ? 'Log an entry' : 'Owner? Log an entry'}</button>
     </footer>`;
 
   $('.js-search', sec).addEventListener('click', openSearch);
+  $$('.js-log', sec).forEach(b => b.addEventListener('click', startLog));
   $$('.chip', sec).forEach(ch => ch.addEventListener('click', () => {
     S.fmt = ch.dataset.fmt || null;
     $$('.chip', sec).forEach(c => c.setAttribute('aria-pressed', String(c === ch)));
@@ -727,15 +734,46 @@ function openSearch() {
   input.focus();
 }
 
+// ============================================================ LOGGING
+function logButton() {
+  return canLog() ? '<button class="btn js-log" type="button" aria-label="Log an entry">+ <span>Log</span><kbd>L</kbd></button>' : '';
+}
+
+function startLog() {
+  openLog({ house: S.house, roomId: S.room?.id, onLogged });
+}
+
+function onLogged(roomId, entry, where) {
+  const room = putEntry(S.house, roomId, entry, where);
+  buildStreet(); // the house's mini shelves pick up the new spine
+  const it = room.items.find(i => i.title === entry.title && (i.year ?? null) === (entry.year ?? null));
+  toast(`Logged ${entry.title}. It's on the shelf now; the live site catches up in about a minute.`);
+  if (!it) return go(roomId);
+  S.pushed = false;
+  go(`${roomId}--${it.kind === 'manga' ? `${it.id}--${it.vols[0]}` : it.id}`);
+}
+
+function toast(text) {
+  $('.toast')?.remove();
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.setAttribute('role', 'status');
+  t.textContent = text;
+  document.body.append(t);
+  setTimeout(() => t.remove(), 5000);
+}
+
 // ============================================================ KEYS + RESIZE
 function onKey(e) {
   const typing = /input|select|textarea/i.test(document.activeElement?.tagName || '');
   if (e.key === 'Escape') {
+    if ($('#log')) return $('#log').remove();
     if ($('#search')) return $('#search').remove();
     if (S.insp) return putBack();
     if (S.scene === 'street' && location.hash === '#house') return go('');
   }
   if (e.key === '/' && !typing) { e.preventDefault(); return openSearch(); }
+  if ((e.key === 'l' || e.key === 'L') && !typing && !S.insp && !$('#search') && !$('#log')) { e.preventDefault(); return startLog(); }
   if (S.insp && !typing) {
     if (e.key === 'ArrowLeft') step(-1);
     else if (e.key === 'ArrowRight') step(1);

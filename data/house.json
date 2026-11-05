@@ -2,6 +2,8 @@
   "name": "Filth Manor",
   "number": "7",
   "established": 2026,
+  "repo": "FilthyL/shelves",
+  "branch": "main",
   "tagline": "Every film, record, book, series and volume that made it past the front door",
   "rooms": [
     { "id": "manga",  "name": "The Manga Loft",     "kind": "manga",  "file": "rooms/manga.json" },
