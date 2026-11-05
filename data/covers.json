@@ -1582,6 +1582,30 @@
     ],
     "fetched": "2026-11-05"
   },
+  "movies/100-meters": {
+    "from": "IMDb",
+    "match": "100 Meters (2025)",
+    "src": "https://m.media-amazon.com/images/M/MV5BOTYyNWZiNTktNzhiYi00YWVmLWJhZTctZTc4MDRkZGMyZjVhXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#e94c3a",
+      "#171a1c",
+      "#6a2b27",
+      "#ab8579"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/1917": {
+    "from": "IMDb",
+    "match": "1917 (2019)",
+    "src": "https://m.media-amazon.com/images/M/MV5BYzkxZjg2NDQtMGVjMy00NWZkLTk0ZDEtZWE3NDYwYjAyMTg1XkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#010102",
+      "#e88d45",
+      "#16395b",
+      "#5b4b58"
+    ],
+    "fetched": "2026-11-05"
+  },
   "movies/2001-a-space-odyssey": {
     "from": "IMDb",
     "match": "2001: A Space Odyssey (1968)",
@@ -1594,39 +1618,207 @@
     ],
     "fetched": "2026-11-05"
   },
-  "movies/arrival": {
+  "movies/a-bittersweet-life": {
     "from": "IMDb",
-    "match": "Arrival (2016)",
-    "src": "https://m.media-amazon.com/images/M/MV5BMTExMzU0ODcxNDheQTJeQWpwZ15BbWU4MDE1OTI4MzAy._V1_SX800.jpg",
+    "match": "A Bittersweet Life (2005)",
+    "src": "https://m.media-amazon.com/images/M/MV5BYTE0ZmNkNGMtNjg4YS00MWUxLTlkMGQtZTUzZDE3OTAwOWM1XkEyXkFqcGc@._V1_SX800.jpg",
     "pal": [
-      "#272a27",
-      "#fdfdfb",
-      "#987759",
-      "#fdfdfb"
+      "#272836",
+      "#7a96a9",
+      "#7a96a9",
+      "#566679"
     ],
     "fetched": "2026-11-05"
   },
-  "movies/blade-runner": {
+  "movies/all-about-lily-chou-chou": {
     "from": "IMDb",
-    "match": "Blade Runner (1982)",
-    "src": "https://m.media-amazon.com/images/M/MV5BOWQ4YTBmNTQtMDYxMC00NGFjLTkwOGQtNzdhNmY1Nzc1MzUxXkEyXkFqcGc@._V1_SX800.jpg",
+    "match": "All About Lily Chou-Chou (2001)",
+    "src": "https://m.media-amazon.com/images/M/MV5BZTk5YWNhZTQtYTU0Zi00NGJjLWJhMDMtNGYzN2VjMDczZDY2XkEyXkFqcGc@._V1_SX800.jpg",
     "pal": [
-      "#040404",
-      "#fafab6",
-      "#583817",
-      "#fafab6"
+      "#fefdfc",
+      "#4a6914",
+      "#88b808",
+      "#f5c3ac"
     ],
     "fetched": "2026-11-05"
   },
-  "movies/gangs-of-wasseypur": {
+  "movies/avatar-fire-and-ash": {
     "from": "IMDb",
-    "match": "Gangs of Wasseypur (2012)",
-    "src": "https://m.media-amazon.com/images/M/MV5BNWQyMmJkYTItNDUyYS00MjgwLWFmYjUtOWQ1NmRjOGZlOTZhXkEyXkFqcGc@._V1_SX800.jpg",
+    "match": "Avatar: Fire and Ash (2025)",
+    "src": "https://m.media-amazon.com/images/M/MV5BZDYxY2I1OGMtN2Y4MS00ZmU1LTgyNDAtODA0MzAyYjI0N2Y2XkEyXkFqcGc@._V1_SX800.jpg",
     "pal": [
-      "#896778",
+      "#474449",
+      "#e4a987",
+      "#b65636",
+      "#877576"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/birdman-or-the-unexpected-virtue-of-ignorance": {
+    "from": "IMDb",
+    "match": "Birdman or (The Unexpected Virtue of Ignorance) (2014)",
+    "src": "https://m.media-amazon.com/images/M/MV5BODAzNDMxMzAxOV5BMl5BanBnXkFtZTgwMDMxMjA4MjE@._V1_SX800.jpg",
+    "pal": [
+      "#c60118",
       "#f4f0e6",
-      "#27386a",
-      "#b8c7b7"
+      "#080403",
+      "#c95956"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/bugonia": {
+    "from": "IMDb",
+    "match": "Bugonia (2025)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNzIzNWQxMjEtZmQ3MS00OTk2LWFlZjktZDUyYWRkM2M3NWVlXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#7a1f22",
+      "#e8cba8",
+      "#c5892c",
+      "#e8cba8"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/clayface": {
+    "from": "IMDb",
+    "match": "Clayface (2026)",
+    "src": "https://m.media-amazon.com/images/M/MV5BMjNlMjM4NTAtYjE5YS00ZGYyLWEyMTYtNjFlMmIxZDEzYjhhXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#fffefe",
+      "#a80905",
+      "#a80905",
+      "#580705"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/collateral": {
+    "from": "IMDb",
+    "match": "Collateral (2004)",
+    "src": "https://m.media-amazon.com/images/M/MV5BMjE3NjM5OTMxMV5BMl5BanBnXkFtZTcwOTIzMTQyMw@@._V1_SX800.jpg",
+    "pal": [
+      "#070605",
+      "#79786c",
+      "#553a2c",
+      "#79786c"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/digger": {
+    "from": "IMDb",
+    "match": "Digger (2026)",
+    "src": "https://m.media-amazon.com/images/M/MV5BN2E0YTg1M2YtOGQyYi00NDFkLTk3NzUtYmEyNTZhYThhZDQ0XkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#162a27",
+      "#98978b",
+      "#777967",
+      "#d7cbb8"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/disclosure-day": {
+    "from": "IMDb",
+    "match": "Disclosure Day (2026)",
+    "src": "https://m.media-amazon.com/images/M/MV5BZDVkYjkxMzMtZjEzYS00N2ZmLTg1YzQtN2NiNmQwYTkxNzhiXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#181819",
+      "#68a6ca",
+      "#2a4768",
+      "#68a6ca"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/eyes-wide-shut": {
+    "from": "IMDb",
+    "match": "Eyes Wide Shut (1999)",
+    "src": "https://m.media-amazon.com/images/M/MV5BZTQ0MmM5MDAtYmYyZS00MzlmLTlhZTAtZDJlZWY5ZTZkZjZmXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#26012a",
+      "#b88937",
+      "#743b18",
+      "#595868"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/forgotten": {
+    "from": "IMDb",
+    "match": "Forgotten (2017)",
+    "src": "https://m.media-amazon.com/images/M/MV5BYWU5YzhiNTEtMDg5ZC00ZWRiLTkyNmItYzRkNGNmMzY5NmRmXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#070507",
+      "#d9dada",
+      "#563933",
+      "#d9dada"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/hamnet": {
+    "from": "IMDb",
+    "match": "Hamnet (2025)",
+    "src": "https://m.media-amazon.com/images/M/MV5BMDQ5ZmY0OWYtOTYzZi00Mzg5LWE3N2EtMjYwZTAzZmJhYjkyXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#272618",
+      "#ac8970",
+      "#7b5339",
+      "#ac8970"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/harakiri": {
+    "from": "IMDb",
+    "match": "Harakiri (1962)",
+    "src": "https://m.media-amazon.com/images/M/MV5BZThiZjU5ZDQtZDI4Mi00ZGYyLTkzOTktYmIzZTFlZTkxYzg5XkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#f9f8f6",
+      "#b5011c",
+      "#b5011c",
+      "#bbb9b9"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/heat": {
+    "from": "IMDb",
+    "match": "Heat (1995)",
+    "src": "https://m.media-amazon.com/images/M/MV5BMTkxYjU1OTMtYWViZC00ZjAzLWI3MDktZGQ2N2VmMjVjNDRlXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#88b9d5",
+      "#19110d",
+      "#19110d",
+      "#354658"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/hereditary": {
+    "from": "IMDb",
+    "match": "Hereditary (2018)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNTEyZGQwODctYWJjZi00NjFmLTg3YmEtMzlhNjljOGZhMWMyXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#070707",
+      "#9b9694",
+      "#153757",
+      "#9b9694"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/high-and-low": {
+    "from": "IMDb",
+    "match": "High and Low (1963)",
+    "src": "https://m.media-amazon.com/images/M/MV5BMGJiNzllYjktODAzNS00OGUzLTlmY2MtMjA2ZTZhYTY1OTc4XkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#e8e8e5",
+      "#6a6766",
+      "#e54a25",
+      "#a9a9a5"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/ikiru": {
+    "from": "IMDb",
+    "match": "Ikiru (1952)",
+    "src": "https://m.media-amazon.com/images/M/MV5BOGU1YTBlN2ItMDAxNy00NjM5LWE4MTAtNTBhZmY4ZTgzYTlkXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#04250c",
+      "#fcfcfb",
+      "#fcfcfb",
+      "#fcfcfb"
     ],
     "fetched": "2026-11-05"
   },
@@ -1642,51 +1834,147 @@
     ],
     "fetched": "2026-11-05"
   },
-  "movies/mulholland-drive": {
+  "movies/mahavatar-narsimha": {
     "from": "IMDb",
-    "match": "Mulholland Drive (2001)",
-    "src": "https://m.media-amazon.com/images/M/MV5BNjliY2UwMjQtYjVlNi00NzExLTg1MDMtMjE2OTYwYjI0NTcxXkEyXkFqcGc@._V1_SX800.jpg",
+    "match": "Mahavatar Narsimha (2024)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNzhkMjFhOTItMTczNi00YWM1LTlhZjItOTc4OTA0OWVhZTIzXkEyXkFqcGc@._V1_SX800.jpg",
     "pal": [
-      "#0d0c11",
-      "#d8d3b9",
-      "#24486a",
-      "#d8d3b9"
+      "#0a0301",
+      "#aa691a",
+      "#583414",
+      "#aa691a"
     ],
     "fetched": "2026-11-05"
   },
-  "movies/oldboy": {
+  "movies/marty-supreme": {
     "from": "IMDb",
-    "match": "Oldboy (2003)",
-    "src": "https://m.media-amazon.com/images/M/MV5BMTAwNzNjYWItZmI0Ni00ZTcyLWIwNWMtZjlmNGMxZTEyYTJmXkEyXkFqcGc@._V1_SX800.jpg",
+    "match": "Marty Supreme (2025)",
+    "src": "https://m.media-amazon.com/images/M/MV5BZTRhYjI1MTItMWYwMi00MjY5LWI1OTktMzQwNzA3MWJlN2QyXkEyXkFqcGc@._V1_SX800.jpg",
     "pal": [
-      "#1a1517",
-      "#c3c8ca",
-      "#761827",
-      "#686a6a"
+      "#371914",
+      "#a9a5a6",
+      "#9a6647",
+      "#a9a5a6"
     ],
     "fetched": "2026-11-05"
   },
-  "movies/parasite": {
+  "movies/normal-people": {
     "from": "IMDb",
-    "match": "Parasite (2019)",
-    "src": "https://m.media-amazon.com/images/M/MV5BYjk1Y2U4MjQtY2ZiNS00OWQyLWI3MmYtZWUwNmRjYWRiNWNhXkEyXkFqcGc@._V1_SX800.jpg",
+    "match": "Normal People Confessions (2020)",
+    "src": "https://m.media-amazon.com/images/M/MV5BMTU3YTlkODAtN2Q0ZS00YTVjLTgyOGUtYjc2OTYyZjQ4ZmU5XkEyXkFqcGc@._V1_SX800.jpg",
     "pal": [
-      "#fbfefe",
-      "#131b26",
-      "#488b56",
-      "#131b26"
+      "#0d0908",
+      "#947c6a",
+      "#573e34",
+      "#8a7364"
     ],
     "fetched": "2026-11-05"
   },
-  "movies/pulp-fiction": {
+  "movies/obsession": {
     "from": "IMDb",
-    "match": "Pulp Fiction (1994)",
-    "src": "https://m.media-amazon.com/images/M/MV5BYTViYTE3ZGQtNDBlMC00ZTAyLTkyODMtZGRiZDg0MjA2YThkXkEyXkFqcGc@._V1_SX800.jpg",
+    "match": "Obsession (2025)",
+    "src": "https://m.media-amazon.com/images/M/MV5BYzc1NWUwMDgtNGZlMS00ZmYzLWIzMzktNmMxMmY1MTUzNWExXkEyXkFqcGc@._V1_SX800.jpg",
     "pal": [
-      "#151719",
-      "#d8a719",
-      "#c61907",
-      "#897729"
+      "#170c0b",
+      "#c6cacb",
+      "#883c1c",
+      "#494545"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/pather-panchali": {
+    "from": "IMDb",
+    "match": "Pather Panchali (1955)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNmZhNzc0ZDMtZDg2My00MjkxLWJjZTctNTljODc2ZjQzMzJkXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#555659",
+      "#e6e7e8",
+      "#b89649",
+      "#0b090a"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/paths-of-glory": {
+    "from": "IMDb",
+    "match": "Paths of Glory (1957)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNmQ2NmI2ODYtMDQzNS00NzQyLTkzZjgtZmZlYTQ5MTc1OWU3XkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#d9dcd7",
+      "#27221c",
+      "#59a6d8",
+      "#27221c"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/primetime": {
+    "from": "IMDb",
+    "match": "Primetime (2026)",
+    "src": "https://m.media-amazon.com/images/M/MV5BMTcyZGI2NWQtOTU3NS00NTEyLTliNDItNTQyNmFkMGZmZGQzXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#2a2428",
+      "#b89a94",
+      "#5797ca",
+      "#b89a94"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/project-hail-mary": {
+    "from": "IMDb",
+    "match": "Project Hail Mary (2026)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNTkwNzJiYTctNzI3NC00NjE1LTlhYjktY2Q5MTdmMWFmNzcxXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#37574a",
+      "#e6c69a",
+      "#e6c69a",
+      "#e9a447"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/punch-drunk-love": {
+    "from": "IMDb",
+    "match": "Punch-Drunk Love (2002)",
+    "src": "https://m.media-amazon.com/images/M/MV5BZTYyMTQ2MDAtMzYzYS00YjZiLWJiNDUtZjEwNzM4YzE1ZDhhXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#040204",
+      "#88c2e8",
+      "#88c2e8",
+      "#88c2e8"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/requiem-for-a-dream": {
+    "from": "IMDb",
+    "match": "Requiem for a Dream (2000)",
+    "src": "https://m.media-amazon.com/images/M/MV5BN2ZlMjIzZjctYzA2My00ZWYyLWI4ZjctMGI2NWYyNzFiZjAwXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#b8cae8",
+      "#030304",
+      "#19475a",
+      "#030304"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/resident-evil": {
+    "from": "IMDb",
+    "match": "Resident Evil (2026)",
+    "src": "https://m.media-amazon.com/images/M/MV5BOGZjZWI1NTItOGUwZC00YWZkLWIxZWEtNzE2ZTIxODdjNmZmXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#292825",
+      "#9b9688",
+      "#933937",
+      "#9b9688"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/rrr": {
+    "from": "IMDb",
+    "match": "RRR (2022)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNWMwODYyMjQtMTczMi00NTQ1LWFkYjItMGJhMWRkY2E3NDAyXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#36291a",
+      "#c4985a",
+      "#98754a",
+      "#d3ab6a"
     ],
     "fetched": "2026-11-05"
   },
@@ -1702,39 +1990,147 @@
     ],
     "fetched": "2026-11-05"
   },
-  "movies/stalker": {
+  "movies/sidewalls": {
     "from": "IMDb",
-    "match": "Stalker (1979)",
-    "src": "https://m.media-amazon.com/images/M/MV5BMDIzMDRiYjgtM2U1Yy00MjlhLTliODMtM2E5NDI5Njc3YmZkXkEyXkFqcGc@._V1_SX800.jpg",
+    "match": "Sidewalls (2011)",
+    "src": "https://m.media-amazon.com/images/M/MV5BN2U5YTdiNjUtNzg3OS00MmY3LTlhMzgtNWUzOTliYzQyOTgwXkEyXkFqcGc@._V1_SX800.jpg",
     "pal": [
-      "#c7c897",
-      "#293734",
-      "#889768",
-      "#f5f4e9"
+      "#a8a7a9",
+      "#3a323b",
+      "#5d3940",
+      "#fbfbfb"
     ],
     "fetched": "2026-11-05"
   },
-  "movies/taxi-driver": {
+  "movies/spider-man-brand-new-day": {
     "from": "IMDb",
-    "match": "Taxi Driver (1976)",
-    "src": "https://m.media-amazon.com/images/M/MV5BZDNhMGYwM2UtMTdlZS00MGQ1LWI2YzAtODY5YWI1MjYyNzRmXkEyXkFqcGc@._V1_SX800.jpg",
+    "match": "Spider-Man: Brand New Day (2026)",
+    "src": "https://m.media-amazon.com/images/M/MV5BOWNjYWM3NWItOGE0ZS00MWRjLThiZWEtYjc4ZmNmMmU5ZTVmXkEyXkFqcGc@._V1_SX800.jpg",
     "pal": [
-      "#0a080a",
-      "#dad527",
-      "#dad527",
-      "#495646"
+      "#380204",
+      "#b6a698",
+      "#b6a698",
+      "#775238"
     ],
     "fetched": "2026-11-05"
   },
-  "movies/the-godfather": {
+  "movies/street-fighter": {
     "from": "IMDb",
-    "match": "The Godfather (1972)",
-    "src": "https://m.media-amazon.com/images/M/MV5BNGEwYjgwOGQtYjg5ZS00Njc1LTk2ZGEtM2QwZWQ2NjdhZTE5XkEyXkFqcGc@._V1_SX800.jpg",
+    "match": "Street Fighter (2026)",
+    "src": "https://m.media-amazon.com/images/M/MV5BYjhlN2EyNGUtY2U4YS00ZTQ3LTg0NTgtNGIxZmVhMDlmMjIyXkEyXkFqcGc@._V1_SX800.jpg",
     "pal": [
-      "#020101",
-      "#9a885b",
-      "#56361c",
-      "#9a885b"
+      "#070504",
+      "#d6884a",
+      "#ca180d",
+      "#752718"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/superbad": {
+    "from": "IMDb",
+    "match": "Superbad (2007)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNjk0MzdlZGEtNTRkOC00ZDRiLWJkYjAtMzUzYTRiNzk1YTViXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#e9e7d7",
+      "#655b59",
+      "#aa2a23",
+      "#655b59"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/terminator-2-judgment-day": {
+    "from": "IMDb",
+    "match": "Terminator 2: Judgment Day (1991)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNGMyMGNkMDUtMjc2Ni00NWFlLTgyODEtZTY2MzBiZTg0OWZiXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#050b0d",
+      "#967a7d",
+      "#682526",
+      "#384856"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/the-conjuring-last-rites": {
+    "from": "IMDb",
+    "match": "The Conjuring: Last Rites (2025)",
+    "src": "https://m.media-amazon.com/images/M/MV5BM2VmMzRkYzgtMzg2ZC00OTFkLTkwMTYtNTMxNjM2YzI1MjgyXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#080c14",
+      "#b9a6a6",
+      "#1c4668",
+      "#766867"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/the-exorcism-of-emily-rose": {
+    "from": "IMDb",
+    "match": "The Exorcism of Emily Rose (2005)",
+    "src": "https://m.media-amazon.com/images/M/MV5BMTI2NTM5MjQ0Nl5BMl5BanBnXkFtZTcwNDAxNjAzMQ@@._V1_SX800.jpg",
+    "pal": [
+      "#cbd8d5",
+      "#161412",
+      "#58736f",
+      "#97a99b"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/the-man-who-sleeps": {
+    "from": "IMDb",
+    "match": "The Man Who Sleeps (1974)",
+    "src": "https://m.media-amazon.com/images/M/MV5BZDNiMjI2NmMtNDI1MC00MGVjLWE2OGQtMjMyNGIzYmI4ZjhhXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#181516",
+      "#bab7b8",
+      "#e3d7cb",
+      "#999596"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/the-odyssey": {
+    "from": "IMDb",
+    "match": "The Odyssey (2026)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNTcyNmJlZmQtNDUwYy00NDBjLTg1NGQtYTY2Y2UxMWM3NmI1XkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#070506",
+      "#e68a46",
+      "#672a18",
+      "#a84a27"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/the-perks-of-being-a-wallflower": {
+    "from": "IMDb",
+    "match": "The Perks of Being a Wallflower (2012)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNTY0ZTI2NzQtYWI1YS00ZWM3LWFmMjMtZWYxNmNmOTI0MGJjXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#b9c80a",
+      "#352b22",
+      "#757d05",
+      "#352b22"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/the-seventh-seal": {
+    "from": "IMDb",
+    "match": "The Seventh Seal (1957)",
+    "src": "https://m.media-amazon.com/images/M/MV5BZDlmYTkzOWUtODQ0MS00MmM4LWE3ZjMtYTEwNGUwMmJkYzIxXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#ece6d9",
+      "#161412",
+      "#a4988c",
+      "#776d67"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/the-summit-of-the-gods": {
+    "from": "IMDb",
+    "match": "The Summit of the Gods (2021)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNWRjZjc5MWYtZWE2Zi00MmExLWFmZmQtOGZlMzUxZjAwM2RjXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#c5d5e6",
+      "#44536a",
+      "#68a5d6",
+      "#44536a"
     ],
     "fetched": "2026-11-05"
   },
@@ -1747,6 +2143,42 @@
       "#a89467",
       "#4c3618",
       "#585a54"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/train-to-busan": {
+    "from": "IMDb",
+    "match": "Train to Busan (2016)",
+    "src": "https://m.media-amazon.com/images/M/MV5BODA3OTM4NWQtMjU1OS00NzA2LTlhZDAtYjU2YjM5MWUxNTdiXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#660c18",
+      "#cdb598",
+      "#c32b27",
+      "#cdb598"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/uncut-gems": {
+    "from": "IMDb",
+    "match": "Uncut Gems (2019)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNmI0YjA5NjItYzExYi00NzkxLTkxNDctNGJjYTZhM2M0NDQ0XkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#050505",
+      "#d4cbbc",
+      "#d4cbbc",
+      "#4a4946"
+    ],
+    "fetched": "2026-11-05"
+  },
+  "movies/weapons": {
+    "from": "IMDb",
+    "match": "Weapons (2025)",
+    "src": "https://m.media-amazon.com/images/M/MV5BNTBhNWJjZWItYzY3NS00M2NkLThmOWYtYTlmNzBmN2UxZWFjXkEyXkFqcGc@._V1_SX800.jpg",
+    "pal": [
+      "#0c1a23",
+      "#648a91",
+      "#396776",
+      "#68949a"
     ],
     "fetched": "2026-11-05"
   },
