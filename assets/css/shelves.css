@@ -313,7 +313,7 @@ input.field { width: 180px; }
 .round:hover { background: var(--navy); }
 .round:disabled { opacity: 0.3; cursor: default; background: var(--ink); color: var(--sand); }
 .stage-count { font: 400 14px/1 var(--f-pix); color: var(--steel); min-width: 64px; text-align: center; }
-.stage-hint { position: absolute; top: max(24px, env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); margin: 0; font: 400 13px/1 var(--f-pix); color: var(--slate); white-space: nowrap; pointer-events: none; }
+.stage-hint { position: absolute; bottom: calc(max(18px, env(safe-area-inset-bottom, 0px)) + 56px); left: 50%; transform: translateX(-50%); margin: 0; font: 400 13px/1 var(--f-pix); color: var(--slate); white-space: nowrap; pointer-events: none; }
 .btn-x { position: absolute; z-index: 3; top: max(14px, env(safe-area-inset-top, 0px)); right: max(14px, env(safe-area-inset-right, 0px)); }
 
 .notes {
@@ -388,6 +388,7 @@ input.field { width: 180px; }
   .inspect { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(300px, 52%) minmax(0, 1fr); }
   .notes { align-items: flex-start; padding-block: 4px 24px; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
   .stage-ui { bottom: 8px; }
+  .stage-hint { display: none; }
   .room-tools { width: 100%; }
   input.field { flex: 1 1 140px; width: auto; }
   .btn span { display: none; }
