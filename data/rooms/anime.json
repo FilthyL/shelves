@@ -1,0 +1,18 @@
+{
+  "items": [
+    { "title": "Cowboy Bebop", "original": "カウボーイビバップ", "creator": "Sunrise", "year": 1998, "format": "boxset", "episodes": 26, "rating": 10, "featured": true, "tags": ["space western", "jazz"], "note": "See you, space cowboy." },
+    { "title": "Neon Genesis Evangelion", "original": "新世紀エヴァンゲリオン", "creator": "Gainax", "year": 1995, "format": "boxset", "episodes": 26, "rating": 9.5, "tags": ["mecha", "psychological"] },
+    { "title": "Spirited Away", "original": "千と千尋の神隠し", "creator": "Studio Ghibli", "year": 2001, "format": "bluray", "runtime": 125, "rating": 10, "tags": ["film", "fantasy"], "facts": { "Director": "Hayao Miyazaki" } },
+    { "title": "Akira", "original": "アキラ", "creator": "Tokyo Movie Shinsha", "year": 1988, "format": "4k", "runtime": 124, "rating": 9.5, "tags": ["film", "cyberpunk"], "facts": { "Director": "Katsuhiro Otomo" } },
+    { "title": "Ghost in the Shell", "original": "攻殻機動隊", "creator": "Production I.G", "year": 1995, "format": "dvd", "runtime": 82, "rating": 9, "tags": ["film", "cyberpunk"], "facts": { "Director": "Mamoru Oshii" } },
+    { "title": "Fullmetal Alchemist: Brotherhood", "original": "鋼の錬金術師", "creator": "Bones", "year": 2009, "format": "boxset", "episodes": 64, "rating": 9.5, "tags": ["adventure"] },
+    { "title": "Steins;Gate", "id": "steins-gate", "original": "シュタインズ・ゲート", "creator": "White Fox", "year": 2011, "format": "bluray", "episodes": 24, "rating": 9, "tags": ["time travel"] },
+    { "title": "Monster", "original": "モンスター", "creator": "Madhouse", "year": 2004, "format": "dvd", "episodes": 74, "rating": 9.5, "tags": ["thriller"] },
+    { "title": "Mob Psycho 100", "original": "モブサイコ100", "creator": "Bones", "year": 2016, "format": "bluray", "episodes": 37, "rating": 9, "tags": ["action", "comedy"] },
+    { "title": "Perfect Blue", "original": "パーフェクトブルー", "creator": "Madhouse", "year": 1997, "format": "bluray", "runtime": 81, "rating": 9, "tags": ["film", "psychological"], "facts": { "Director": "Satoshi Kon" } },
+    { "title": "Your Name.", "id": "your-name", "original": "君の名は。", "creator": "CoMix Wave Films", "year": 2016, "format": "bluray", "runtime": 106, "rating": 8.5, "tags": ["film", "romance"], "facts": { "Director": "Makoto Shinkai" } },
+    { "title": "Samurai Champloo", "original": "サムライチャンプルー", "creator": "Manglobe", "year": 2004, "format": "dvd", "episodes": 26, "rating": 9, "tags": ["hip hop", "samurai"] },
+    { "title": "Frieren: Beyond Journey's End", "original": "葬送のフリーレン", "creator": "Madhouse", "year": 2023, "format": "boxset", "episodes": 28, "rating": 9.5, "status": "watching", "tags": ["fantasy"] },
+    { "title": "Death Note", "original": "デスノート", "creator": "Madhouse", "year": 2006, "format": "dvd", "episodes": 37, "rating": 8.5, "tags": ["thriller"] }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "items": [
+    { "title": "Blade Runner", "creator": "Ridley Scott", "year": 1982, "format": "4k", "runtime": 117, "country": "USA", "rating": 9.5, "featured": true, "tags": ["neo-noir", "sci-fi"], "note": "The Final Cut. Rain, neon and a Vangelis score that hums in the walls." },
+    { "title": "2001: A Space Odyssey", "creator": "Stanley Kubrick", "year": 1968, "format": "bluray", "runtime": 149, "country": "UK / USA", "rating": 10, "tags": ["sci-fi"] },
+    { "title": "In the Mood for Love", "original": "花樣年華", "creator": "Wong Kar-wai", "year": 2000, "format": "bluray", "runtime": 98, "country": "Hong Kong", "rating": 9.5, "tags": ["romance"] },
+    { "title": "Parasite", "original": "기생충", "creator": "Bong Joon-ho", "year": 2019, "format": "bluray", "runtime": 132, "country": "South Korea", "rating": 9, "featured": true, "tags": ["thriller", "satire"] },
+    { "title": "The Godfather", "creator": "Francis Ford Coppola", "year": 1972, "format": "dvd", "runtime": 175, "country": "USA", "rating": 10, "tags": ["crime"] },
+    { "title": "Pulp Fiction", "creator": "Quentin Tarantino", "year": 1994, "format": "vhs", "runtime": 154, "country": "USA", "rating": 8.5, "tags": ["crime"] },
+    { "title": "Oldboy", "original": "올드보이", "creator": "Park Chan-wook", "year": 2003, "format": "dvd", "runtime": 120, "country": "South Korea", "rating": 9, "tags": ["thriller"] },
+    { "title": "Stalker", "original": "Сталкер", "creator": "Andrei Tarkovsky", "year": 1979, "format": "bluray", "runtime": 161, "country": "USSR", "rating": 9, "tags": ["sci-fi", "slow cinema"] },
+    { "title": "Mulholland Drive", "creator": "David Lynch", "year": 2001, "format": "dvd", "runtime": 147, "country": "USA / France", "rating": 9, "tags": ["mystery"] },
+    { "title": "There Will Be Blood", "creator": "Paul Thomas Anderson", "year": 2007, "format": "bluray", "runtime": 158, "country": "USA", "rating": 9.5, "tags": ["drama"] },
+    { "title": "Seven Samurai", "original": "七人の侍", "creator": "Akira Kurosawa", "year": 1954, "format": "bluray", "runtime": 207, "country": "Japan", "rating": 9.5, "tags": ["jidaigeki"] },
+    { "title": "Taxi Driver", "creator": "Martin Scorsese", "year": 1976, "format": "vhs", "runtime": 114, "country": "USA", "rating": 8.5, "tags": ["drama"] },
+    { "title": "Gangs of Wasseypur", "creator": "Anurag Kashyap", "year": 2012, "format": "dvd", "country": "India", "rating": 9, "tags": ["crime", "epic"], "facts": { "Parts": "I & II" } },
+    { "title": "Arrival", "creator": "Denis Villeneuve", "year": 2016, "format": "4k", "runtime": 116, "country": "USA", "rating": 8.5, "tags": ["sci-fi"] }
+  ]
+}
