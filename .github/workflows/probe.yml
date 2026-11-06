@@ -19,6 +19,15 @@ jobs:
         env:
           PYTHONUNBUFFERED: "1"
         run: python tools/covers.py --room manga
+      - name: Where the covers come from
+        run: |
+          python - <<'PY'
+          import json, collections, urllib.parse
+          c = json.load(open('data/covers.json'))
+          for k, e in c.items():
+              if k.startswith('manga/'):
+                  print(k, dict(collections.Counter(urllib.parse.urlparse((x['src'] if isinstance(x, dict) else x)).netloc for x in e.get('vols', {}).values())))
+          PY
       - name: Contact sheets
         run: |
           mkdir sheets

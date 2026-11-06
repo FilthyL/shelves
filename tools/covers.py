@@ -206,7 +206,7 @@ def choose_anilist(it, res):
 VOL_RE = re.compile(r'(?:\bvol(?:ume)?\.?|#|\bbook|\bpart)\s*(\d+)', re.I)
 BIG_EDITIONS = ('perfect', 'deluxe', 'kanzenban', 'master edition', 'omnibus', 'collector', 'vizbig', 'definitive')
 CJK_RE = re.compile(r'[\u3040-\u30ff\u3400-\u9fff]')
-MANGA_V = 3  # bump to look every manga up again (entries made by an older recipe are dropped)
+MANGA_V = 4  # bump to look every manga up again (entries made by an older recipe are dropped)
 RANGE_RE = re.compile(r'\d+\s*[-\u2010-\u2015~\u301c]\s*\d+')  # "17\u201018": two volumes in one
 
 
@@ -226,6 +226,26 @@ def isbn10(isbn):
         check = (11 - total % 11) % 11
         return core + ('X' if check == 10 else str(check))
     return d.upper() if len(d) == 10 else None
+
+
+def isbn13(isbn):
+    """The ISBN-13 for an ISBN-10 or an ISBN-13, else None."""
+    d = re.sub(r'[^0-9Xx]', '', str(isbn)).upper()
+    if len(d) == 13 and d.isdigit():
+        return d
+    if len(d) == 10:
+        core = '978' + d[:9]
+        return core + str((10 - sum(int(c) * (1 if i % 2 == 0 else 3) for i, c in enumerate(core)) % 10) % 10)
+    return None
+
+
+def jp_links(isbns):
+    """Covers of a Japanese edition by its ISBN, from Japanese book-cover services. A record's own ISBNs are far
+    more reliable than the images Open Library attaches to it, which are sometimes another volume's."""
+    out = []
+    for i in list(dict.fromkeys(x for x in map(isbn13, isbns) if x and x.startswith('9784')))[:4]:
+        out += [f'https://cover.openbd.jp/{i}.jpg', f'https://ndlsearch.ndl.go.jp/thumbnail/{i}.jpg']
+    return out
 
 
 def isbn_links(isbns):
@@ -270,7 +290,8 @@ def openlibrary_volumes(it, wanted, log):
         for d in get_json(f'https://openlibrary.org/search.json?{q}').get('docs', []):
             title = d.get('title') or ''
             t, v = title.lower(), volume_of(title)
-            isbns = list(dict.fromkeys(i for i in (str(x) for x in d.get('isbn') or []) if len(re.sub(r'\D', '', i)) in (10, 13)))[:4]
+            all_isbns = [i for i in (str(x) for x in d.get('isbn') or []) if len(re.sub(r'[^0-9Xx]', '', i)) in (10, 13)]
+            isbns = list(dict.fromkeys(all_isbns))[:4]
             if v not in wanted or not (d.get('cover_i') or isbns) or not named(title):
                 continue
             raw = d.get('author_name') or []
@@ -284,7 +305,8 @@ def openlibrary_volumes(it, wanted, log):
             if (any(w in t for w in SET_WORDS) and not (big and is_big and 'box' not in t)) or (is_big and not big):
                 continue  # a box, an omnibus, a guide or a different printing's collected volumes
             jp = bool(CJK_RE.search(title)) or 'jpn' in (d.get('language') or []) or (bool(raw) and not any(latin(a) for a in raw))
-            urls = ([f"https://covers.openlibrary.org/b/id/{d['cover_i']}-L.jpg?default=false"] if d.get('cover_i') else []) + isbn_links(isbns)
+            own = [f"https://covers.openlibrary.org/b/id/{d['cover_i']}-L.jpg?default=false"] if d.get('cover_i') else []
+            urls = (jp_links(all_isbns) + own + isbn_links(isbns)) if jp else own + isbn_links(isbns)
             rank = (1 if jp == want_jp else 0, 1 if is_big == big else 0, 1 if d.get('cover_i') else 0)
             found.setdefault(v, []).append((rank, urls))
 
