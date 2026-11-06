@@ -123,9 +123,9 @@ const SUGGEST = {
     // Wikipedia's articles carry each game's published box art
     const r = await fetch(`https://en.wikipedia.org/w/api.php?${new URLSearchParams({
       action: 'query', format: 'json', origin: '*', generator: 'search', gsrsearch: `${q} video game`, gsrlimit: 8,
-      prop: 'pageimages|description', piprop: 'original|thumbnail', pithumbsize: 160, redirects: 1 })}`);
+      prop: 'pageimages|description', piprop: 'original|thumbnail', pithumbsize: 160, pilicense: 'any', redirects: 1 })}`);
     const pages = Object.values((await r.json())?.query?.pages || {}).sort((a, b) => a.index - b.index);
-    return pages.filter(p => /game/i.test(p.description || '')).map(p => {
+    return pages.filter(p => /video game/i.test(p.description || '') && !/series|franchise/i.test(`${p.title} ${p.description}`)).map(p => {
       const year = parseInt((p.description || '').match(/(?:19|20)\d\d/)?.[0], 10) || undefined;
       return { title: p.title.replace(/\s*\((?:\d{4} )?video game\)$/, ''), year, thumb: p.thumbnail?.source, cover: p.original?.source,
         sub: [p.description].filter(Boolean).join('') };

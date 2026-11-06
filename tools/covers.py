@@ -386,14 +386,17 @@ WP = 'https://en.wikipedia.org/w/api.php'
 def game_wikipedia(it, kind, log):
     """Box art from the game's Wikipedia article: the infobox image is the published cover."""
     q = urllib.parse.urlencode({'action': 'query', 'format': 'json', 'generator': 'search', 'gsrsearch': f"{it['title']} video game",
-                                'gsrlimit': 8, 'prop': 'pageimages|description', 'piprop': 'original', 'redirects': 1})
-    pages = [p for p in ((get_json(f'{WP}?{q}').get('query') or {}).get('pages') or {}).values() if (p.get('original') or {}).get('source')]
+                                'gsrlimit': 8, 'prop': 'pageimages|description', 'piprop': 'original', 'redirects': 1,
+                                # box art is used under fair use: without this the API only offers free images (logos)
+                                'pilicense': 'any'})
+    pages = [p for p in ((get_json(f'{WP}?{q}').get('query') or {}).get('pages') or {}).values()
+             if (p.get('original') or {}).get('source') and not re.search(r'series|franchise', f"{p.get('title')} {p.get('description')}", re.I)]
 
     def score(p):
         desc = (p.get('description') or '').lower()
         name = re.sub(r'\s*\((?:\d{4} )?video game\)$', '', p.get('title') or '')
         m = re.search(r'(?:19|20)\d\d', desc)
-        not_game = 0 if 'game' in desc else 0.3
+        not_game = 0 if 'video game' in desc else 0.3
         return 0.75 * sim(it['title'], name) + 0.25 * year_score(it.get('year'), int(m.group(0)) if m else None) - not_game - variant_penalty(it['title'], name)
     best, s = pick(pages, score)
     if best and s >= THRESHOLD:
