@@ -42,6 +42,8 @@ class Matching(unittest.TestCase):
         self.assertEqual(volume_of('Blame!, Volume 10'), 10)
         self.assertEqual(volume_of('Monster: The Perfect Edition #7'), 7)
         self.assertEqual(volume_of('Vagabond 12'), 12)
+        self.assertEqual(volume_of('ドロヘドロ (1)'), 1)
+        self.assertEqual(volume_of('バガボンド(12)'), 12)
         self.assertIsNone(volume_of('Monster'))
 
     def test_similarity_ignores_editions_and_articles(self):
@@ -135,14 +137,17 @@ class Matching(unittest.TestCase):
             {'title': 'ONE PIECE 3', 'author_name': ['Somebody Else'], 'cover_i': 13},
             {'title': 'One Piece Deluxe Volume 4', 'author_name': ['尾田栄一郎'], 'cover_i': 14},
             {'title': 'Maximum One Piece 5', 'author_name': ['尾田栄一郎'], 'cover_i': 15},
+            {'title': 'ONE PIECE 5‐6', 'author_name': ['尾田栄一郎 (Eiichiro Oda)'], 'cover_i': 16},
+            {'title': 'One Piece VIZBIG Edition, Vol. 5', 'author_name': ['尾田栄一郎 (Eiichiro Oda)'], 'cover_i': 17},
+            {'title': 'One Piece 6', 'author_name': ['尾田栄一郎 (Eiichiro Oda)'], 'cover_i': 18},
         ]
         orig = covers.get_json
         covers.get_json = lambda url, **kw: {'docs': docs}
         try:
-            got = covers.openlibrary_volumes({'title': 'One Piece', 'creator': 'Eiichiro Oda', 'format': 'tankobon'}, [1, 2, 3, 4, 5], lambda m: None)
+            got = covers.openlibrary_volumes({'title': 'One Piece', 'creator': 'Eiichiro Oda', 'format': 'tankobon'}, [1, 2, 3, 4, 5, 6], lambda m: None)
         finally:
             covers.get_json = orig
-        self.assertEqual(sorted(got), ['1', '2'])
+        self.assertEqual(sorted(got), ['1', '2', '6'])  # the Japanese-and-Latin author name matches; a range, VIZBIG, deluxe, maximum and mismatched authors don't
         self.assertEqual(got['1'][0], 'https://covers.openlibrary.org/b/id/11-L.jpg?default=false')
         self.assertIn('https://dw9to29mmj727.cloudfront.net/products/1569319014.jpg', got['1'])
         self.assertTrue(got['2'][0].startswith('https://covers.openlibrary.org/b/isbn/1569319030'))

@@ -204,13 +204,14 @@ def choose_anilist(it, res):
 
 # ------------------------------------------------------------------ manga volumes: Open Library editions
 VOL_RE = re.compile(r'(?:\bvol(?:ume)?\.?|#|\bbook|\bpart)\s*(\d+)', re.I)
-BIG_EDITIONS = ('perfect', 'deluxe', 'kanzenban', 'master edition', 'omnibus', 'collector')
+BIG_EDITIONS = ('perfect', 'deluxe', 'kanzenban', 'master edition', 'omnibus', 'collector', 'vizbig', 'definitive')
+RANGE_RE = re.compile(r'\d+\s*[-\u2010-\u2015~\u301c]\s*\d+')  # "17\u201018": two volumes in one
 
 
 def volume_of(title):
     """The volume number in an edition's title: "Monster, Vol. 3", "Blame! 4", "Volume 10: ..."."""
     t = str(title or '')
-    m = VOL_RE.search(t) or re.search(r'(\d+)\s*$', t)
+    m = VOL_RE.search(t) or re.search(r'\(?(\d+)\)?\s*$', t)
     return int(m.group(1)) if m else None
 
 
@@ -265,10 +266,12 @@ def openlibrary_volumes(it, wanted, log):
             isbns = list(dict.fromkeys(i for i in (str(x) for x in d.get('isbn') or []) if len(re.sub(r'\D', '', i)) in (10, 13)))[:4]
             if v not in wanted or not (d.get('cover_i') or isbns) or not named(title):
                 continue
-            authors = d.get('author_name') or []
-            # Open Library often lists the mangaka in Japanese; only a Latin name can be compared with ours
-            if creator and any(latin(a) for a in authors) and best_sim(creator, authors) < 0.6:
+            # Open Library often lists the mangaka in Japanese, or as "井上雄彦 (Takehiko Inoue)": compare the Latin parts
+            authors = [x.strip() for a in d.get('author_name') or [] for x in [a, re.sub(r'\(.*?\)', '', a)] + re.findall(r'\((.*?)\)', a)]
+            if creator and any(latin(a) for a in authors) and best_sim(creator, [a for a in authors if latin(a)]) < 0.6:
                 continue
+            if RANGE_RE.search(title):
+                continue  # two or more volumes in one
             is_big = any(w in t for w in BIG_EDITIONS)
             if (any(w in t for w in SET_WORDS) and not (big and is_big and 'box' not in t)) or (is_big and not big):
                 continue  # a box, an omnibus or a different printing's collected volumes
