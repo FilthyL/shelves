@@ -100,7 +100,7 @@ export function spineHTML(obj) {
     case 'cassette':
       return `<span class="sp-ins"><span class="sp-v"><b>${C}</b><i>${T}</i></span></span>${tip}`;
     case 'case': {
-      const band = { bluray: 'BLU-RAY', '4k': '4K UHD', dvd: 'DVD' }[it.format];
+      const band = { bluray: 'BLU-RAY', '4k': '4K UHD', dvd: 'DVD', ps5: 'PS5', ps4: 'PS4', ps3: 'PS3', 'xbox-series': 'XBOX SERIES X', 'xbox-one': 'XBOX ONE', 'xbox-360': 'XBOX 360' }[it.format];
       return `<span class="sp-band">${band}</span><span class="sp-ins"><span class="sp-v"><i>${T}</i><b>${esc(lastName(it.creator))}</b></span><span class="sp-foot">${esc(it.year || '')}</span></span>${tip}`;
     }
     case 'vhs': {
@@ -130,7 +130,7 @@ export function frameHTML(obj) {
   switch (g) {
     case 'jewel': return `<span class="fr fr-jewel"><span class="fr-hinge"></span>${cover}${gloss}</span>`;
     case 'case': {
-      const band = { bluray: 'BLU-RAY', '4k': '4K ULTRA HD', dvd: '' }[it.format];
+      const band = { bluray: 'BLU-RAY', '4k': '4K ULTRA HD', dvd: '', ps5: 'PS5', ps4: 'PS4', ps3: 'PS3', 'xbox-series': 'XBOX SERIES X', 'xbox-one': 'XBOX ONE', 'xbox-360': 'XBOX 360' }[it.format];
       return `<span class="fr fr-case fr-${it.format}">${band ? `<span class="fr-band">${band}</span>` : ''}${cover}${gloss}</span>`;
     }
     case 'cassette': return `<span class="fr fr-cassette">${cover}${gloss}</span>`;

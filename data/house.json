@@ -37,6 +37,12 @@
       "file": "rooms/movies.json"
     },
     {
+      "id": "games",
+      "name": "The Games Room",
+      "kind": "games",
+      "file": "rooms/games.json"
+    },
+    {
       "id": "tricks",
       "name": "The Trick Room",
       "kind": "toys",

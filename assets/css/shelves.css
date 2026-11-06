@@ -166,6 +166,7 @@ a { color: inherit; }
 .theme-anime  { --wall: #262b44; --wd0: #262b44; --wd1: #5a6988; --wd2: #8b9bb4; --back: #181425; --floor0: #3a4466; --floor1: #262b44; --accent: #2ce8f5; }
 .theme-music  { --wall: #3e2731; --wd0: #733e39; --wd1: #b86f50; --wd2: #e4a672; --back: #181425; --floor0: #733e39; --floor1: #3e2731; --accent: #feae34; }
 .theme-books  { --wall: #265c42; --wd0: #3e2731; --wd1: #733e39; --wd2: #b86f50; --back: #181425; --floor0: #733e39; --floor1: #3e2731; --accent: #feae34; }
+.theme-games  { --wall: #193c3e; --wd0: #181425; --wd1: #262b44; --wd2: #3a4466; --back: #181425; --floor0: #262b44; --floor1: #181425; --accent: #2ce8f5; }
 .theme-movies { --wall: #a22633; --wd0: #181425; --wd1: #262b44; --wd2: #3a4466; --back: #181425; --floor0: #3e2731; --floor1: #181425; --accent: #feae34; }
 
 /* ============================================================ ROOM */

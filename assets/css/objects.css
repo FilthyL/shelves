@@ -159,6 +159,26 @@
 .fr-4k { background: #0b0b0b; }
 .fr-4k .fr-band { background: linear-gradient(180deg, #2a2a2a, #050505); }
 .fr-bluray .cover, .fr-4k .cover { top: 11%; }
+/* game cases: each platform's shell colour and top band */
+.fmt-ps5.sp-case { background: linear-gradient(90deg, #e9edf2, #ffffff 45%, #dfe4ea); }
+.fmt-ps5 .sp-band { background: #ffffff; color: #101010; }
+.fmt-ps5 .sp-ins { background: #f4f5f7; }
+.fmt-ps4.sp-case { background: linear-gradient(90deg, #00307f, #0a4bb8 45%, #00307f); }
+.fmt-ps4 .sp-band { background: linear-gradient(180deg, #1b5fd0, #00307f); }
+.fmt-ps3.sp-case { background: linear-gradient(90deg, #0d0d0d, #2b2b2b 45%, #0d0d0d); }
+.fmt-ps3 .sp-band { background: linear-gradient(180deg, #4a4a4a, #111); color: #e6e6e6; }
+.fmt-xbox-series.sp-case, .fmt-xbox-one.sp-case, .fmt-xbox-360.sp-case { background: linear-gradient(90deg, #0b5d0b, #16a016 45%, #0b5d0b); }
+.fmt-xbox-series .sp-band { background: #0b0b0b; }
+.fmt-xbox-one .sp-band { background: linear-gradient(180deg, #1fb51f, #0b6b0b); }
+.fmt-xbox-360 .sp-band { background: linear-gradient(180deg, #f2f2f2, #c9c9c9); color: #0b6b0b; }
+.fr-ps5 { background: #f4f5f7; } .fr-ps5 .fr-band { background: #ffffff; color: #101010; }
+.fr-ps4 { background: linear-gradient(90deg, #00307f, #0a4bb8 50%, #00307f); } .fr-ps4 .fr-band { background: linear-gradient(180deg, #1b5fd0, #00307f); }
+.fr-ps3 { background: #111; } .fr-ps3 .fr-band { background: linear-gradient(180deg, #4a4a4a, #111); color: #e6e6e6; }
+.fr-xbox-series, .fr-xbox-one, .fr-xbox-360 { background: linear-gradient(90deg, #0b5d0b, #16a016 50%, #0b5d0b); }
+.fr-xbox-series .fr-band { background: #0b0b0b; }
+.fr-xbox-one .fr-band { background: linear-gradient(180deg, #1fb51f, #0b6b0b); }
+.fr-xbox-360 .fr-band { background: linear-gradient(180deg, #f2f2f2, #c9c9c9); color: #0b6b0b; }
+.fr-ps5 .cover, .fr-ps4 .cover, .fr-ps3 .cover, .fr-xbox-series .cover, .fr-xbox-one .cover, .fr-xbox-360 .cover { top: 11%; }
 .fr-sleeve { background: var(--bg, #222); border-radius: 1px; }
 .fr-wear { position: absolute; inset: 0; pointer-events: none;
   background:

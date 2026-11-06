@@ -1,0 +1,22 @@
+{
+  "items": [
+    {"title": "Elden Ring", "creator": "FromSoftware", "year": 2022, "format": "ps5", "rating": 10, "tags": ["soulslike", "open world"], "note": "The best open world there is."},
+    {"title": "Demon's Souls", "creator": "Bluepoint Games", "year": 2020, "format": "ps5", "rating": 9, "tags": ["soulslike", "remake"]},
+    {"title": "Marvel's Spider-Man 2", "creator": "Insomniac Games", "year": 2023, "format": "ps5", "rating": 8.5, "tags": ["action", "open world"]},
+    {"title": "God of War Ragnarök", "creator": "Santa Monica Studio", "year": 2022, "format": "ps5", "rating": 9, "tags": ["action", "mythology"]},
+    {"title": "Final Fantasy VII Rebirth", "creator": "Square Enix", "year": 2024, "format": "ps5", "rating": 9, "tags": ["jrpg"]},
+    {"title": "Astro Bot", "creator": "Team Asobi", "year": 2024, "format": "ps5", "rating": 9.5, "tags": ["platformer"]},
+    {"title": "Ghost of Tsushima Director's Cut", "creator": "Sucker Punch Productions", "year": 2021, "format": "ps5", "rating": 9, "tags": ["samurai", "open world"]},
+    {"title": "Bloodborne", "creator": "FromSoftware", "year": 2015, "format": "ps4", "rating": 10, "tags": ["soulslike", "gothic"], "note": "Yharnam at night. Still waiting for the remaster."},
+    {"title": "The Last of Us Part II", "creator": "Naughty Dog", "year": 2020, "format": "ps4", "rating": 9.5, "tags": ["story", "survival"]},
+    {"title": "Persona 5 Royal", "creator": "Atlus", "year": 2019, "format": "ps4", "rating": 9.5, "tags": ["jrpg", "style"]},
+    {"title": "Sekiro: Shadows Die Twice", "creator": "FromSoftware", "year": 2019, "format": "ps4", "rating": 9.5, "tags": ["soulslike", "shinobi"]},
+    {"title": "Metal Gear Solid 4: Guns of the Patriots", "creator": "Kojima Productions", "year": 2008, "format": "ps3", "rating": 9, "tags": ["stealth"]},
+    {"title": "Halo Infinite", "creator": "343 Industries", "year": 2021, "format": "xbox-series", "rating": 7.5, "tags": ["shooter"]},
+    {"title": "Forza Horizon 5", "creator": "Playground Games", "year": 2021, "format": "xbox-series", "rating": 9, "tags": ["racing", "open world"]},
+    {"title": "Starfield", "creator": "Bethesda Game Studios", "year": 2023, "format": "xbox-series", "rating": 7, "tags": ["rpg", "space"]},
+    {"title": "Gears 5", "creator": "The Coalition", "year": 2019, "format": "xbox-one", "rating": 8, "tags": ["shooter"]},
+    {"title": "Halo 3", "creator": "Bungie", "year": 2007, "format": "xbox-360", "rating": 9.5, "tags": ["shooter", "classic"], "note": "Finish the fight."},
+    {"title": "Red Dead Redemption", "creator": "Rockstar San Diego", "year": 2010, "format": "xbox-360", "rating": 10, "tags": ["western", "open world"]}
+  ]
+}

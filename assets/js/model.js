@@ -16,12 +16,21 @@ export const FORMATS = {
   kanzenban: { label: 'Perfect edition', group: 'manga',    w: 148, h: 210, d: 24 },
   deluxe:    { label: 'Deluxe hardcover',group: 'manga',    w: 182, h: 257, d: 30 },
   toy:       { label: 'Toy',             group: 'toy',      w: 120, h: 90,  d: 30 },
+  // game cases: the PlayStation and current Xbox keep cases are Blu-ray sized, the Xbox 360's is DVD sized
+  ps5:           { label: 'PS5',            group: 'case', w: 135, h: 170, d: 14 },
+  ps4:           { label: 'PS4',            group: 'case', w: 135, h: 170, d: 14 },
+  ps3:           { label: 'PS3',            group: 'case', w: 135, h: 170, d: 14 },
+  'xbox-series': { label: 'Xbox Series X',  group: 'case', w: 135, h: 170, d: 14 },
+  'xbox-one':    { label: 'Xbox One',       group: 'case', w: 135, h: 170, d: 14 },
+  'xbox-360':    { label: 'Xbox 360',       group: 'case', w: 135, h: 190, d: 14 },
 };
 
 const ALIASES = {
   lp: 'vinyl', record: 'vinyl', 'blu-ray': 'bluray', bd: 'bluray', uhd: '4k', '4k uhd': '4k',
   'tankōbon': 'tankobon', manga: 'tankobon', 'perfect edition': 'kanzenban', 'box set': 'boxset',
   box: 'boxset', tape: 'cassette', hc: 'hardcover', pb: 'paperback', book: 'paperback',
+  'playstation 5': 'ps5', 'playstation 4': 'ps4', 'playstation 3': 'ps3', 'xbox series x': 'xbox-series', 'xbox series': 'xbox-series',
+  xsx: 'xbox-series', 'xbox one': 'xbox-one', xb1: 'xbox-one', 'xbox 360': 'xbox-360', x360: 'xbox-360',
 };
 
 export const KINDS = {
@@ -35,6 +44,8 @@ export const KINDS = {
             scale: 0.98, decor: ['daruma', 'plant', 'bookend', 'candle'] },
   toys:   { code: 'TOY', one: 'toy',    many: 'toys',    verb: 'Played',  by: 'Kind',        format: 'toy',
             scale: 1.0,  decor: ['plant', 'cat', 'candle', 'bookend'] },
+  games:  { code: 'GAM', one: 'game',   many: 'games',   verb: 'Played',  by: 'Developer',   format: 'ps5',
+            scale: 1.0,  decor: ['controller', 'plant', 'cat', 'candle'] },
   manga:  { code: 'MNG', one: 'volume', many: 'volumes', verb: 'Read',    by: 'Mangaka',     format: 'tankobon',
             scale: 1.0,  decor: ['daruma', 'lantern', 'cat', 'plant'] },
 };

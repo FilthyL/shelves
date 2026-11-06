@@ -18,6 +18,7 @@ export const THEMES = {
   books:  { wall: E.pine,  motif: E.deep,   floor: E.brown, floorLine: E.plum,  wood: [E.plum, E.brown, E.clay],  light: E.amber },
   movies: { wall: E.wine,  motif: E.brown,  floor: E.plum,  floorLine: E.night, wood: [E.night, E.plum, E.brown], light: E.fog },
   toys:   { wall: E.grape, motif: E.plum,   floor: E.night, floorLine: E.slate, wood: [E.ink, E.slate, E.steel],  light: E.pink },
+  games:  { wall: E.deep,  motif: E.pine,   floor: E.ink,   floorLine: E.night, wood: [E.night, E.ink, E.navy],   light: E.sky },
 };
 
 const BAYER = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
@@ -417,6 +418,7 @@ export function createStreet({ rooms, name, number }) {
       case 'books': return ((i + j) % 6 === 0 || (i - j + 60) % 6 === 0) ? t.motif : t.wall;
       case 'movies': return (i % 3 === 0) ? t.motif : t.wall;
       case 'toys': return (i % 4 === 2 && j % 4 === 2) ? t.motif : t.wall;
+      case 'games': { const a = i % 8, b = j % 8; return (a === 4 && b >= 3 && b <= 5) || (b === 4 && a >= 3 && a <= 5) ? t.motif : t.wall; } // d-pads
       default: return t.wall;
     }
   }
@@ -492,6 +494,7 @@ export function createStreet({ rooms, name, number }) {
         const x0 = S.hx + c.x, y0 = S.hy + c.y;
         if (c.room.kind === 'toys' && PROPS.arcadeAt) { const a = PROPS.arcadeAt; f.dith(a.x, a.y, 11, 8, Math.sin(t * 6) > 0 ? E.sky : E.lime, 0.35); }
         if (c.room.kind === 'anime') { const tv = PROPS.tvAt; if (tv) f.dith(tv.x, tv.y, 7, 5, Math.sin(t * 9) > 0 ? E.cyan : E.sky, 0.5); }
+        if (c.room.kind === 'games' && PROPS.gameTvAt) { const g = PROPS.gameTvAt; f.dith(g.x, g.y, 26, 15, Math.sin(t * 5) > 0 ? E.cyan : E.lime, 0.22); }
         if (c.room.kind === 'music' && PROPS.deckAt) { const d = PROPS.deckAt; f.px(d.x + Math.round(2 + Math.cos(t * 4) * 2), d.y + Math.round(Math.sin(t * 4) * 0.5), E.steel); }
         if (st.hover === c.room.id) outlineRect(f, x0 - 1, y0 - 1, c.w + 2, c.h + 2, c.attic);
       }
@@ -557,6 +560,16 @@ const PROPS = {
     r.rect(x + 24, fl - 8, 1, 8, E.night); r.rect(x + 53, fl - 8, 1, 8, E.night);
     r.rect(x + 60, fl - 4, 4, 4, E.pink); r.px(x + 61, fl - 5, E.white);
   },
+  games(r, x, fl, w) {
+    // a big TV on a low stand, a console either side, a beanbag in front
+    r.rect(x + 2, fl - 26, 28, 17, E.night); r.rect(x + 3, fl - 25, 26, 15, E.blue); r.dith(x + 3, fl - 25, 26, 15, E.sky, 0.4);
+    PROPS.gameTvAt = { x: x + 3, y: fl - 25 };
+    r.rect(x, fl - 7, 32, 7, E.ink); r.hl(x, fl - 7, 32, E.navy);
+    r.rect(x + 2, fl - 13, 4, 6, E.white); r.vl(x + 4, fl - 13, 6, E.fog); r.px(x + 4, fl - 8, E.sky);
+    r.rect(x + 25, fl - 11, 5, 4, E.night); r.px(x + 27, fl - 10, E.lime);
+    r.rect(x + 36, fl - 6, 10, 6, E.wine); r.hl(x + 37, fl - 7, 8, E.red); r.px(x + 40, fl - 4, E.red);
+    r.rect(x + 12, fl - 3, 6, 2, E.night); r.px(x + 13, fl - 3, E.red); r.px(x + 16, fl - 3, E.lime);
+  },
   movies(r, x, fl, w) {
     r.rect(x, fl - 30, 22, 14, E.night); r.rect(x + 1, fl - 29, 20, 12, E.fog); r.dith(x + 1, fl - 29, 20, 12, E.white, 0.5);
     glow(r, x + 11, fl - 23, 16, E.white, 0.14);
@@ -617,6 +630,8 @@ const DECOR_SPRITES = {
     'ssksSkkSskss', 'sssssSSsssss', 'skkssssskkfs', '.sfkssskkfs.', '..sffssffs..', '...ssssss...'] },
   lantern: { map: { k: E.plum, o: E.orange, a: E.amber, y: E.yellow, r: E.rust }, rows: [
     '..k..', '.kkk.', 'oaaao', 'ayyya', 'ayyya', 'oaaao', 'rooor', '.kkk.', '..k..'] },
+  controller: { map: { k: E.night, b: E.ink, s: E.slate, r: E.red, g: E.lime, y: E.amber, c: E.sky }, rows: [
+    '.bbbbbbbbbbbbb.', 'bbsbbbbbbbbbybb', 'bsssbbbbbbbcbrb', 'bbsbbbsbsbbbgbb', 'bbbbbbbbbbbbbbb', 'bbbbbkkkkkbbbbb', '.bbbk.....kbbb.', '..bb.......bb..'] },
   bookend: { map: { s: E.fog, S: E.steel, k: E.slate }, rows: [
     'sS....', 'sS....', 'sS....', 'sS....', 'sS....', 'sS....', 'sS....', 'sS....', 'sS....', 'sS....', 'sSSSSS', 'kkkkkk'] },
 };
@@ -636,9 +651,9 @@ export function wallTile(kind) {
   const key = 'wall-' + kind;
   if (spriteCache[key]) return spriteCache[key];
   const t = THEMES[kind] || THEMES.books;
-  const n = { manga: 12, anime: 8, music: 16, books: 12, movies: 6, toys: 6 }[kind] || 12;
+  const n = { manga: 12, anime: 8, music: 16, books: 12, movies: 6, toys: 6, games: 8 }[kind] || 12;
   const r = new Raster(n, n);
-  const base = { manga: E.deep, anime: E.ink, music: E.plum, books: E.pine, movies: E.wine, toys: E.grape }[kind] || t.wall;
+  const base = { manga: E.deep, anime: E.ink, music: E.plum, books: E.pine, movies: E.wine, toys: E.grape, games: E.deep }[kind] || t.wall;
   r.rect(0, 0, n, n, base);
   if (kind === 'manga') { r.hl(0, 0, n, E.pine); r.vl(0, 0, n, E.pine); }
   if (kind === 'anime') { r.px(0, 0, E.navy); r.px(4, 4, E.grape); }
@@ -646,5 +661,6 @@ export function wallTile(kind) {
   if (kind === 'books') { for (let i = 0; i < n; i++) { r.px(i, i, E.deep); r.px(n - 1 - i, i, E.deep); } r.px(6, 0, E.green); r.px(0, 6, E.green); }
   if (kind === 'movies') { r.vl(0, 0, n, E.brown); r.dith(1, 0, 2, n, E.brown, 0.25); }
   if (kind === 'toys') { r.rect(2, 2, 2, 2, E.plum); r.px(2, 2, E.night); } // pegboard
+  if (kind === 'games') { r.hl(2, 4, 5, E.pine); r.vl(4, 2, 5, E.pine); } // a d-pad
   return (spriteCache[key] = { url: r.toURL(), n });
 }

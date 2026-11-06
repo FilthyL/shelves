@@ -3,10 +3,12 @@
 
 Free sources, no keys needed, all shelves looked up at the same time:
   anime   AniList
-  manga   MangaDex, a cover for every owned volume (AniList for a series MangaDex lacks)
+  manga   MangaDex, a cover for every owned volume (gaps filled from Open Library's editions,
+          AniList for a series neither has)
   music   MusicBrainz with the Cover Art Archive (Deezer for a record it lacks)
   books   Open Library (by isbn when the item has one)
   movies  IMDb's public title suggestions
+  games   Wikipedia (the box art in each game's article)
 
 Nothing is stored in the repo: data/covers.json records each cover's link, and
 the site loads it from there. Each image is read once into memory to check the
@@ -377,6 +379,29 @@ def book_openlibrary(it, kind, log):
     return None
 
 
+# ------------------------------------------------------------------ games: Wikipedia
+WP = 'https://en.wikipedia.org/w/api.php'
+
+
+def game_wikipedia(it, kind, log):
+    """Box art from the game's Wikipedia article: the infobox image is the published cover."""
+    q = urllib.parse.urlencode({'action': 'query', 'format': 'json', 'generator': 'search', 'gsrsearch': f"{it['title']} video game",
+                                'gsrlimit': 8, 'prop': 'pageimages|description', 'piprop': 'original', 'redirects': 1})
+    pages = [p for p in ((get_json(f'{WP}?{q}').get('query') or {}).get('pages') or {}).values() if (p.get('original') or {}).get('source')]
+
+    def score(p):
+        desc = (p.get('description') or '').lower()
+        name = re.sub(r'\s*\((?:\d{4} )?video game\)$', '', p.get('title') or '')
+        m = re.search(r'(?:19|20)\d\d', desc)
+        not_game = 0 if 'game' in desc else 0.3
+        return 0.75 * sim(it['title'], name) + 0.25 * year_score(it.get('year'), int(m.group(0)) if m else None) - not_game - variant_penalty(it['title'], name)
+    best, s = pick(pages, score)
+    if best and s >= THRESHOLD:
+        return {'from': 'Wikipedia', 'url': best['original']['source'], 'match': best.get('title'), 'score': s}
+    short('Wikipedia', pages, s, log)
+    return None
+
+
 # ------------------------------------------------------------------ movies: IMDb
 def movie_imdb(it, kind, log):
     q = re.sub(r'\s+', ' ', str(it['title']).lower()).strip()
@@ -405,6 +430,7 @@ SOURCES = {
     'music': [music_musicbrainz, music_deezer],
     'books': [book_openlibrary],
     'movies': [movie_imdb],
+    'games': [game_wikipedia],
 }
 
 

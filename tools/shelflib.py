@@ -10,13 +10,16 @@ DATA = ROOT / 'data'
 FORMATS = {
     'vinyl', 'cd', 'cassette', 'dvd', 'bluray', '4k', 'vhs', 'boxset',
     'hardcover', 'paperback', 'tankobon', 'kanzenban', 'deluxe', 'toy',
+    'ps5', 'ps4', 'ps3', 'xbox-series', 'xbox-one', 'xbox-360',
 }
 ALIASES = {
     'lp': 'vinyl', 'record': 'vinyl', 'blu-ray': 'bluray', 'bd': 'bluray', 'uhd': '4k', '4k uhd': '4k',
     'tankōbon': 'tankobon', 'manga': 'tankobon', 'perfect edition': 'kanzenban', 'box set': 'boxset',
     'box': 'boxset', 'tape': 'cassette', 'hc': 'hardcover', 'pb': 'paperback', 'book': 'paperback',
+    'playstation 5': 'ps5', 'playstation 4': 'ps4', 'playstation 3': 'ps3', 'xbox series x': 'xbox-series', 'xbox series': 'xbox-series',
+    'xsx': 'xbox-series', 'xbox one': 'xbox-one', 'xb1': 'xbox-one', 'xbox 360': 'xbox-360', 'x360': 'xbox-360',
 }
-KINDS = {'movies', 'music', 'books', 'anime', 'manga', 'toys'}
+KINDS = {'movies', 'music', 'books', 'anime', 'manga', 'toys', 'games'}
 
 
 def slug(s):
@@ -47,7 +50,7 @@ def parse_owned(owned, total=None):
 
 
 def norm_format(f, kind):
-    default = {'movies': 'bluray', 'music': 'vinyl', 'books': 'paperback', 'anime': 'bluray', 'manga': 'tankobon', 'toys': 'toy'}.get(kind, 'paperback')
+    default = {'movies': 'bluray', 'music': 'vinyl', 'books': 'paperback', 'anime': 'bluray', 'manga': 'tankobon', 'toys': 'toy', 'games': 'ps5'}.get(kind, 'paperback')
     k = str(f or default).strip().lower()
     k = ALIASES.get(k, k)
     return k if k in FORMATS else default

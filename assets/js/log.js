@@ -11,6 +11,7 @@ const FORMATS_FOR = {
   books: ['paperback', 'hardcover'],
   anime: ['bluray', 'boxset', 'dvd', '4k'],
   manga: ['tankobon', 'kanzenban', 'deluxe'],
+  games: ['ps5', 'ps4', 'ps3', 'xbox-series', 'xbox-one', 'xbox-360'],
 };
 const $ = (s, r = document) => r.querySelector(s);
 
@@ -118,6 +119,18 @@ const SUGGEST = {
         sub: [artist, g['primary-type'], year].filter(Boolean).join(' · ') };
     });
   },
+  async games(q) {
+    // Wikipedia's articles carry each game's published box art
+    const r = await fetch(`https://en.wikipedia.org/w/api.php?${new URLSearchParams({
+      action: 'query', format: 'json', origin: '*', generator: 'search', gsrsearch: `${q} video game`, gsrlimit: 8,
+      prop: 'pageimages|description', piprop: 'original|thumbnail', pithumbsize: 160, redirects: 1 })}`);
+    const pages = Object.values((await r.json())?.query?.pages || {}).sort((a, b) => a.index - b.index);
+    return pages.filter(p => /game/i.test(p.description || '')).map(p => {
+      const year = parseInt((p.description || '').match(/(?:19|20)\d\d/)?.[0], 10) || undefined;
+      return { title: p.title.replace(/\s*\((?:\d{4} )?video game\)$/, ''), year, thumb: p.thumbnail?.source, cover: p.original?.source,
+        sub: [p.description].filter(Boolean).join('') };
+    });
+  },
   async movies(q) {
     const s = q.toLowerCase().trim();
     const r = await fetch(`https://v3.sg.media-imdb.com/suggestion/${encodeURIComponent(s[0] || 'x')}/${encodeURIComponent(s)}.json`);
@@ -148,6 +161,7 @@ const EXTRA = {
   anime: [['episodes', 'Episodes', 'number', ''], ['original', 'Original title', 'text', '']],
   books: [['pages', 'Pages', 'number', ''], ['isbn', 'ISBN', 'text', 'Pins the exact edition']],
   movies: [['runtime', 'Runtime (min)', 'number', '']],
+  games: [],
   music: [],
 };
 
