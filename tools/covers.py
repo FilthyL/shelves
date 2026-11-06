@@ -205,13 +205,15 @@ def choose_anilist(it, res):
 # ------------------------------------------------------------------ manga volumes: Open Library editions
 VOL_RE = re.compile(r'(?:\bvol(?:ume)?\.?|#|\bbook|\bpart)\s*(\d+)', re.I)
 BIG_EDITIONS = ('perfect', 'deluxe', 'kanzenban', 'master edition', 'omnibus', 'collector', 'vizbig', 'definitive')
+CJK_RE = re.compile(r'[\u3040-\u30ff\u3400-\u9fff]')
+MANGA_V = 3  # bump to look every manga up again (entries made by an older recipe are dropped)
 RANGE_RE = re.compile(r'\d+\s*[-\u2010-\u2015~\u301c]\s*\d+')  # "17\u201018": two volumes in one
 
 
 def volume_of(title):
     """The volume number in an edition's title: "Monster, Vol. 3", "Blame! 4", "Volume 10: ..."."""
     t = str(title or '')
-    m = VOL_RE.search(t) or re.search(r'\(?(\d+)\)?\s*$', t)
+    m = VOL_RE.search(t) or re.search(r'\u7b2c\s*(\d+)\s*\u5dfb', t) or re.search(r'\(?(\d+)\)?\s*$', t)
     return int(m.group(1)) if m else None
 
 
@@ -240,15 +242,20 @@ def isbn_links(isbns):
     return out
 
 
-SET_WORDS = ('box', '-in-1', 'omnibus', 'maximum', 'maximun', ' set', 'collection')
+SET_WORDS = ('box', '-in-1', 'omnibus', 'maximum', 'maximun', ' set', 'collection', 'guide', 'artbook', 'art book', 'illustration', 'fan book', 'fanbook', 'official',
+             '\u30ac\u30a4\u30c9', '\u30a4\u30e9\u30b9\u30c8', '\u30bb\u30c3\u30c8', '\u753b\u96c6')
 
 
 def openlibrary_volumes(it, wanted, log):
-    """Candidate cover links per wanted volume from Open Library's editions of the series: the cover Open
-    Library holds, then images keyed by the edition's ISBN. {volume: [url, ...]}. The series is searched
-    once for all volumes, then each volume still missing is searched for by itself."""
+    """Candidate cover links per wanted volume from Open Library's editions of the series, best edition first:
+    the cover Open Library holds, then images keyed by the edition's ISBN. {volume: [url, ...]}.
+
+    The shelves list the Japanese publishers (Shueisha, Kodansha ...), so the Japanese edition's covers come
+    first and the rest only fill what it lacks; an item can say "edition": "en" to prefer the English ones. The
+    series is searched once for everything, then each volume still without a preferred cover is searched for."""
     wanted, found = set(wanted), {}
     big = it.get('format') in ('kanzenban', 'deluxe')
+    want_jp = it.get('edition', 'jp') != 'en'
     names = [n.strip() for n in (it['title'], it.get('original')) if n and n.strip()]
     creator = it.get('creator') or ''
     norm = lambda x: re.sub(r'[^a-z0-9 ]+', '', str(x).lower())  # noqa: E731
@@ -259,45 +266,57 @@ def openlibrary_volumes(it, wanted, log):
         return any((norm(n) in norm(t)) if norm(n) else (n in t) for n in names)
 
     def collect(params):
-        q = urllib.parse.urlencode({**params, 'limit': 100, 'fields': 'title,author_name,cover_i,isbn'})
+        q = urllib.parse.urlencode({**params, 'limit': 100, 'fields': 'title,author_name,cover_i,isbn,language'})
         for d in get_json(f'https://openlibrary.org/search.json?{q}').get('docs', []):
             title = d.get('title') or ''
             t, v = title.lower(), volume_of(title)
             isbns = list(dict.fromkeys(i for i in (str(x) for x in d.get('isbn') or []) if len(re.sub(r'\D', '', i)) in (10, 13)))[:4]
             if v not in wanted or not (d.get('cover_i') or isbns) or not named(title):
                 continue
-            # Open Library often lists the mangaka in Japanese, or as "井上雄彦 (Takehiko Inoue)": compare the Latin parts
-            authors = [x.strip() for a in d.get('author_name') or [] for x in [a, re.sub(r'\(.*?\)', '', a)] + re.findall(r'\((.*?)\)', a)]
+            raw = d.get('author_name') or []
+            # Open Library often lists the mangaka in Japanese, or as "\u4e95\u4e0a\u96c4\u5f66 (Takehiko Inoue)": compare the Latin parts
+            authors = [x.strip() for a in raw for x in [a, re.sub(r'\(.*?\)', '', a)] + re.findall(r'\((.*?)\)', a)]
             if creator and any(latin(a) for a in authors) and best_sim(creator, [a for a in authors if latin(a)]) < 0.6:
                 continue
             if RANGE_RE.search(title):
                 continue  # two or more volumes in one
             is_big = any(w in t for w in BIG_EDITIONS)
             if (any(w in t for w in SET_WORDS) and not (big and is_big and 'box' not in t)) or (is_big and not big):
-                continue  # a box, an omnibus or a different printing's collected volumes
+                continue  # a box, an omnibus, a guide or a different printing's collected volumes
+            jp = bool(CJK_RE.search(title)) or 'jpn' in (d.get('language') or []) or (bool(raw) and not any(latin(a) for a in raw))
             urls = ([f"https://covers.openlibrary.org/b/id/{d['cover_i']}-L.jpg?default=false"] if d.get('cover_i') else []) + isbn_links(isbns)
-            rank = (1 if is_big == big else 0, 1 if d.get('cover_i') else 0)
-            if v not in found or rank > found[v][0]:
-                found[v] = (rank, urls)
+            rank = (1 if jp == want_jp else 0, 1 if is_big == big else 0, 1 if d.get('cover_i') else 0)
+            found.setdefault(v, []).append((rank, urls))
 
-    series = [{'title': it['title'], 'author': creator}, {'q': f"{it['title']} {creator}".strip()}]
+    def settled(v):  # a volume is done once it has a cover from the edition we prefer
+        return any(r[0] for r, _ in found.get(v, []))
+
+    creator_q = {'author': creator} if creator else {}
+    series = [{'title': it['title'], **creator_q}, {'q': f"{it['title']} {creator}".strip()}]
     if it.get('original'):
         series.append({'title': it['original']})
     for params in series:
         collect(params)
-        if wanted <= set(found):
+        if all(settled(v) for v in wanted):
             break
-    for v in sorted(wanted - set(found)):
-        tries = [{'q': f"{it['title']} vol {v} {creator}".strip()}, {'title': f"{it['title']} volume {v}"}]
-        if it.get('original'):
-            tries.append({'q': f"{it['original']} {v}"})
+    for v in sorted(wanted):
+        if settled(v):
+            continue
+        tries = [{'q': f"{it['original']} {v}"}, {'title': f"{it['original']}({v})"}] if it.get('original') and want_jp else []
+        tries += [{'q': f"{it['title']} vol {v} {creator}".strip()}, {'title': f"{it['title']} volume {v}"}]
         for params in tries:
             collect(params)
-            if v in found:
+            if settled(v) or (v in found and not want_jp):
                 break
-    if found:
-        log(f'Open Library: editions for volumes {sorted(found)}')
-    return {str(v): urls for v, (_, urls) in found.items()}
+    out = {}
+    for v, cands in found.items():
+        links = []
+        for _, urls in sorted(cands, key=lambda c: c[0], reverse=True)[:3]:
+            links += [u for u in urls if u not in links]
+        out[str(v)] = links
+    if out:
+        log(f'Open Library: editions for volumes {sorted(int(v) for v in out)}')
+    return out
 
 
 def manga_volumes(it, kind, log):
@@ -506,7 +525,7 @@ def lookup(kind, it, log):
             hit = src(it, kind, log)
             if not hit:
                 continue
-            entry = {'from': hit['from'], 'match': hit['match']}
+            entry = {'from': hit['from'], 'match': hit['match'], **({'v': MANGA_V} if kind == 'manga' else {})}
             if 'vols' in hit:
                 entry['vols'] = {}
                 for v, urls in hit['vols'].items():
@@ -536,6 +555,12 @@ def lookup(kind, it, log):
                 entry['src'] = hit['url']
                 if img and (p := palette(img)):
                     entry['pal'] = p
+            for v, url in (it.get('vol_covers') or {}).items():  # a cover the owner pinned by hand wins
+                try:
+                    img = check(url, log)
+                    entry.setdefault('vols', {})[str(v)] = {'src': url, **({'pal': p} if img and (p := palette(img)) else {})}
+                except Exception as e:
+                    log(f'pinned volume {v}: {e}')
             return entry
         except Exception as e:  # one source failing should not stop the next
             log(f'{src.__name__} failed: {e}')
@@ -553,8 +578,8 @@ def main(argv=None):
     args = ap.parse_args(argv)
 
     covers = load_json(COVERS_JSON) if COVERS_JSON.exists() else {}
-    for key in [k for k, e in covers.items() if 'uploads.mangadex.org' in json.dumps(e)]:
-        covers.pop(key)  # MangaDex serves its images behind a bot challenge now; look these up again elsewhere
+    for key in [k for k, e in covers.items() if 'uploads.mangadex.org' in json.dumps(e) or (k.startswith('manga/') and not e.get('miss') and e.get('v') != MANGA_V)]:
+        covers.pop(key)  # MangaDex's images are challenge-walled; and a manga found by an older recipe is looked up again
     _, rooms = load_house()
     today = dt.date.today().isoformat()
     lock = threading.Lock()
