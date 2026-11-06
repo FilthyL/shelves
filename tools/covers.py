@@ -225,29 +225,50 @@ def isbn10(isbn):
     return d.upper() if len(d) == 10 else None
 
 
+def isbn_links(isbns):
+    """Image links keyed by an edition's ISBN: Open Library's, the VIZ and Amazon image servers."""
+    out = []
+    for i in isbns:
+        out.append(f'https://covers.openlibrary.org/b/isbn/{i}-L.jpg?default=false')
+        out.append(f'https://dw9to29mmj727.cloudfront.net/products/{i}.jpg')
+        if len(i) == 10:
+            out.append(f'https://m.media-amazon.com/images/P/{i}.01.LZZZZZZZ.jpg')
+    return out
+
+
 def openlibrary_volumes(it, wanted, log):
     """Candidate cover links per wanted volume from Open Library's editions of the series: the cover Open
-    Library holds, then the image Amazon serves for the edition's ISBN. {volume: [url, ...]}"""
+    Library holds, then images keyed by the edition's ISBN. {volume: [url, ...]}. The series is searched
+    once for all volumes, then each volume still missing is searched for by itself."""
     wanted, found = set(wanted), {}
     big = it.get('format') in ('kanzenban', 'deluxe')
     names = [n.lower() for n in (it['title'], it.get('original')) if n]
     norm = lambda x: re.sub(r'[^a-z0-9 ]+', '', str(x).lower())  # noqa: E731
-    for params in ({'title': it['title'], 'author': it.get('creator') or ''}, {'q': f"{it['title']} {it.get('creator') or ''}".strip()}):
+
+    def collect(params):
         q = urllib.parse.urlencode({**params, 'limit': 100, 'fields': 'title,author_name,cover_i,isbn'})
         for d in get_json(f'https://openlibrary.org/search.json?{q}').get('docs', []):
             t, v = (d.get('title') or '').lower(), volume_of(d.get('title'))
-            isbns = list(dict.fromkeys(i for i in map(isbn10, d.get('isbn') or []) if i))[:3]
+            isbns = list(dict.fromkeys(i for i in (str(x) for x in d.get('isbn') or []) if len(re.sub(r'\D', '', i)) in (10, 13)))[:4]
             if v not in wanted or not (d.get('cover_i') or isbns) or not any(norm(n) in norm(t) for n in names):
                 continue
             if 'box' in t or '-in-1' in t or (it.get('creator') and best_sim(it['creator'], d.get('author_name') or []) < 0.6):
                 continue
-            urls = ([f"https://covers.openlibrary.org/b/id/{d['cover_i']}-L.jpg?default=false"] if d.get('cover_i') else []) + \
-                   [f'https://m.media-amazon.com/images/P/{i}.01.LZZZZZZZ.jpg' for i in isbns]
+            urls = ([f"https://covers.openlibrary.org/b/id/{d['cover_i']}-L.jpg?default=false"] if d.get('cover_i') else []) + isbn_links(isbns)
             rank = (1 if any(w in t for w in BIG_EDITIONS) == big else 0, 1 if d.get('cover_i') else 0)
             if v not in found or rank > found[v][0]:
                 found[v] = (rank, urls)
+
+    creator = it.get('creator') or ''
+    for params in ({'title': it['title'], 'author': creator}, {'q': f"{it['title']} {creator}".strip()}):
+        collect(params)
         if wanted <= set(found):
             break
+    for v in sorted(wanted - set(found)):
+        for params in ({'q': f"{it['title']} vol {v} {creator}".strip()}, {'title': f"{it['title']} volume {v}"}):
+            collect(params)
+            if v in found:
+                break
     if found:
         log(f'Open Library: editions for volumes {sorted(found)}')
     return {str(v): urls for v, (_, urls) in found.items()}
