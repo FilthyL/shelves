@@ -78,7 +78,8 @@ function buildStreet() {
   const H = S.house;
   ST.scene = createStreet({ rooms: H.rooms, name: H.name, number: H.number });
   const { cells, L } = ST.scene;
-  for (const c of cells) if (c.room) c.room.where = c.attic ? 'Attic' : c.basement ? 'Basement' : `${floorName(c.floor, L.floors)} · ${c.x > 50 ? 'East' : 'West'}`;
+  const wing = { L: 'West wing', C: 'Centre', R: 'East wing' };
+  for (const c of cells) if (c.room) c.room.where = c.attic ? 'Attic' : c.basement ? 'Basement' : `${floorName(c.floor, L.floors)} · ${wing[c.wing]}`;
   const totalStats = H.rooms.map(r => `<span><b>${r.kind === 'manga' ? r.objects.length : r.items.length}</b> ${r.kind === 'manga' ? 'volumes' : r.K.many}</span>`).join('');
 
   $('#street').innerHTML = `
@@ -128,8 +129,8 @@ function fitHouse() {
   const vw = street.clientWidth, vh = street.clientHeight;
   const head = $('.street-head', street).offsetHeight, foot = $('.street-foot', street).offsetHeight;
   const need = ST.scene.L.totalH + 12;
-  let k = Math.min((vh - head - foot - 12) / need, (vw - 8) / 150, 6);
-  k = k >= 3 ? Math.floor(k) : Math.max(1.5, Math.floor(k * 4) / 4);
+  let k = Math.min((vh - head - foot - 12) / need, (vw - 4) / (ST.scene.L.TW + 4), 6);
+  k = k >= 3 ? Math.floor(k) : Math.max(1, Math.floor(k * 4) / 4);
   const W = Math.ceil(vw / k), H = Math.ceil(vh / k);
   const ground = H - Math.ceil(foot / k) - 7 - ST.scene.basementH;
   ST.k = k;
