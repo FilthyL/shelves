@@ -1,0 +1,6 @@
+{
+  "name": "shelves",
+  "private": true,
+  "type": "module",
+  "description": "A static site: there is nothing to install. This file only tells Node that the .js files are ES modules, for tools/*.mjs."
+}

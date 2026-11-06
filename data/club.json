@@ -1,0 +1,7 @@
+{
+  "supabase": {
+    "url": "",
+    "anonKey": "",
+    "emailDomain": "members.filthmanor.example"
+  }
+}
