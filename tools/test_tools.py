@@ -97,16 +97,34 @@ class Matching(unittest.TestCase):
 
 
 
-    def test_volume_covers_prefer_japanese_and_skip_unowned(self):
-        cov = [
-            {'attributes': {'volume': '1', 'locale': 'en', 'fileName': 'en1.jpg'}},
-            {'attributes': {'volume': '1', 'locale': 'ja', 'fileName': 'ja1.jpg'}},
-            {'attributes': {'volume': '2', 'locale': 'fr', 'fileName': 'fr2.jpg'}},
-            {'attributes': {'volume': '9', 'locale': 'ja', 'fileName': 'ja9.jpg'}},
-            {'attributes': {'volume': None, 'locale': 'ja', 'fileName': 'x.jpg'}},
-        ]
-        self.assertEqual(covers.choose_volume_covers(cov, {1, 2}), {'1': 'ja1.jpg', '2': 'fr2.jpg'})
-        self.assertEqual(covers.choose_volume_covers(cov, {1}, prefer='en'), {'1': 'en1.jpg'})
+    def test_isbn10_from_isbn13_and_back(self):
+        self.assertEqual(covers.isbn10('9781506711980'), '1506711987')
+        self.assertEqual(covers.isbn10('1506711987'), '1506711987')
+        self.assertIsNone(covers.isbn10('9791370136383'))
+
+    def test_volume_lookup_tries_each_candidate_link_and_falls_back_to_the_series_cover(self):
+        good = b'x' * 3000
+        calls = []
+
+        def fake_check(url, log):
+            calls.append(url)
+            if 'dead' in url:
+                raise ValueError('not an image')
+            return good
+
+        hit = {'from': 'Open Library and AniList', 'match': 'Monster', 'vols': {'1': ['https://dead/1', 'https://ok/1'], '2': ['https://dead/2']}, 'url': 'https://ok/series'}
+        orig_check, orig_palette = covers.check, covers.palette
+        covers.check, covers.palette = fake_check, lambda image: None
+        try:
+            covers.SOURCES['manga'], saved = [lambda it, kind, log: hit], covers.SOURCES['manga']
+            try:
+                entry = covers.lookup('manga', {'title': 'Monster', '_vols': [1, 2]}, lambda m: None)
+            finally:
+                covers.SOURCES['manga'] = saved
+        finally:
+            covers.check, covers.palette = orig_check, orig_palette
+        self.assertEqual(entry['vols'], {'1': {'src': 'https://ok/1'}})
+        self.assertEqual(entry['src'], 'https://ok/series')
 
 
 if __name__ == '__main__':

@@ -3,8 +3,9 @@
 
 Free sources, no keys needed, all shelves looked up at the same time:
   anime   AniList
-  manga   MangaDex, a cover for every owned volume (gaps filled from Open Library's editions,
-          AniList for a series neither has)
+  manga   Open Library's editions, a cover for each owned volume (the cover Open Library holds, else
+          the one Amazon serves for the edition's ISBN), AniList's series cover for any volume without one.
+          MangaDex is not used: it now sends image requests to a bot challenge, so no browser can load them
   music   MusicBrainz with the Cover Art Archive (Deezer for a record it lacks)
   books   Open Library (by isbn when the item has one)
   movies  IMDb's public title suggestions
@@ -56,7 +57,7 @@ THRESHOLD = 0.72
 LOG = functools.partial(print, flush=True)  # show progress live in CI logs
 
 # minimum seconds between requests to each host, from each API's published limits
-PACE = {'graphql.anilist.co': 2.1, 'api.mangadex.org': 0.3, 'musicbrainz.org': 1.1, 'api.deezer.com': 0.2,
+PACE = {'graphql.anilist.co': 2.1, 'musicbrainz.org': 1.1, 'api.deezer.com': 0.2,
         'openlibrary.org': 1.0, 'v3.sg.media-imdb.com': 0.4}
 _last = {}
 _locks = defaultdict(threading.Lock)
@@ -201,46 +202,7 @@ def choose_anilist(it, res):
     return None
 
 
-# ------------------------------------------------------------------ manga volumes: MangaDex
-MD = 'https://api.mangadex.org'
-
-
-def manga_mangadex(it, kind, log):
-    # a plain word like "Monster" has many series; look wider, and by the original title too
-    res, seen = [], set()
-    for title in dict.fromkeys(t for t in (it['title'], it.get('original')) if t):
-        q = urllib.parse.urlencode([('title', title), ('limit', 25), ('order[relevance]', 'desc'), ('includes[]', 'author'),
-                                    ('contentRating[]', 'safe'), ('contentRating[]', 'suggestive'), ('contentRating[]', 'erotica')])
-        for m in get_json(f'{MD}/manga?{q}').get('data', []):
-            if m.get('id') not in seen:
-                seen.add(m.get('id'))
-                res.append(m)
-    best, s = pick(res, lambda m: score_mangadex(it, m))
-    if not best or s < THRESHOLD:
-        short('MangaDex', res, s, log)
-        return None
-    covers, offset = [], 0
-    while True:
-        q = urllib.parse.urlencode([('manga[]', best['id']), ('limit', 100), ('offset', offset), ('order[volume]', 'asc')])
-        page = get_json(f'{MD}/cover?{q}')
-        covers += page.get('data', [])
-        offset += 100
-        if offset >= page.get('total', 0):
-            break
-    vols = choose_volume_covers(covers, set(it['_vols']), it.get('cover_locale'))
-    urls = {v: f"https://uploads.mangadex.org/covers/{best['id']}/{fn}.512.jpg" for v, fn in vols.items()}
-    # every owned volume should show its own cover: fill the gaps from Open Library's editions
-    missing = [v for v in it['_vols'] if str(v) not in urls]
-    extra = openlibrary_volumes(it, missing, log) if missing else {}
-    urls.update(extra)
-    if not urls:
-        log('MangaDex: no covers for the owned volumes')
-        return None
-    titles = (best.get('attributes') or {}).get('title') or {}
-    return {'from': 'MangaDex' + (' and Open Library' if extra else ''), 'match': next(iter(titles.values()), it['title']), 'score': s,
-            'vols': dict(sorted(urls.items(), key=lambda kv: int(kv[0])))}
-
-
+# ------------------------------------------------------------------ manga volumes: Open Library editions
 VOL_RE = re.compile(r'(?:\bvol(?:ume)?\.?|#|\bbook|\bpart)\s*(\d+)', re.I)
 BIG_EDITIONS = ('perfect', 'deluxe', 'kanzenban', 'master edition', 'omnibus', 'collector')
 
@@ -252,62 +214,60 @@ def volume_of(title):
     return int(m.group(1)) if m else None
 
 
+def isbn10(isbn):
+    """The ISBN-10 for an ISBN-10 or a 978-prefixed ISBN-13 (Amazon keys its images by it), else None."""
+    d = re.sub(r'[^0-9Xx]', '', str(isbn))
+    if len(d) == 13 and d.startswith('978') and d.isdigit():
+        core = d[3:12]
+        total = sum((10 - i) * int(c) for i, c in enumerate(core))
+        check = (11 - total % 11) % 11
+        return core + ('X' if check == 10 else str(check))
+    return d.upper() if len(d) == 10 else None
+
+
 def openlibrary_volumes(it, wanted, log):
-    """Per-volume covers from Open Library's editions of a manga series, for the volumes asked for."""
+    """Candidate cover links per wanted volume from Open Library's editions of the series: the cover Open
+    Library holds, then the image Amazon serves for the edition's ISBN. {volume: [url, ...]}"""
     wanted, found = set(wanted), {}
     big = it.get('format') in ('kanzenban', 'deluxe')
     names = [n.lower() for n in (it['title'], it.get('original')) if n]
     norm = lambda x: re.sub(r'[^a-z0-9 ]+', '', str(x).lower())  # noqa: E731
     for params in ({'title': it['title'], 'author': it.get('creator') or ''}, {'q': f"{it['title']} {it.get('creator') or ''}".strip()}):
-        q = urllib.parse.urlencode({**params, 'limit': 100, 'fields': 'title,author_name,cover_i'})
+        q = urllib.parse.urlencode({**params, 'limit': 100, 'fields': 'title,author_name,cover_i,isbn'})
         for d in get_json(f'https://openlibrary.org/search.json?{q}').get('docs', []):
             t, v = (d.get('title') or '').lower(), volume_of(d.get('title'))
-            if not d.get('cover_i') or v not in wanted or not any(norm(n) in norm(t) for n in names):
+            isbns = list(dict.fromkeys(i for i in map(isbn10, d.get('isbn') or []) if i))[:3]
+            if v not in wanted or not (d.get('cover_i') or isbns) or not any(norm(n) in norm(t) for n in names):
                 continue
             if 'box' in t or '-in-1' in t or (it.get('creator') and best_sim(it['creator'], d.get('author_name') or []) < 0.6):
                 continue
-            rank = (1 if any(w in t for w in BIG_EDITIONS) == big else 0)
+            urls = ([f"https://covers.openlibrary.org/b/id/{d['cover_i']}-L.jpg?default=false"] if d.get('cover_i') else []) + \
+                   [f'https://m.media-amazon.com/images/P/{i}.01.LZZZZZZZ.jpg' for i in isbns]
+            rank = (1 if any(w in t for w in BIG_EDITIONS) == big else 0, 1 if d.get('cover_i') else 0)
             if v not in found or rank > found[v][0]:
-                found[v] = (rank, d['cover_i'])
+                found[v] = (rank, urls)
         if wanted <= set(found):
             break
     if found:
-        log(f'Open Library: covers for volumes {sorted(found)}')
-    return {str(v): f'https://covers.openlibrary.org/b/id/{c}-L.jpg?default=false' for v, (_, c) in found.items()}
+        log(f'Open Library: editions for volumes {sorted(found)}')
+    return {str(v): urls for v, (_, urls) in found.items()}
 
 
-def manga_openlibrary(it, kind, log):
+def manga_volumes(it, kind, log):
+    """A cover per owned volume where an edition has one, and the series cover (AniList) for the rest."""
     vols = openlibrary_volumes(it, it['_vols'], log)
-    return {'from': 'Open Library', 'match': it['title'], 'score': 1.0, 'vols': vols} if vols else None
-
-
-def score_mangadex(it, m):
-    a = m.get('attributes') or {}
-    names = list((a.get('title') or {}).values()) + [t for d in a.get('altTitles') or [] for t in d.values()]
-    s = 0.7 * best_sim(it['title'], names)
-    if it.get('original') and it['original'] in names:
-        s = max(s, 0.7)
-    authors = [(r.get('attributes') or {}).get('name') for r in m.get('relationships') or [] if r.get('type') == 'author']
-    return s + 0.15 * best_sim(it.get('creator'), authors) + 0.15 * year_score(it.get('year'), a.get('year'))
-
-
-def choose_volume_covers(covers, owned, prefer=None):
-    """One cover per owned volume, preferring the original Japanese printing."""
-    order = [prefer] if prefer else []
-    order += [loc for loc in ('ja', 'en') if loc not in order]
-    best = {}
-    for c in covers:
-        a = c.get('attributes') or {}
-        try:
-            v = int(float(a.get('volume')))
-        except (TypeError, ValueError):
-            continue
-        if v not in owned or not a.get('fileName'):
-            continue
-        rank = order.index(a.get('locale')) if a.get('locale') in order else len(order)
-        if v not in best or rank < best[v][0]:
-            best[v] = (rank, a['fileName'])
-    return {str(v): fn for v, (_, fn) in sorted(best.items())}
+    series = None
+    try:
+        series = anilist(it, kind, log)
+    except Exception as e:  # the volumes alone are still worth keeping
+        log(f'AniList failed: {e}')
+    if not vols and not series:
+        return None
+    hit = {'from': 'Open Library' + (' and AniList' if vols and series else '') if vols else 'AniList',
+           'match': (series or {}).get('match') or it['title'], 'score': (series or {}).get('score', 1.0), 'vols': vols}
+    if series:
+        hit['url'] = series['url']
+    return hit
 
 
 # ------------------------------------------------------------------ music: MusicBrainz + Cover Art Archive, then Deezer
@@ -429,7 +389,7 @@ def choose_imdb(it, res):
 
 SOURCES = {
     'anime': [anilist],
-    'manga': [manga_mangadex, manga_openlibrary, anilist],
+    'manga': [manga_volumes],
     'music': [music_musicbrainz, music_deezer],
     'books': [book_openlibrary],
     'movies': [movie_imdb],
@@ -502,17 +462,28 @@ def lookup(kind, it, log):
             entry = {'from': hit['from'], 'match': hit['match']}
             if 'vols' in hit:
                 entry['vols'] = {}
-                for v, url in hit['vols'].items():
+                for v, urls in hit['vols'].items():
+                    for url in [urls] if isinstance(urls, str) else urls:
+                        try:
+                            img = check(url, log)
+                        except Exception as e:
+                            log(f'volume {v}: {e}')
+                            continue
+                        entry['vols'][v] = {'src': url, **({'pal': p} if img and (p := palette(img)) else {})}
+                        break
+                if hit.get('url'):
                     try:
-                        img = check(url, log)
+                        img = check(hit['url'], log)
+                        entry['src'] = hit['url']
+                        if img and (p := palette(img)):
+                            entry['pal'] = p
                     except Exception as e:
-                        log(f'volume {v}: {e}')
-                        continue
-                    entry['vols'][v] = {'src': url, **({'pal': p} if img and (p := palette(img)) else {})}
-                if not entry['vols']:
+                        log(f'series cover: {e}')
+                if not entry['vols'] and 'src' not in entry:
                     continue
-                first = entry['vols'][min(entry['vols'], key=int)]
-                entry.update({k: first[k] for k in ('src', 'pal') if k in first})
+                if 'src' not in entry:
+                    first = entry['vols'][min(entry['vols'], key=int)]
+                    entry.update({k: first[k] for k in ('src', 'pal') if k in first})
             else:
                 img = check(hit['url'], log)
                 entry['src'] = hit['url']
@@ -535,6 +506,8 @@ def main(argv=None):
     args = ap.parse_args(argv)
 
     covers = load_json(COVERS_JSON) if COVERS_JSON.exists() else {}
+    for key in [k for k, e in covers.items() if 'uploads.mangadex.org' in json.dumps(e)]:
+        covers.pop(key)  # MangaDex serves its images behind a bot challenge now; look these up again elsewhere
     _, rooms = load_house()
     today = dt.date.today().isoformat()
     lock = threading.Lock()

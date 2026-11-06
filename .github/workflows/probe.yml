@@ -2,28 +2,35 @@ name: Probe covers
 on:
   push:
     branches: [ccr-9ed8a046-dq7s74]
-    paths: [".github/workflows/probe.yml"]
+    paths: [".github/workflows/probe.yml", "tools/covers.py"]
 jobs:
   probe:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - name: Probe
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet pillow
+      - name: Look the manga covers up
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: python tools/covers.py --room manga
+      - name: Summarise
         run: |
-          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126 Safari/537.36"
-          IMG=(-H "Sec-Fetch-Dest: image" -H "Sec-Fetch-Site: cross-site" -H "Sec-Fetch-Mode: no-cors" -H "Accept: image/avif,image/webp,*/*")
-          MD="https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/5ca0c30f-e5b7-405c-8014-39b9cdbfbe91.jpg.512.jpg"
-          probe() { echo "-- $1"; curl -sS -m 25 -L -A "$UA" "${IMG[@]}" -o /tmp/p -w "status=%{http_code} type=%{content_type} size=%{size_download} final=%{url_effective}\n" "$1" | cut -c1-300; }
-          echo "== proxies over mangadex"
-          probe "https://wsrv.nl/?url=$MD&w=300"
-          probe "https://images.weserv.nl/?url=$MD&w=300"
-          echo "== google books"
-          for q in "intitle:berserk+vol.+3+inauthor:miura" "intitle:one+piece+vol.+1+inauthor:oda" "intitle:monster+vol.+5+inauthor:urasawa"; do
-            echo "-- q=$q"; curl -sS -m 25 "https://www.googleapis.com/books/v1/volumes?q=$q&maxResults=5&fields=items(id,volumeInfo(title,authors,imageLinks))" | head -c 900; echo
-          done
-          echo "== google books image"
-          probe "https://books.google.com/books/content?id=nqtwtgEACAAJ&printsec=frontcover&img=1&zoom=1"
-          echo "== open library"
-          curl -sS -m 25 "https://openlibrary.org/search.json?title=berserk&author=miura&limit=5&fields=title,cover_i,isbn" | head -c 600; echo
-          probe "https://covers.openlibrary.org/b/id/8478321-L.jpg?default=false"
-          echo "== kitsu"
-          curl -sS -m 25 -H "Accept: application/vnd.api+json" "https://kitsu.io/api/edge/manga?filter[text]=berserk&page[limit]=1" | head -c 700; echo
+          python - <<'PY'
+          import json, sys, urllib.parse, collections
+          sys.path.insert(0, 'tools')
+          from shelflib import slug, parse_owned
+          c = json.load(open('data/covers.json'))
+          items = json.load(open('data/rooms/manga.json'))['items']
+          tot = got = 0
+          for it in items:
+              sid = slug(it['title']); e = c.get('manga/' + sid) or {}
+              vols = parse_owned(it['owned'], it.get('total')); vc = e.get('vols', {})
+              hosts = collections.Counter(urllib.parse.urlparse(x['src']).netloc for x in vc.values())
+              tot += len(vols); got += len(vc)
+              print(f"{sid:22} owned {len(vols):3} own-cover {len(vc):3}  series={urllib.parse.urlparse(e.get('src','')).netloc or 'NONE'}  {dict(hosts)}")
+          print('TOTAL', got, 'of', tot)
+          PY
