@@ -566,6 +566,7 @@
   "manga/akira": {
     "from": "Open Library and AniList",
     "match": "Akira",
+    "v": 6,
     "vols": {
       "1": {
         "src": "https://covers.openlibrary.org/b/id/814967-L.jpg?default=false",
@@ -577,12 +578,12 @@
         ]
       },
       "2": {
-        "src": "https://covers.openlibrary.org/b/id/814968-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784061037120-L.jpg?default=false",
         "pal": [
-          "#5c6acb",
-          "#fdfdfd",
-          "#75cafa",
-          "#171c22"
+          "#32349b",
+          "#eaf7dd",
+          "#77fb59",
+          "#15181b"
         ]
       },
       "3": {
@@ -634,113 +635,114 @@
   "manga/berserk": {
     "from": "Open Library and AniList",
     "match": "Berserk",
+    "v": 6,
     "vols": {
       "1": {
-        "src": "https://covers.openlibrary.org/b/id/869205-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784592135746-L.jpg?default=false",
         "pal": [
           "#fcfcfc",
-          "#464738",
-          "#265275",
-          "#464738"
+          "#676668",
+          "#ca5d74",
+          "#676668"
         ]
       },
       "6": {
-        "src": "https://covers.openlibrary.org/b/id/869292-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784592135791-L.jpg?default=false",
         "pal": [
-          "#fefefe",
-          "#253937",
-          "#880f0f",
-          "#253937"
+          "#fbfbfc",
+          "#151838",
+          "#151838",
+          "#54597b"
         ]
       },
       "2": {
-        "src": "https://covers.openlibrary.org/b/id/869208-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784592135753-L.jpg?default=false",
         "pal": [
-          "#fbfbfa",
-          "#040404",
-          "#d56669",
-          "#040404"
+          "#fcfcfc",
+          "#383855",
+          "#673a9b",
+          "#383855"
         ]
       },
       "4": {
-        "src": "https://covers.openlibrary.org/b/id/869269-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784592135777-L.jpg?default=false",
         "pal": [
-          "#fefefe",
-          "#276888",
-          "#276888",
-          "#a9a7a4"
+          "#fcfcfc",
+          "#565759",
+          "#67a6d8",
+          "#565759"
         ]
       },
       "7": {
-        "src": "https://covers.openlibrary.org/b/id/869353-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784592135807-L.jpg?default=false",
         "pal": [
-          "#fefefe",
-          "#667675",
-          "#027796",
-          "#667675"
+          "#fcfcfc",
+          "#575776",
+          "#294776",
+          "#9aa8b9"
         ]
       },
       "5": {
-        "src": "https://covers.openlibrary.org/b/id/869290-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784592135784-L.jpg?default=false",
         "pal": [
-          "#fefcfb",
-          "#383617",
-          "#352c09",
-          "#aaa8a5"
+          "#463c34",
+          "#f8f9f9",
+          "#e65717",
+          "#777878"
         ]
       },
       "13": {
-        "src": "https://covers.openlibrary.org/b/id/869473-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784592136958-L.jpg?default=false",
         "pal": [
-          "#393636",
-          "#b9b6b4",
-          "#a8161d",
-          "#b9b6b4"
+          "#482628",
+          "#879cc8",
+          "#879cc8",
+          "#985845"
         ]
       },
       "10": {
-        "src": "https://covers.openlibrary.org/b/id/869356-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784592136927-L.jpg?default=false",
         "pal": [
-          "#574745",
-          "#ccc9c7",
-          "#b97654",
-          "#b5aba7"
+          "#fbfcfc",
+          "#673819",
+          "#763816",
+          "#b76627"
         ]
       },
       "11": {
-        "src": "https://covers.openlibrary.org/b/id/869447-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784592136934-L.jpg?default=false",
         "pal": [
-          "#361b25",
-          "#948b88",
-          "#984623",
-          "#948b88"
+          "#fbfbfa",
+          "#192768",
+          "#192768",
+          "#572829"
         ]
       },
       "12": {
-        "src": "https://covers.openlibrary.org/b/id/869459-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784592136941-L.jpg?default=false",
         "pal": [
-          "#281816",
-          "#968c88",
-          "#893a22",
-          "#968c88"
+          "#fbfbfa",
+          "#36191c",
+          "#36191c",
+          "#c6c6c7"
         ]
       },
       "8": {
-        "src": "https://covers.openlibrary.org/b/id/869354-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784592136903-L.jpg?default=false",
         "pal": [
-          "#fdfcfc",
-          "#b84756",
-          "#d75638",
-          "#e7c987"
+          "#fbfcf9",
+          "#b8481c",
+          "#b8481c",
+          "#c79957"
         ]
       },
       "3": {
-        "src": "https://covers.openlibrary.org/b/id/869209-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784592135760-L.jpg?default=false",
         "pal": [
-          "#66676a",
-          "#eaf5f6",
-          "#842329",
-          "#eaf5f6"
+          "#373b36",
+          "#fafafb",
+          "#bac666",
+          "#fafafb"
         ]
       },
       "14": {
@@ -753,12 +755,12 @@
         ]
       },
       "9": {
-        "src": "https://covers.openlibrary.org/b/id/869355-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784592136910-L.jpg?default=false",
         "pal": [
-          "#1b2735",
-          "#9a9695",
-          "#9a9695",
-          "#9a9695"
+          "#f8f8f8",
+          "#28242a",
+          "#143747",
+          "#f3c949"
         ]
       }
     },
@@ -774,6 +776,7 @@
   "manga/blame": {
     "from": "Open Library and AniList",
     "match": "BLAME!",
+    "v": 6,
     "vols": {
       "1": {
         "src": "https://covers.openlibrary.org/b/id/874491-L.jpg?default=false",
@@ -878,6 +881,7 @@
   "manga/chainsaw-man": {
     "from": "Open Library and AniList",
     "match": "Chainsaw Man",
+    "v": 6,
     "vols": {
       "1": {
         "src": "https://covers.openlibrary.org/b/id/11432953-L.jpg?default=false",
@@ -889,66 +893,66 @@
         ]
       },
       "2": {
-        "src": "https://covers.openlibrary.org/b/id/12794652-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784088818313-L.jpg?default=false",
         "pal": [
-          "#92d2bc",
-          "#35182b",
-          "#35182b",
-          "#b55b84"
+          "#98d5b8",
+          "#462438",
+          "#1a4678",
+          "#462438"
         ]
       },
       "6": {
-        "src": "https://covers.openlibrary.org/b/id/10544946-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784088822242-L.jpg?default=false",
         "pal": [
-          "#f9832b",
-          "#f4f0e6",
-          "#f8e228",
-          "#fac79f"
+          "#c9a5aa",
+          "#462757",
+          "#462757",
+          "#462757"
         ]
       },
       "5": {
-        "src": "https://covers.openlibrary.org/b/id/11177825-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784088821719-L.jpg?default=false",
         "pal": [
-          "#e9386a",
-          "#f4f0e6",
-          "#742756",
-          "#e8e8a4"
+          "#d72657",
+          "#f9fafc",
+          "#261836",
+          "#f8f596"
         ]
       },
       "11": {
-        "src": "https://covers.openlibrary.org/b/id/14830424-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784088825762-L.jpg?default=false",
         "pal": [
-          "#000000",
-          "#d6d7d6",
-          "#990802",
-          "#d6d7d6"
+          "#f4a878",
+          "#363867",
+          "#b60428",
+          "#a66773"
         ]
       },
       "9": {
-        "src": "https://covers.openlibrary.org/b/id/12794660-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784088824703-L.jpg?default=false",
         "pal": [
-          "#a7c8ca",
-          "#524c3c",
-          "#17978a",
-          "#c4966a"
+          "#a6c8c8",
+          "#474a48",
+          "#089787",
+          "#56a7a8"
         ]
       },
       "10": {
-        "src": "https://covers.openlibrary.org/b/id/11305267-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784088825274-L.jpg?default=false",
         "pal": [
-          "#dd1535",
-          "#f8f9f8",
-          "#e8e609",
-          "#bd9ba3"
+          "#e90343",
+          "#f4f0e6",
+          "#c9d40c",
+          "#b29aa3"
         ]
       },
       "7": {
-        "src": "https://covers.openlibrary.org/b/id/11994974-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784088823287-L.jpg?default=false",
         "pal": [
-          "#020102",
-          "#0b8688",
-          "#0b8688",
-          "#d64579"
+          "#a92766",
+          "#fbfdfb",
+          "#059796",
+          "#86c79c"
         ]
       },
       "3": {
@@ -961,12 +965,12 @@
         ]
       },
       "4": {
-        "src": "https://covers.openlibrary.org/b/id/12794654-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784088820750-L.jpg?default=false",
         "pal": [
-          "#089ab6",
-          "#1d141e",
-          "#c52734",
-          "#b6bac8"
+          "#38a8c8",
+          "#132c65",
+          "#c71637",
+          "#c8d8e7"
         ]
       },
       "8": {
@@ -991,9 +995,10 @@
   "manga/death-note": {
     "from": "Open Library and AniList",
     "match": "Death Note",
+    "v": 6,
     "vols": {
       "1": {
-        "src": "https://covers.openlibrary.org/b/id/1041608-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784088736211-L.jpg?default=false",
         "pal": [
           "#3a3937",
           "#a7a5a5",
@@ -1002,12 +1007,12 @@
         ]
       },
       "2": {
-        "src": "https://covers.openlibrary.org/b/id/764905-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784088736310-L.jpg?default=false",
         "pal": [
-          "#e4eaec",
-          "#b71429",
-          "#b71429",
-          "#6596b7"
+          "#e6e6e7",
+          "#49474a",
+          "#49474a",
+          "#b6a8a6"
         ]
       },
       "8": {
@@ -1113,6 +1118,7 @@
   "manga/dorohedoro": {
     "from": "Open Library and AniList",
     "match": "Dorohedoro",
+    "v": 6,
     "vols": {
       "2": {
         "src": "https://covers.openlibrary.org/b/id/7767603-L.jpg?default=false",
@@ -1178,12 +1184,12 @@
         ]
       },
       "1": {
-        "src": "https://covers.openlibrary.org/b/id/11898356-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784091882714-L.jpg?default=false",
         "pal": [
-          "#aa8647",
-          "#040302",
-          "#882329",
-          "#040302"
+          "#040602",
+          "#c58737",
+          "#79130b",
+          "#c58737"
         ]
       }
     },
@@ -1199,32 +1205,15 @@
   "manga/fullmetal-alchemist": {
     "from": "Open Library and AniList",
     "match": "Fullmetal Alchemist",
+    "v": 6,
     "vols": {
-      "3": {
-        "src": "https://covers.openlibrary.org/b/id/9274815-L.jpg?default=false",
-        "pal": [
-          "#fcfdfc",
-          "#444a4b",
-          "#444a4b",
-          "#444a4b"
-        ]
-      },
-      "2": {
-        "src": "https://covers.openlibrary.org/b/id/1813422-L.jpg?default=false",
-        "pal": [
-          "#fafafa",
-          "#556779",
-          "#556779",
-          "#a69597"
-        ]
-      },
       "1": {
-        "src": "https://covers.openlibrary.org/b/id/3290930-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784797328561-L.jpg?default=false",
         "pal": [
-          "#767bb9",
-          "#f4f0e6",
-          "#363558",
-          "#874b54"
+          "#15151a",
+          "#86868b",
+          "#943938",
+          "#575559"
         ]
       },
       "9": {
@@ -1254,22 +1243,40 @@
           "#a3a99a"
         ]
       },
-      "4": {
-        "src": "https://covers.openlibrary.org/b/id/863664-L.jpg?default=false",
+      "2": {
+        "src": "https://covers.openlibrary.org/b/isbn/9784757506992-L.jpg?default=false",
         "pal": [
-          "#c6c8c9",
-          "#5a4539",
-          "#d52d38",
-          "#fdfdfd"
+          "#141617",
+          "#379589",
+          "#379589",
+          "#475358"
+        ]
+      },
+      "4": {
+        "src": "https://covers.openlibrary.org/b/isbn/9784757508552-L.jpg?default=false",
+        "pal": [
+          "#171b23",
+          "#fac649",
+          "#fac649",
+          "#d78744"
         ]
       },
       "5": {
-        "src": "https://covers.openlibrary.org/b/id/764911-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784757509665-L.jpg?default=false",
         "pal": [
-          "#b6b7b9",
-          "#010203",
-          "#d72432",
-          "#86494a"
+          "#151716",
+          "#b8b9e8",
+          "#6c5898",
+          "#b8b9e8"
+        ]
+      },
+      "3": {
+        "src": "https://covers.openlibrary.org/b/isbn/9784757507913-L.jpg?default=false",
+        "pal": [
+          "#171516",
+          "#84a867",
+          "#27568a",
+          "#84a867"
         ]
       },
       "12": {
@@ -1282,166 +1289,64 @@
         ]
       },
       "15": {
-        "src": "https://covers.openlibrary.org/b/id/9119688-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784757518124-L.jpg?default=false",
         "pal": [
-          "#b6b7b9",
-          "#77252a",
-          "#d1121c",
-          "#d4767c"
+          "#040408",
+          "#c9b399",
+          "#995838",
+          "#c9b399"
         ]
       },
       "13": {
-        "src": "https://covers.openlibrary.org/b/id/765530-L.jpg?default=false",
-        "pal": [
-          "#040303",
-          "#a7a8a9",
-          "#d30f1e",
-          "#a7a8a9"
-        ]
+        "src": "https://covers.openlibrary.org/b/id/765530-L.jpg?default=false"
       },
       "8": {
-        "src": "https://covers.openlibrary.org/b/id/765078-L.jpg?default=false",
-        "pal": [
-          "#b80c12",
-          "#f6f5f1",
-          "#f6f5f1",
-          "#98a7b9"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757512306-L.jpg?default=false"
       },
       "14": {
-        "src": "https://covers.openlibrary.org/b/id/4813764-L.jpg?default=false",
-        "pal": [
-          "#a7a7a7",
-          "#262a36",
-          "#d3101d",
-          "#495868"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757517196-L.jpg?default=false"
       },
       "11": {
-        "src": "https://covers.openlibrary.org/b/id/765347-L.jpg?default=false",
-        "pal": [
-          "#a6a7a9",
-          "#363937",
-          "#d2101d",
-          "#e6e7e7"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757514966-L.jpg?default=false"
       },
       "10": {
-        "src": "https://covers.openlibrary.org/b/id/765080-L.jpg?default=false",
-        "pal": [
-          "#a6a7a8",
-          "#282a24",
-          "#d30e1d",
-          "#e8e7e8"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757513860-L.jpg?default=false"
       },
       "16": {
-        "src": "https://covers.openlibrary.org/b/id/1813412-L.jpg?default=false",
-        "pal": [
-          "#a7a8a9",
-          "#482b35",
-          "#d3111c",
-          "#e7e8e8"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757519657-L.jpg?default=false"
       },
       "20": {
-        "src": "https://covers.openlibrary.org/b/id/6678874-L.jpg?default=false",
-        "pal": [
-          "#a6a8a8",
-          "#192438",
-          "#d4111f",
-          "#e8e7e8"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757523531-L.jpg?default=false"
       },
       "18": {
-        "src": "https://covers.openlibrary.org/b/id/6673903-L.jpg?default=false",
-        "pal": [
-          "#a7a9a9",
-          "#49292a",
-          "#c82b32",
-          "#47494a"
-        ]
+        "src": "https://covers.openlibrary.org/b/id/6673903-L.jpg?default=false"
       },
       "21": {
-        "src": "https://covers.openlibrary.org/b/id/6683708-L.jpg?default=false",
-        "pal": [
-          "#567b88",
-          "#f4f0e6",
-          "#f4f0e6",
-          "#a5a7a8"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757524392-L.jpg?default=false"
       },
       "17": {
-        "src": "https://covers.openlibrary.org/b/id/6673281-L.jpg?default=false",
-        "pal": [
-          "#a6a7a8",
-          "#393c45",
-          "#d2101e",
-          "#fbfbfb"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757520646-L.jpg?default=false"
       },
       "19": {
-        "src": "https://covers.openlibrary.org/b/id/6678162-L.jpg?default=false",
-        "pal": [
-          "#a5a7a9",
-          "#4a3348",
-          "#d4101f",
-          "#553849"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757522374-L.jpg?default=false"
       },
       "22": {
-        "src": "https://covers.openlibrary.org/b/id/6692609-L.jpg?default=false",
-        "pal": [
-          "#a5a8a8",
-          "#353b36",
-          "#d60c11",
-          "#e9eaea"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757525382-L.jpg?default=false"
       },
       "23": {
-        "src": "https://covers.openlibrary.org/b/id/6461078-L.jpg?default=false",
-        "pal": [
-          "#a6a7a7",
-          "#272b2a",
-          "#d60f19",
-          "#d86568"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757526020-L.jpg?default=false"
       },
       "26": {
-        "src": "https://covers.openlibrary.org/b/id/12817672-L.jpg?default=false",
-        "pal": [
-          "#a7a8a7",
-          "#36383b",
-          "#c91921",
-          "#36383b"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757529298-L.jpg?default=false"
       },
       "25": {
-        "src": "https://covers.openlibrary.org/b/id/10661445-L.jpg?default=false",
-        "pal": [
-          "#aaa9a9",
-          "#1b2a43",
-          "#890000",
-          "#656568"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757528406-L.jpg?default=false"
       },
       "27": {
-        "src": "https://covers.openlibrary.org/b/id/10229325-L.jpg?default=false",
-        "pal": [
-          "#19120d",
-          "#fefefe",
-          "#e7c787",
-          "#fefefe"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784757530546-L.jpg?default=false"
       },
       "24": {
-        "src": "https://covers.openlibrary.org/b/id/6679756-L.jpg?default=false",
-        "pal": [
-          "#d7121e",
-          "#f4f0e6",
-          "#782827",
-          "#b4a8a8"
-        ]
+        "src": "https://covers.openlibrary.org/b/id/6679756-L.jpg?default=false"
       }
     },
     "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30025-mpPVpCKFTowt.png",
@@ -1456,14 +1361,15 @@
   "manga/goodnight-punpun": {
     "from": "Open Library and AniList",
     "match": "Goodnight Punpun",
+    "v": 6,
     "vols": {
       "1": {
-        "src": "https://covers.openlibrary.org/b/id/12327624-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784091512185-L.jpg?default=false",
         "pal": [
-          "#ffd124",
+          "#fecb03",
           "#161412",
-          "#817123",
-          "#817123"
+          "#141414",
+          "#141414"
         ]
       },
       "2": {
@@ -1533,6 +1439,7 @@
   "manga/monster": {
     "from": "Open Library and AniList",
     "match": "Monster",
+    "v": 6,
     "vols": {
       "1": {
         "src": "https://covers.openlibrary.org/b/id/863480-L.jpg?default=false",
@@ -1553,12 +1460,12 @@
         ]
       },
       "6": {
-        "src": "https://covers.openlibrary.org/b/id/765113-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784091836564-L.jpg?default=false",
         "pal": [
-          "#fdfdfd",
-          "#676666",
-          "#7a191d",
-          "#757676"
+          "#332c28",
+          "#b4aca2",
+          "#69625d",
+          "#b4aca2"
         ]
       },
       "2": {
@@ -1628,114 +1535,43 @@
   "manga/one-piece": {
     "from": "Open Library and AniList",
     "match": "One Piece",
+    "v": 6,
     "vols": {
       "1": {
-        "src": "https://covers.openlibrary.org/b/id/1020563-L.jpg?default=false",
-        "pal": [
-          "#f9f9f8",
-          "#5a749a",
-          "#667ba6",
-          "#a67767"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784088725093-L.jpg?default=false"
       },
       "2": {
-        "src": "https://covers.openlibrary.org/b/id/9609527-L.jpg?default=false",
-        "pal": [
-          "#dad9d6",
-          "#575714",
-          "#78990a",
-          "#a99886"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784088725444-L.jpg?default=false"
       },
       "3": {
-        "src": "https://covers.openlibrary.org/b/id/9929208-L.jpg?default=false",
-        "pal": [
-          "#b62916",
-          "#f4f0e6",
-          "#270805",
-          "#c97768"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784088725697-L.jpg?default=false"
       },
       "4": {
-        "src": "https://covers.openlibrary.org/b/id/9485994-L.jpg?default=false",
-        "pal": [
-          "#959abb",
-          "#010101",
-          "#010101",
-          "#010101"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784088725949-L.jpg?default=false"
       },
       "5": {
-        "src": "https://covers.openlibrary.org/b/id/9602846-L.jpg?default=false",
-        "pal": [
-          "#b9b6a9",
-          "#362718",
-          "#c6483c",
-          "#867b75"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784088726199-L.jpg?default=false"
       },
       "10": {
-        "src": "https://covers.openlibrary.org/b/id/1020698-L.jpg?default=false",
-        "pal": [
-          "#67789a",
-          "#f4f0e6",
-          "#f4f0e6",
-          "#fafaf5"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784088727738-L.jpg?default=false"
       },
       "6": {
-        "src": "https://covers.openlibrary.org/b/id/1020568-L.jpg?default=false",
-        "pal": [
-          "#d8dbc7",
-          "#375788",
-          "#375788",
-          "#859589"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784088726427-L.jpg?default=false"
       },
       "11": {
-        "src": "https://covers.openlibrary.org/b/id/1020699-L.jpg?default=false",
-        "pal": [
-          "#476699",
-          "#f4f0e6",
-          "#f67b5b",
-          "#987567"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784088727974-L.jpg?default=false"
       },
       "7": {
-        "src": "https://covers.openlibrary.org/b/id/1020569-L.jpg?default=false",
-        "pal": [
-          "#67769a",
-          "#f4f0e6",
-          "#c79556",
-          "#382c2a"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784088726830-L.jpg?default=false"
       },
       "9": {
-        "src": "https://covers.openlibrary.org/b/id/1020570-L.jpg?default=false",
-        "pal": [
-          "#466796",
-          "#eae7e5",
-          "#eae7e5",
-          "#e8c699"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784088727356-L.jpg?default=false"
       },
       "8": {
-        "src": "https://covers.openlibrary.org/b/id/984633-L.jpg?default=false",
-        "pal": [
-          "#fbfbfb",
-          "#6c6768",
-          "#e88745",
-          "#898789"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784088727127-L.jpg?default=false"
       },
       "12": {
-        "src": "https://covers.openlibrary.org/b/id/1020700-L.jpg?default=false",
-        "pal": [
-          "#877b77",
-          "#f4f0e6",
-          "#f4f0e6",
-          "#d6c6b6"
-        ]
+        "src": "https://covers.openlibrary.org/b/isbn/9784088728223-L.jpg?default=false"
       }
     },
     "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30013-BeslEMqiPhlk.jpg",
@@ -1750,108 +1586,109 @@
   "manga/vagabond": {
     "from": "Open Library and AniList",
     "match": "Vagabond",
+    "v": 6,
     "vols": {
       "6": {
-        "src": "https://covers.openlibrary.org/b/id/8211378-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784063286854-L.jpg?default=false",
         "pal": [
-          "#3697d3",
-          "#0b090b",
-          "#c9161e",
-          "#0b090b"
+          "#fcfdfc",
+          "#161516",
+          "#4a381b",
+          "#f8f657"
         ]
       },
       "1": {
-        "src": "https://covers.openlibrary.org/b/id/863044-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784063286199-L.jpg?default=false",
         "pal": [
-          "#564c56",
-          "#c7d5ea",
-          "#c7d5ea",
-          "#c7d5ea"
+          "#e8e7e8",
+          "#5a5956",
+          "#8cb5ea",
+          "#a7a6a9"
         ]
       },
       "4": {
-        "src": "https://covers.openlibrary.org/b/id/813863-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784063286588-L.jpg?default=false",
         "pal": [
-          "#fcfefd",
-          "#171a25",
-          "#fc4943",
-          "#171a25"
+          "#ccc7bb",
+          "#372418",
+          "#e66728",
+          "#372418"
         ]
       },
       "3": {
-        "src": "https://covers.openlibrary.org/b/id/4933421-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784063286441-L.jpg?default=false",
         "pal": [
-          "#f8f8f9",
-          "#575967",
-          "#99b617",
-          "#575967"
+          "#171737",
+          "#9b9b95",
+          "#738a04",
+          "#9b9b95"
         ]
       },
       "8": {
-        "src": "https://covers.openlibrary.org/b/id/5260875-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784063287202-L.jpg?default=false",
         "pal": [
-          "#fbfcfb",
-          "#383936",
-          "#1a84c8",
-          "#f9aa88"
+          "#fafaf6",
+          "#55474a",
+          "#2d99e9",
+          "#f9c799"
         ]
       },
       "7": {
-        "src": "https://covers.openlibrary.org/b/id/15169100-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784063287028-L.jpg?default=false",
         "pal": [
-          "#fefefe",
-          "#292448",
-          "#292448",
-          "#080908"
+          "#fcfbfb",
+          "#474997",
+          "#464ca7",
+          "#a689c9"
         ]
       },
       "9": {
-        "src": "https://covers.openlibrary.org/b/id/15169103-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784063287363-L.jpg?default=false",
         "pal": [
-          "#fefefe",
-          "#5a5557",
-          "#2d3948",
-          "#cac9c9"
+          "#ebe9e6",
+          "#585656",
+          "#f2867a",
+          "#585656"
         ]
       },
       "11": {
-        "src": "https://covers.openlibrary.org/b/id/15169104-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784063287639-L.jpg?default=false",
         "pal": [
-          "#292826",
-          "#7a9797",
-          "#3aa6a8",
-          "#476867"
+          "#575559",
+          "#f8f8f7",
+          "#4ab8a8",
+          "#98a6a8"
         ]
       },
       "12": {
-        "src": "https://covers.openlibrary.org/b/id/15169107-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784063287790-L.jpg?default=false",
         "pal": [
-          "#fefefe",
-          "#28263a",
-          "#28263a",
-          "#69696b"
+          "#fbfcfc",
+          "#4c4637",
+          "#045c27",
+          "#4c4637"
         ]
       },
       "2": {
-        "src": "https://covers.openlibrary.org/b/id/4932965-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784063286205-L.jpg?default=false",
         "pal": [
-          "#f8f8f8",
-          "#796978",
-          "#d35c86",
-          "#796978"
+          "#f8f8f6",
+          "#554c54",
+          "#fd5849",
+          "#c6aad9"
         ]
       },
       "5": {
-        "src": "https://covers.openlibrary.org/b/id/813892-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784063286724-L.jpg?default=false",
         "pal": [
-          "#c74a36",
-          "#fcfdfb",
-          "#d4c94b",
-          "#eb8674"
+          "#973628",
+          "#f4f0e6",
+          "#391b19",
+          "#877976"
         ]
       },
       "10": {
-        "src": "https://covers.openlibrary.org/b/id/8432437-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784063287554-L.jpg?default=false",
         "pal": [
           "#eaebe9",
           "#785776",
@@ -1872,6 +1709,7 @@
   "manga/vinland-saga": {
     "from": "Open Library and AniList",
     "match": "Vinland Saga",
+    "v": 6,
     "vols": {
       "8": {
         "src": "https://covers.openlibrary.org/b/id/15272025-L.jpg?default=false",
@@ -1928,21 +1766,21 @@
         ]
       },
       "10": {
-        "src": "https://covers.openlibrary.org/b/id/11131329-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/id/13486086-L.jpg?default=false",
         "pal": [
-          "#563d96",
-          "#e9e6e8",
-          "#e9e6e8",
-          "#e9e6e8"
+          "#686578",
+          "#fcfcfc",
+          "#fcfcfc",
+          "#c9d6da"
         ]
       },
       "1": {
-        "src": "https://covers.openlibrary.org/b/id/8443603-L.jpg?default=false",
+        "src": "https://covers.openlibrary.org/b/isbn/9784063144239-L.jpg?default=false",
         "pal": [
-          "#041646",
-          "#98b9c6",
-          "#0679a7",
-          "#98b9c6"
+          "#494458",
+          "#e5e9ea",
+          "#d92e26",
+          "#e5e9ea"
         ]
       },
       "2": {
