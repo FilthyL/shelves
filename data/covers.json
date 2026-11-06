@@ -347,6 +347,222 @@
     ],
     "fetched": "2026-11-05"
   },
+  "games/astro-bot": {
+    "from": "Wikipedia",
+    "match": "Astro Bot",
+    "src": "https://upload.wikimedia.org/wikipedia/en/a/a9/Astro_Bot_cover_art.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#d9a378",
+      "#1c2799",
+      "#1c2799",
+      "#c5ccea"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/bloodborne": {
+    "from": "Wikipedia",
+    "match": "Bloodborne",
+    "src": "https://upload.wikimedia.org/wikipedia/en/6/68/Bloodborne_Cover_Wallpaper.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#bcc4c8",
+      "#474749",
+      "#370606",
+      "#474749"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/demon-s-souls": {
+    "from": "Wikipedia",
+    "match": "Demon's Souls (2020 video game)",
+    "src": "https://upload.wikimedia.org/wikipedia/en/1/11/Demons_Souls_remake_cover_art.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#464848",
+      "#b4b6b6",
+      "#c6a284",
+      "#877d76"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/elden-ring": {
+    "from": "Wikipedia",
+    "match": "Elden Ring",
+    "src": "https://upload.wikimedia.org/wikipedia/en/b/b9/Elden_Ring_Box_art.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#020402",
+      "#677d6b",
+      "#1b4746",
+      "#76563a"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/final-fantasy-vii-rebirth": {
+    "from": "Wikipedia",
+    "match": "Final Fantasy VII Rebirth",
+    "src": "https://upload.wikimedia.org/wikipedia/en/7/75/Boxart_for_Final_Fantasy_VII_Rebirth.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#391426",
+      "#fae8a4",
+      "#f89a59",
+      "#fae8a4"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/forza-horizon-5": {
+    "from": "Wikipedia",
+    "match": "Forza Horizon 5",
+    "src": "https://upload.wikimedia.org/wikipedia/en/8/86/Forza_Horizon_5_cover_art.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#e7f3f9",
+      "#675945",
+      "#574938",
+      "#1a1817"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/gears-5": {
+    "from": "Wikipedia",
+    "match": "Gears 5",
+    "src": "https://upload.wikimedia.org/wikipedia/en/e/e4/Gears_5_cover_art.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#f4f7fc",
+      "#36383b",
+      "#d60607",
+      "#a5b9c9"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/ghost-of-tsushima-director-s-cut": {
+    "from": "Wikipedia",
+    "match": "Ghost of Tsushima",
+    "src": "https://upload.wikimedia.org/wikipedia/en/b/b6/Ghost_of_Tsushima.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#181715",
+      "#c9c4bb",
+      "#a34d44",
+      "#c9c4bb"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/god-of-war-ragnarok": {
+    "from": "Wikipedia",
+    "match": "God of War Ragnarök",
+    "src": "https://upload.wikimedia.org/wikipedia/en/e/ee/God_of_War_Ragnar%C3%B6k_cover.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#98b5d9",
+      "#373537",
+      "#677c99",
+      "#373537"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/halo-3": {
+    "from": "Wikipedia",
+    "match": "Halo 3",
+    "src": "https://upload.wikimedia.org/wikipedia/en/b/b4/Halo_3_final_boxshot.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#080605",
+      "#bad2d8",
+      "#683605",
+      "#bad2d8"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/halo-infinite": {
+    "from": "Wikipedia",
+    "match": "Halo Infinite",
+    "src": "https://upload.wikimedia.org/wikipedia/en/1/14/Halo_Infinite.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#2a5786",
+      "#d7d4d9",
+      "#262b16",
+      "#758ca9"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/marvel-s-spider-man-2": {
+    "from": "Wikipedia",
+    "match": "Marvel's Spider-Man 2",
+    "src": "https://upload.wikimedia.org/wikipedia/en/0/0f/SpiderMan2PS5BoxArt.jpeg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#980605",
+      "#deb0b0",
+      "#3b0303",
+      "#a77579"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/metal-gear-solid-4-guns-of-the-patriots": {
+    "from": "Wikipedia",
+    "match": "Metal Gear Solid 4: Guns of the Patriots",
+    "src": "https://upload.wikimedia.org/wikipedia/en/4/4b/Mgs4us_cover_small.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#090a0b",
+      "#8a8887",
+      "#b61416",
+      "#484847"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/persona-5-royal": {
+    "from": "Wikipedia",
+    "match": "Persona 5",
+    "src": "https://upload.wikimedia.org/wikipedia/en/b/b0/Persona_5_cover_art.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#090607",
+      "#877878",
+      "#681719",
+      "#756a6a"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/red-dead-redemption": {
+    "from": "Wikipedia",
+    "match": "Red Dead Redemption",
+    "src": "https://upload.wikimedia.org/wikipedia/en/a/a7/Red_Dead_Redemption.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#e51d25",
+      "#f4f0e6",
+      "#881719",
+      "#040201"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/sekiro-shadows-die-twice": {
+    "from": "Wikipedia",
+    "match": "Sekiro: Shadows Die Twice",
+    "src": "https://upload.wikimedia.org/wikipedia/en/6/6e/Sekiro_art.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#282528",
+      "#7c95b6",
+      "#57647a",
+      "#7c95b6"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/starfield": {
+    "from": "Wikipedia",
+    "match": "Starfield (video game)",
+    "src": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Starfield_-_game_cover.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#171b24",
+      "#fafbfa",
+      "#3c5267",
+      "#fafbfa"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "games/the-last-of-us-part-ii": {
+    "from": "Wikipedia",
+    "match": "The Last of Us Part II",
+    "src": "https://upload.wikimedia.org/wikipedia/en/4/4f/TLOU_P2_Box_Art_2.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "pal": [
+      "#040404",
+      "#c7c7c7",
+      "#394857",
+      "#c7c7c7"
+    ],
+    "fetched": "2026-11-06"
+  },
   "manga/akira": {
     "from": "MangaDex",
     "match": "Akira",
