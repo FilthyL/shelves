@@ -226,14 +226,20 @@ def isbn10(isbn):
 
 
 def isbn_links(isbns):
-    """Image links keyed by an edition's ISBN: Open Library's, the VIZ and Amazon image servers."""
+    """Image links keyed by an edition's ISBN: Open Library's, the VIZ and Amazon image servers, AbeBooks'."""
     out = []
     for i in isbns:
+        ten = isbn10(i)
         out.append(f'https://covers.openlibrary.org/b/isbn/{i}-L.jpg?default=false')
-        out.append(f'https://dw9to29mmj727.cloudfront.net/products/{i}.jpg')
-        if len(i) == 10:
-            out.append(f'https://m.media-amazon.com/images/P/{i}.01.LZZZZZZZ.jpg')
+        for key in dict.fromkeys(k for k in (ten, i) if k):
+            out.append(f'https://dw9to29mmj727.cloudfront.net/products/{key}.jpg')
+        if ten:
+            out.append(f'https://m.media-amazon.com/images/P/{ten}.01.LZZZZZZZ.jpg')
+        out.append(f'https://pictures.abebooks.com/isbn/{i}-us.jpg')
     return out
+
+
+SET_WORDS = ('box', '-in-1', 'omnibus', 'maximum', 'maximun', ' set', 'collection')
 
 
 def openlibrary_volumes(it, wanted, log):
@@ -242,30 +248,47 @@ def openlibrary_volumes(it, wanted, log):
     once for all volumes, then each volume still missing is searched for by itself."""
     wanted, found = set(wanted), {}
     big = it.get('format') in ('kanzenban', 'deluxe')
-    names = [n.lower() for n in (it['title'], it.get('original')) if n]
+    names = [n.strip() for n in (it['title'], it.get('original')) if n and n.strip()]
+    creator = it.get('creator') or ''
     norm = lambda x: re.sub(r'[^a-z0-9 ]+', '', str(x).lower())  # noqa: E731
+    latin = lambda x: bool(re.search(r'[A-Za-z]', str(x)))  # noqa: E731
+
+    def named(t):
+        # a Latin title is compared without punctuation; a Japanese one has to appear as written
+        return any((norm(n) in norm(t)) if norm(n) else (n in t) for n in names)
 
     def collect(params):
         q = urllib.parse.urlencode({**params, 'limit': 100, 'fields': 'title,author_name,cover_i,isbn'})
         for d in get_json(f'https://openlibrary.org/search.json?{q}').get('docs', []):
-            t, v = (d.get('title') or '').lower(), volume_of(d.get('title'))
+            title = d.get('title') or ''
+            t, v = title.lower(), volume_of(title)
             isbns = list(dict.fromkeys(i for i in (str(x) for x in d.get('isbn') or []) if len(re.sub(r'\D', '', i)) in (10, 13)))[:4]
-            if v not in wanted or not (d.get('cover_i') or isbns) or not any(norm(n) in norm(t) for n in names):
+            if v not in wanted or not (d.get('cover_i') or isbns) or not named(title):
                 continue
-            if 'box' in t or '-in-1' in t or (it.get('creator') and best_sim(it['creator'], d.get('author_name') or []) < 0.6):
+            authors = d.get('author_name') or []
+            # Open Library often lists the mangaka in Japanese; only a Latin name can be compared with ours
+            if creator and any(latin(a) for a in authors) and best_sim(creator, authors) < 0.6:
                 continue
+            is_big = any(w in t for w in BIG_EDITIONS)
+            if (any(w in t for w in SET_WORDS) and not (big and is_big and 'box' not in t)) or (is_big and not big):
+                continue  # a box, an omnibus or a different printing's collected volumes
             urls = ([f"https://covers.openlibrary.org/b/id/{d['cover_i']}-L.jpg?default=false"] if d.get('cover_i') else []) + isbn_links(isbns)
-            rank = (1 if any(w in t for w in BIG_EDITIONS) == big else 0, 1 if d.get('cover_i') else 0)
+            rank = (1 if is_big == big else 0, 1 if d.get('cover_i') else 0)
             if v not in found or rank > found[v][0]:
                 found[v] = (rank, urls)
 
-    creator = it.get('creator') or ''
-    for params in ({'title': it['title'], 'author': creator}, {'q': f"{it['title']} {creator}".strip()}):
+    series = [{'title': it['title'], 'author': creator}, {'q': f"{it['title']} {creator}".strip()}]
+    if it.get('original'):
+        series.append({'title': it['original']})
+    for params in series:
         collect(params)
         if wanted <= set(found):
             break
     for v in sorted(wanted - set(found)):
-        for params in ({'q': f"{it['title']} vol {v} {creator}".strip()}, {'title': f"{it['title']} volume {v}"}):
+        tries = [{'q': f"{it['title']} vol {v} {creator}".strip()}, {'title': f"{it['title']} volume {v}"}]
+        if it.get('original'):
+            tries.append({'q': f"{it['original']} {v}"})
+        for params in tries:
             collect(params)
             if v in found:
                 break

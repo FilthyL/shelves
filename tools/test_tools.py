@@ -127,5 +127,26 @@ class Matching(unittest.TestCase):
         self.assertEqual(entry['src'], 'https://ok/series')
 
 
+    def test_open_library_volumes_accept_japanese_authors_and_skip_other_printings(self):
+        docs = [
+            {'title': 'ONE PIECE 1', 'author_name': ['尾田栄一郎'], 'cover_i': 11, 'isbn': ['9781569319017']},
+            {'title': 'ONE PIECE 2', 'author_name': ['尾田栄一郎'], 'isbn': ['1569319030']},
+            {'title': 'One Piece 3-In-1 Edition 12-book Manga Set 21-32', 'author_name': ['尾田栄一郎'], 'cover_i': 12},
+            {'title': 'ONE PIECE 3', 'author_name': ['Somebody Else'], 'cover_i': 13},
+            {'title': 'One Piece Deluxe Volume 4', 'author_name': ['尾田栄一郎'], 'cover_i': 14},
+            {'title': 'Maximum One Piece 5', 'author_name': ['尾田栄一郎'], 'cover_i': 15},
+        ]
+        orig = covers.get_json
+        covers.get_json = lambda url, **kw: {'docs': docs}
+        try:
+            got = covers.openlibrary_volumes({'title': 'One Piece', 'creator': 'Eiichiro Oda', 'format': 'tankobon'}, [1, 2, 3, 4, 5], lambda m: None)
+        finally:
+            covers.get_json = orig
+        self.assertEqual(sorted(got), ['1', '2'])
+        self.assertEqual(got['1'][0], 'https://covers.openlibrary.org/b/id/11-L.jpg?default=false')
+        self.assertIn('https://dw9to29mmj727.cloudfront.net/products/1569319014.jpg', got['1'])
+        self.assertTrue(got['2'][0].startswith('https://covers.openlibrary.org/b/isbn/1569319030'))
+
+
 if __name__ == '__main__':
     unittest.main()
