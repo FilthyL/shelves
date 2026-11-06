@@ -556,16 +556,108 @@
     "fetched": "2026-11-05"
   },
   "manga/blame": {
-    "from": "AniList",
+    "from": "MangaDex",
     "match": "BLAME!",
-    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30149-YetcNrfacNVj.jpg",
+    "vols": {
+      "1": {
+        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/f4b7ffea-5835-49dc-8e27-e560bc8b8dad.jpg.512.jpg",
+        "pal": [
+          "#443b36",
+          "#ea9b66",
+          "#c66a37",
+          "#88a59a"
+        ]
+      },
+      "2": {
+        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/a04104fa-4b42-444d-9636-e5b4f9989d2d.jpg.512.jpg",
+        "pal": [
+          "#060c0b",
+          "#fcfcfc",
+          "#fcfcfc",
+          "#fcfcfc"
+        ]
+      },
+      "3": {
+        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/3ddfe81c-f000-47ca-9346-484e2ad1cdbd.jpg.512.jpg",
+        "pal": [
+          "#e83706",
+          "#f4f0e6",
+          "#892617",
+          "#f7eae5"
+        ]
+      },
+      "4": {
+        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/d129063d-fb23-4631-8448-7ec4413cedbb.jpg.512.jpg",
+        "pal": [
+          "#172528",
+          "#88a7c6",
+          "#88a7c6",
+          "#88a7c6"
+        ]
+      },
+      "5": {
+        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/bf0d325b-704f-4be4-ba42-23a1211b7439.jpg.512.jpg",
+        "pal": [
+          "#16261b",
+          "#78c497",
+          "#357738",
+          "#78c497"
+        ]
+      },
+      "6": {
+        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/ee9a559e-f4b5-4337-b830-7b59d5509000.jpg.512.jpg",
+        "pal": [
+          "#182a2a",
+          "#969c69",
+          "#b76849",
+          "#868877"
+        ]
+      },
+      "7": {
+        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/3cf641ba-f743-46a3-b0ca-29107fedfec6.jpg.512.jpg",
+        "pal": [
+          "#192628",
+          "#a2b1be",
+          "#d61b08",
+          "#a2b1be"
+        ]
+      },
+      "8": {
+        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/a65f3495-bb57-4cb8-a9b9-e7867a1d2e8a.jpg.512.jpg",
+        "pal": [
+          "#39489a",
+          "#f7f9f9",
+          "#050c0a",
+          "#f7f9f9"
+        ]
+      },
+      "9": {
+        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/a9716d9b-bf17-416b-80b8-4c349088681a.jpg.512.jpg",
+        "pal": [
+          "#161a16",
+          "#8a8359",
+          "#865728",
+          "#98966b"
+        ]
+      },
+      "10": {
+        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/32b567ed-7635-47ab-93e4-356e1c5fe0c7.jpg.512.jpg",
+        "pal": [
+          "#030504",
+          "#f9faf9",
+          "#2b4445",
+          "#f9faf9"
+        ]
+      }
+    },
+    "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/f4b7ffea-5835-49dc-8e27-e560bc8b8dad.jpg.512.jpg",
     "pal": [
-      "#474949",
-      "#bbd4d8",
-      "#b88557",
-      "#85b4ac"
+      "#443b36",
+      "#ea9b66",
+      "#c66a37",
+      "#88a59a"
     ],
-    "fetched": "2026-11-05"
+    "fetched": "2026-11-06"
   },
   "manga/chainsaw-man": {
     "from": "MangaDex",
@@ -1223,16 +1315,99 @@
     "fetched": "2026-11-05"
   },
   "manga/monster": {
-    "from": "AniList",
+    "from": "MangaDex",
     "match": "Monster",
-    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30001-Knby7l1jevE7.jpg",
+    "vols": {
+      "1": {
+        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/a397b3d3-d7b3-413f-8d6a-f2b136a4b4e2.jpg.512.jpg",
+        "pal": [
+          "#fefefe",
+          "#466ca4",
+          "#466ca4",
+          "#8aa5c7"
+        ]
+      },
+      "2": {
+        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/a4a8c173-03af-4aa1-8186-82cc560f26a0.jpg.512.jpg",
+        "pal": [
+          "#fefdfd",
+          "#757675",
+          "#b64a18",
+          "#c9c8c7"
+        ]
+      },
+      "3": {
+        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/ff82fe16-dba2-44fd-949c-38c8b2bf22d5.jpg.512.jpg",
+        "pal": [
+          "#fefefe",
+          "#757574",
+          "#6a9b35",
+          "#c9c9c8"
+        ]
+      },
+      "4": {
+        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/fa3de01f-d672-4de9-b11f-8d91b85b4220.jpg.512.jpg",
+        "pal": [
+          "#fefefe",
+          "#8a538b",
+          "#8a538b",
+          "#b9b8b8"
+        ]
+      },
+      "5": {
+        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/d63db5ba-ac36-49f3-b297-873222cff23d.jpg.512.jpg",
+        "pal": [
+          "#fefefe",
+          "#656779",
+          "#cb2835",
+          "#b7b7ba"
+        ]
+      },
+      "6": {
+        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/feade5da-511a-4a39-834b-b0d5a1987f51.jpg.512.jpg",
+        "pal": [
+          "#fefefe",
+          "#c90448",
+          "#c90448",
+          "#bbbab9"
+        ]
+      },
+      "7": {
+        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/3cf98b97-87c0-4cd7-8881-eb2a18e5ca65.jpg.512.jpg",
+        "pal": [
+          "#fefefe",
+          "#765846",
+          "#d49b16",
+          "#a9a9a8"
+        ]
+      },
+      "8": {
+        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/edd9a2a2-45be-4c5d-98d6-98883d17fb55.jpg.512.jpg",
+        "pal": [
+          "#fdfefe",
+          "#3a6498",
+          "#37a7d7",
+          "#c8c8c8"
+        ]
+      },
+      "9": {
+        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/1ae196b3-88af-47e3-9bcf-94adf383b849.jpg.512.jpg",
+        "pal": [
+          "#fefefe",
+          "#757674",
+          "#285664",
+          "#757674"
+        ]
+      }
+    },
+    "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/a397b3d3-d7b3-413f-8d6a-f2b136a4b4e2.jpg.512.jpg",
     "pal": [
       "#fefefe",
-      "#3758a5",
-      "#3758a5",
-      "#8799c5"
+      "#466ca4",
+      "#466ca4",
+      "#8aa5c7"
     ],
-    "fetched": "2026-11-05"
+    "fetched": "2026-11-06"
   },
   "manga/one-piece": {
     "from": "MangaDex",
