@@ -466,16 +466,16 @@ export function createStreet({ rooms, name, number }) {
       for (let i = -half; i < half; i++) r.px(mid + i, y, i === -half || i === half - 1 ? E.fog : E.steel);
     }
     r.hl(mid - 33, top - 9, 66, E.fog);
-    // a rose window with simple radiating tracery, stone-ringed
-    const rr = 8, ry = top - 16, glass = [E.red, E.amber, E.cyan, E.lime, E.rose, E.sky];
+    // a rose window: a stone ring, one warm glow (matching the house's other lit glass), and radiating tracery
+    const rr = 8, ry = top - 16;
     r.circle(mid, ry, rr, E.fog);
-    for (let j = -rr + 1; j <= rr - 1; j++) for (let i = -rr + 1; i <= rr - 1; i++) {
-      const d = Math.hypot(i, j);
-      if (d > rr - 1) continue;
-      const seg = Math.floor(((Math.atan2(j, i) + Math.PI) / (Math.PI * 2)) * 6) % 6;
-      r.px(mid + i, ry + j, d < 2 ? E.fog : glass[seg]);
+    r.circle(mid, ry, rr - 1, E.amber);
+    r.circle(mid, ry, rr - 4, E.yellow);
+    for (let s = 0; s < 8; s++) {
+      const a = (s / 8) * Math.PI * 2;
+      for (let t = 2; t < rr; t++) r.px(mid + Math.round(Math.cos(a) * t), ry + Math.round(Math.sin(a) * t), E.fog);
     }
-    for (let s = 0; s < 6; s++) { const a = (s / 6) * Math.PI * 2; r.px(mid + Math.round(Math.cos(a) * (rr - 2)), ry + Math.round(Math.sin(a) * (rr - 2)), E.fog); }
+    r.px(mid, ry, E.fog);
   }
 
   /** the entrance hall: panelled walls, a marble floor, a double staircase and a chandelier */
