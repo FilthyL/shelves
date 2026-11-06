@@ -1,0 +1,48 @@
+name: Probe covers
+on:
+  push:
+    branches: [ccr-9ed8a046-dq7s74]
+    paths: [".github/workflows/probe.yml", "tools/covers.py"]
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet pillow
+      - name: Contact sheets
+        run: |
+          mkdir sheets
+          python - <<'PY'
+          import json, io, urllib.request
+          from PIL import Image, ImageDraw
+          c = json.load(open('data/covers.json'))
+          def get(u):
+              try: return Image.open(io.BytesIO(urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': 'shelves/1.0'}), timeout=30).read())).convert('RGB')
+              except Exception as e: return None
+          for key, e in c.items():
+              if not key.startswith('manga/'): continue
+              cells = [('series', e.get('src'))] + [(f'v{v}', (x['src'] if isinstance(x, dict) else x).replace('?default=false', '')) for v, x in sorted(e.get('vols', {}).items(), key=lambda kv: int(kv[0]))]
+              W, H, cols = 150, 225, 7
+              rows = (len(cells) + cols - 1) // cols
+              sheet = Image.new('RGB', (cols * W, rows * (H + 18)), '#181425'); d = ImageDraw.Draw(sheet)
+              for i, (label, u) in enumerate(cells):
+                  x, y = (i % cols) * W, (i // cols) * (H + 18)
+                  im = get(u.replace('-L.jpg', '-M.jpg') if u and 'openlibrary' in u else u) if u else None
+                  if im: im.thumbnail((W - 6, H)); sheet.paste(im, (x + 3, y + 18))
+                  d.text((x + 4, y + 3), label, fill='#feae34')
+              sheet.save(f"sheets/{key.split('/')[1]}.jpg", quality=60)
+              print(key, len(cells))
+          PY
+      - name: Publish the sheets on a throwaway branch
+        run: |
+          cd sheets
+          git init -q -b probe-sheets
+          git config user.name "shelves-bot"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add . && git commit -q -m "Contact sheets (throwaway)"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" probe-sheets
