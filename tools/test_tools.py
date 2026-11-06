@@ -176,5 +176,33 @@ class Warm(unittest.TestCase):
         self.assertEqual({re.search(r'&w=(\d+)&', u).group(1) for u in out}, {'200', '480'})
 
 
+class Club(unittest.TestCase):
+    @unittest.skipUnless(shutil.which('node'), 'node is not installed')
+    def test_local_backend_runs_the_whole_interface(self):
+        r = subprocess.run(['node', str(ROOT / 'tools' / 'test_club.mjs')], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+    def test_every_table_has_row_level_security_and_a_read_policy(self):
+        sql = (ROOT / 'supabase' / 'schema.sql').read_text(encoding='utf-8')
+        tables = re.findall(r'create table public\.(\w+)', sql)
+        self.assertGreaterEqual(len(tables), 8)
+        for t in tables:
+            self.assertIn(f'alter table public.{t} enable row level security', sql, t)
+            self.assertRegex(sql, rf'create policy "[^"]+" on public\.{t} for select', t)
+
+    def test_nothing_in_the_schema_lets_someone_write_as_another_member(self):
+        sql = (ROOT / 'supabase' / 'schema.sql').read_text(encoding='utf-8')
+        for m in re.finditer(r'create policy "[^"]+" on public\.(\w+) for (insert|update)([^;]*);', sql):
+            table, _, rest = m.groups()
+            if table in ('list_items',):
+                self.assertIn('l.user_id = auth.uid()', rest, table)
+            else:
+                self.assertRegex(rest, r'(user_id|follower_id|id) = auth\.uid\(\)', table)
+
+    def test_club_is_off_until_a_server_is_named(self):
+        cfg = json.loads((ROOT / 'data' / 'club.json').read_text(encoding='utf-8'))
+        self.assertEqual((cfg['supabase']['url'], cfg['supabase']['anonKey']), ('', ''))
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -5,6 +5,8 @@ import { createStreet, decorSprite, wallTile } from './pixel.js';
 import { openLog, canLog, applyPending } from './log.js';
 import { TOYS, trickCount, performer } from './toys.js';
 import { play, soundOn, toggleSound, onSound } from './sound.js';
+import { startClub, button as clubButton, handles as clubHandles, show as clubShow, hide as clubHide, mountItemPanel } from './club/club-ui.js';
+import { subjectOf } from './club/shared.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -28,6 +30,8 @@ async function boot() {
       : `The collection data didn’t load (${esc(e.message)}).<br>Check that the data folder was deployed.`}</p></div>`;
     return;
   }
+  // the club (accounts, diary, lists) is off unless data/club.json names a server; it must never stop the house opening
+  await startClub({ house: S.house, toast, section: $('#members') }).catch(() => false);
   buildStreet();
   addEventListener('hashchange', route);
   addEventListener('resize', debounce(onResize, 120));
@@ -55,6 +59,16 @@ function route() {
   const h = decodeURIComponent(location.hash.slice(1));
   const [rid, ...rest] = h.split('--');
   const room = S.house.byId[rid];
+  if (clubHandles(h)) {
+    closeInspect(true);
+    closePlay();
+    disposeToys();
+    $('#street').hidden = true; $('#room').hidden = true;
+    S.scene = 'members'; S.room = null;
+    clubShow(h);
+    return;
+  }
+  clubHide();
   if (room) {
     if (S.scene !== 'room' || S.room !== room) showRoom(room);
     if (room.kind === 'toys') {
@@ -105,6 +119,7 @@ function buildStreet() {
       <button class="btn btn-close" type="button">Close the front</button>
       <span class="stats">${totalStats}</span>
       ${logButton()}
+      ${clubButton()}
       ${soundButton()}
       <button class="btn js-search" type="button" aria-label="Search the collection">${searchIcon()}<span>Search</span><kbd>/</kbd></button>
     </footer>`;
@@ -567,7 +582,8 @@ function fill(o, fly) {
   const z = sizeFor(o, stage);
   I.z = z;
   holder.innerHTML = obj3dHTML(o, z);
-  $('.notes', el).innerHTML = cardHTML(o);
+  $('.notes', el).innerHTML = `<div class="notes-col">${cardHTML(o)}<div class="club-slot"></div></div>`;
+  mountItemPanel($('.club-slot', el), subjectOf({ kind: o.item.kind, title: o.item.title, creator: o.item.creator, year: o.item.year, cover: o.item.cover }));
   el.setAttribute('aria-label', o.item.title);
   const idx = S.order.indexOf(o.key);
   $('.stage-count', el).textContent = idx >= 0 ? `${idx + 1} / ${S.order.length}` : '';
@@ -791,6 +807,7 @@ function navHTML(room) {
       <a class="nav-mark" href="#house" title="Back to the house">${esc(S.house.name)}</a>
       <div class="nav-rooms">${S.house.rooms.map(r => `<a href="#${r.id}"${r === room ? ' aria-current="page"' : ''}>${esc(r.name.replace(/^The\s+/i, ''))}</a>`).join('')}</div>
       ${logButton()}
+      ${clubButton()}
       ${soundButton()}
       <button class="btn js-search" type="button" aria-label="Search the collection">${searchIcon()}<span>Search</span><kbd>/</kbd></button>
     </nav>`;

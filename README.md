@@ -22,6 +22,7 @@ The site is a folder of static files: no framework, no bundler, no server and no
 | Tricks and combos | Keyframes joined into one smooth track, with physics where it matters (`tricks.js`) | A combo plays as one continuous motion, so tricks flow into each other. Tosses fly under real gravity with a steady spin, spins in the fingers start with a flick and lose speed to friction, and parts that slam into a stop bounce and kick the wrist. The hand's grip is worked out from the same track rather than animated by hand. |
 | Sound | The Web Audio API | Every sound is made on the fly from noise and short tones, worked out from each trick's motion. There are no audio files to store or download. |
 | Covers and suggestions | AniList, MusicBrainz with the Cover Art Archive, Deezer, Open Library, IMDb's suggestion feed and Wikipedia | All free, with no API keys. The repo keeps only links (`data/covers.json`), and images load from their sources, so the repo stays small. |
+| Accounts, diary and lists (the club) | [Supabase](https://supabase.com) (Postgres with sign-in and row-level security), loaded from jsDelivr only when the club is on; a same-interface local version for trying it | A static site has no server, and people logging things, following each other and writing reviews needs one. Supabase's free tier gives real accounts and a database, and its row-level security means the public key in `data/club.json` can only do what the policies in `supabase/schema.sql` allow. The club is off until that file names a project, so the site is unchanged until you choose to turn it on. |
 | Cover loading | The [wsrv.nl](https://wsrv.nl) image CDN in front of Open Library and the Cover Art Archive (`img.js`), with a warm-up script (`tools/warm.mjs`) | Those two answer through redirects and a zip extraction at archive.org, 1 to 3 seconds for every image every time. The CDN serves each cover resized to the size shown, as WebP, cached for a year, in about 40 ms. The deploy asks it for every cover once, so a visitor never meets a cold cache; a volume you rest the pointer on, and the ones next to the open one, are fetched ahead; and if the CDN is ever down the browser falls back to the source link. |
 | Tools | Python 3 standard library (`tools/`), with Pillow optional for spine colours | Runs on any machine and on GitHub's runners with nothing to install. Tests use saved responses, so they run offline. |
 | Type | Google Fonts | Pixelify Sans and Jersey 10 for the interface, Archivo, Bodoni Moda and IBM Plex Mono for printing on the objects. |
@@ -36,12 +37,14 @@ assets/js/model.js    formats in millimetres, room kinds, loading data/
 assets/js/pixel.js    the pixel renderer: street, house, cutaway, decor
 assets/js/art.js      generated covers, spines and discs for items without a real cover
 assets/js/log.js      logging new entries from the site
+assets/js/club/       the club: accounts, diary, watchlist, follows, lists (club-ui.js, club-pages.js, club-kit.js, two backends)
 assets/js/tricks.js   the tricks, suggested combos, and how a combo becomes one track
 assets/js/toys.js     the performer, toy sounds, flat stand-ins, the list of toys
 assets/js/toys3d.js   the 3D toys and hands (Three.js)
 assets/js/sound.js    all sound, made with Web Audio
 data/                 house.json, rooms/*.json, covers.json
 tools/                covers.py, validate.py and their tests
+supabase/schema.sql   the club's tables, policies and sign-up trigger, to run once in Supabase
 ```
 
 ## Add to the collection
@@ -143,6 +146,28 @@ Logging needs a GitHub token, pasted once and kept only in that browser:
 1. Open [a new fine-grained token](https://github.com/settings/personal-access-tokens/new).
 2. Under Repository access, choose **Only select repositories** and pick this repo.
 3. Under Permissions, set **Contents** to **Read and write**, then generate it.
+
+## The club: accounts, a diary and lists
+
+Anyone can make an account with a username and password, log what they have read, watched, heard or played (half-star rating, a review, a date, liked or not), keep a watchlist, follow other members and see what they log, and make lists with likes and comments. It also lets people log things that are not on these shelves, found through the same title search the owner's logger uses. Every item you open in the house shows what members have said about it.
+
+It is off until a server is set up, so nothing changes on the site before then. To turn it on:
+
+1. Make a free project at [supabase.com](https://supabase.com).
+2. In the project, open SQL Editor, paste all of `supabase/schema.sql` and run it. It creates the tables and the security policies.
+3. Open Authentication, then Providers, then Email, and turn **Confirm email** off. Members sign in with a username, so each one is stored under a made-up address (`<username>@members.filthmanor.example`, changeable as `emailDomain`) that never receives mail. The cost is that there is no password reset by email.
+4. Open Project Settings, then API, and copy the project URL and the `anon` public key into `data/club.json`:
+
+   ```json
+   { "supabase": { "url": "https://xxxx.supabase.co", "anonKey": "eyJ…", "emailDomain": "members.filthmanor.example" } }
+   ```
+
+   The anon key is meant to be public. It can only do what the policies allow: read logs, lists and profiles, and change or delete only your own rows. Never put the `service_role` key anywhere in this repo.
+5. Push. The account button appears next to Search, and the site is a club.
+
+To try it without a server, open the site with `?club=local` (and `?club=off` to stop). Accounts then live in that one browser only, which is how the tests run.
+
+Logs, ratings, reviews and lists are public to anyone who visits; a private list is visible only to its owner. Supabase keeps passwords hashed and is the only place they are stored.
 
 ## Run locally
 

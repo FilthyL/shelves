@@ -1,0 +1,156 @@
+/* The club: accounts, diary, lists. Same quiet chrome as the rest of the house: ENDESGA 32 tokens only, sentence case,
+   one accent (amber), no glows or offset shadows, a 4px grid and the one easing curve. */
+
+.scene-members { min-height: 100%; background: var(--night); color: var(--fog); }
+.club { max-width: 880px; margin: 0 auto; padding: clamp(24px, 5vh, 48px) max(16px, env(safe-area-inset-left, 0px)) 96px; }
+.club h1 { margin: 0; font: 400 clamp(44px, 7vw, 80px)/0.85 var(--f-big); color: var(--sand); text-wrap: balance; overflow-wrap: anywhere; }
+.club h2 { margin: 0; font: 500 16px/1.3 var(--f-pix); color: var(--sand); }
+.club h3 { margin: 0; font: 500 18px/1.25 var(--f-pix); color: var(--sand); }
+.club p { margin: 0; }
+.club a { color: inherit; }
+.club-menu a:hover, .club a:hover { color: var(--white); }
+
+.chead { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 24px; margin-bottom: 24px; }
+.chead > div { min-width: 0; }
+.cuname { margin-top: 8px; font: 400 15px/1.3 var(--f-pix); color: var(--steel); }
+.cbio { margin-top: 8px; max-width: 60ch; font: 400 16px/1.5 var(--f-pix); color: var(--fog); }
+.cacts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.cprofile .cacts { align-self: flex-start; }
+
+/* tabs: buttons in a dialog, links on a page */
+.ctabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.ctabs button, .ctabs a {
+  display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 0; cursor: pointer; text-decoration: none;
+  clip-path: var(--notch); background: var(--ink); color: var(--fog); font: 500 14px/1 var(--f-pix);
+  transition: background-color 0.15s var(--ease-out), color 0.15s var(--ease-out);
+}
+.ctabs button:hover, .ctabs a:hover { background: var(--navy); color: var(--white); }
+.ctabs [aria-pressed="true"] { background: var(--amber); color: var(--night); }
+.ctabs b { font: 400 13px/1 var(--f-pix); color: var(--steel); }
+.ctabs [aria-pressed="true"] b { color: var(--plum); }
+.ctabs-line { margin-bottom: 24px; }
+
+/* the diary and lists: a cover, then what was said */
+.clist { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.crow { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 16px 0; border-top: 2px dashed var(--navy); }
+.clist-num .crow { grid-template-columns: 24px 56px minmax(0, 1fr); }
+.crow:first-child { border-top: 0; }
+.cnum { align-self: start; min-width: 24px; padding-top: 2px; font: 400 14px/1.2 var(--f-pix); color: var(--steel); text-align: right; }
+.cbody { display: grid; gap: 6px; min-width: 0; align-content: start; }
+.ctitle i { margin-left: 6px; font: 400 14px/1 var(--f-pix); font-style: normal; color: var(--steel); }
+a.ctitle { text-decoration: none; }
+a.ctitle:hover { text-decoration: underline; text-underline-offset: 3px; }
+.cmeta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font: 400 14px/1.3 var(--f-pix); color: var(--steel); }
+.cdate { color: var(--slate); }
+.cavg { font: 400 24px/1 var(--f-big); color: var(--amber); }
+.creview { font: 400 16px/1.5 var(--f-pix); color: var(--fog); white-space: pre-line; overflow-wrap: anywhere; }
+.cspoil { color: var(--slate); }
+.cuser { text-decoration: none; color: var(--sand); font: 500 14px/1.2 var(--f-pix); }
+.cuser i { margin-left: 4px; font-style: normal; font-weight: 400; color: var(--steel); }
+.cuser:hover { text-decoration: underline; text-underline-offset: 3px; }
+.cstars { display: inline-flex; gap: 2px; }
+.cstars svg { display: block; }
+.cliked { display: inline-flex; }
+
+.cthumb { position: relative; display: block; width: 56px; aspect-ratio: 2 / 3; overflow: hidden; background: var(--ink); box-shadow: 0 0 0 2px var(--navy); }
+.cthumb .cph { position: absolute; inset: 0; display: grid; place-items: center; font: 400 28px/1 var(--f-big); color: var(--steel); }
+.cthumb .art-img { z-index: 1; }
+
+.clike { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 8px 0 0; border: 0; background: none; cursor: pointer; color: var(--steel); font: 400 13px/1 var(--f-pix); }
+.clike:hover { color: var(--sand); }
+.clike[aria-pressed="true"] { color: var(--sand); }
+.clink { padding: 0; border: 0; background: none; cursor: pointer; font: 400 13px/1.3 var(--f-pix); color: var(--steel); text-decoration: underline; text-underline-offset: 3px; }
+.clink:hover:not(:disabled) { color: var(--sand); }
+.clink:disabled { opacity: 0.35; cursor: default; }
+.cmore { margin-top: 16px; }
+.cnone { font: 400 14px/1.4 var(--f-pix); color: var(--steel); }
+.cempty { display: grid; gap: 8px; padding: 32px 0; }
+.cempty p { max-width: 52ch; color: var(--fog); }
+.cempty a, .cempty .clink { color: var(--amber); }
+
+/* members */
+.cchips { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.cchips li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 2px dashed var(--navy); }
+.cchips li:first-child { border-top: 0; }
+.cfindin { max-width: 420px; margin-bottom: 16px; width: 100%; }
+.cedit { display: grid; gap: 8px; max-width: 480px; }
+.cedit .field { width: 100%; }
+.cedit textarea.field { height: auto; padding: 8px 12px; line-height: 1.45; }
+
+/* watchlist and lists */
+.cgrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+.cgrid li { display: flex; gap: 12px; align-items: flex-start; min-width: 0; }
+.cgrid li > div { display: grid; gap: 4px; min-width: 0; }
+.clists { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+.clists a { display: grid; gap: 4px; padding: 12px; text-decoration: none; background: var(--ink); box-shadow: 0 0 0 2px var(--navy); }
+.clists a:hover { background: var(--navy); }
+.clists b { font: 500 16px/1.25 var(--f-pix); color: var(--sand); }
+.clists i { font: 400 13px/1.3 var(--f-pix); font-style: normal; color: var(--steel); }
+.ccollage { display: flex; gap: 4px; min-height: 60px; margin-bottom: 4px; }
+.ccollage .cthumb { width: 40px; box-shadow: none; }
+.ccollage .cph:empty { background: var(--night); }
+
+/* comments */
+.ccomments { display: grid; gap: 12px; margin-top: 32px; padding-top: 16px; border-top: 2px dashed var(--navy); }
+.ccomments ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.ccomments li { display: grid; gap: 4px; }
+.ccomment { display: grid; gap: 8px; max-width: 560px; }
+.ccomment .field { width: 100%; height: auto; padding: 8px 12px; line-height: 1.45; }
+.ccomment .btn { justify-self: start; }
+
+/* the account menu */
+.club-menu { position: fixed; z-index: 65; min-width: 180px; display: grid; background: var(--ink); box-shadow: 0 0 0 2px var(--navy); }
+.club-menu a, .club-menu button {
+  display: block; width: 100%; padding: 10px 16px; border: 0; background: none; cursor: pointer; text-align: left; text-decoration: none;
+  font: 500 14px/1.2 var(--f-pix); color: var(--fog);
+}
+.club-menu a:hover, .club-menu button:hover, .club-menu a:focus-visible, .club-menu button:focus-visible { background: var(--navy); color: var(--white); outline: none; }
+.club-menu button[data-m="out"] { border-top: 2px dashed var(--navy); color: var(--steel); }
+
+/* the members panel under an open item (auto margins centre the pair while it fits and let it scroll when it does not) */
+.notes-col { width: 100%; margin-block: auto; }
+.cpanel { margin-top: 16px; background: var(--ink); color: var(--fog); box-shadow: 0 0 0 2px var(--navy); }
+.cpanel-body { display: grid; gap: 12px; padding: 16px; }
+.cpanel-list { list-style: none; margin: 0; padding: 12px 0 0; display: grid; gap: 12px; border-top: 2px dashed var(--navy); }
+.cpanel-list li { display: grid; gap: 4px; }
+.cyours { padding-top: 4px; }
+.cyours .log-label { margin: 0 4px 0 0; font: 400 12px/1.4 var(--f-pix); color: var(--steel); }
+.btn[aria-pressed="true"] { background: var(--navy); color: var(--white); }
+
+/* dialogs */
+.club-form .field { width: 100%; }
+.club-form input[type="search"] { width: 100%; padding: 0 12px; font: 400 15px/1.2 var(--f-pix); }
+.club-form input[type="date"] { color-scheme: dark; }
+.club-hint { font: 400 13px/1.4 var(--f-pix); color: var(--steel); }
+.club-subject { display: flex; gap: 12px; align-items: center; }
+.club-subject .cthumb { width: 44px; }
+.club-subject b { display: block; font: 500 17px/1.25 var(--f-pix); color: var(--sand); }
+.club-subject i { font: 400 13px/1.3 var(--f-pix); font-style: normal; color: var(--steel); }
+.club-rate-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.club-rate-row .log-label { margin: 0; }
+.rate { display: inline-flex; gap: 4px; }
+.rate-star { position: relative; display: block; width: 28px; height: 28px; }
+.rate-art svg { display: block; }
+.rate-half { position: absolute; top: 0; bottom: 0; width: 50%; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.rate-half.l { left: 0; }
+.rate-half.r { right: 0; }
+.rate-out { min-width: 44px; font: 400 13px/1 var(--f-pix); color: var(--steel); }
+.club-like { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; height: 32px; padding: 0 12px; border: 0; cursor: pointer; clip-path: var(--notch); background: var(--night); color: var(--fog); font: 500 14px/1 var(--f-pix); }
+.club-like:hover { background: var(--navy); }
+.club-like[aria-pressed="true"] { color: var(--sand); }
+.cfind { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; max-height: 50vh; overflow-y: auto; }
+.cfind button { display: flex; align-items: center; gap: 12px; width: 100%; padding: 8px; border: 0; background: none; cursor: pointer; text-align: left; color: inherit; }
+.cfind button:hover, .cfind button:focus-visible { background: var(--navy); outline: none; }
+.cfind .cthumb { width: 36px; flex: none; }
+.cfind b { display: block; font: 500 15px/1.25 var(--f-pix); color: var(--sand); }
+.cfind i { font: 400 13px/1.3 var(--f-pix); font-style: normal; color: var(--steel); }
+.cfind em { margin-left: auto; font: 400 12px/1 var(--f-pix); font-style: normal; color: var(--steel); white-space: nowrap; }
+.club-find-msg { min-height: 0; }
+
+@media (max-width: 520px) {
+  .crow { gap: 12px; }
+  .crow { grid-template-columns: 48px minmax(0, 1fr); }
+  .clist-num .crow { grid-template-columns: 20px 48px minmax(0, 1fr); }
+  .cthumb { width: 48px; }
+  .club-like { margin-left: 0; }
+}

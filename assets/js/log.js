@@ -141,6 +141,9 @@ const SUGGEST = {
   },
 };
 
+/** title suggestions for a kind, from the same free sources the owner's logger uses */
+export const suggest = (kind, q) => SUGGEST[kind](q);
+
 async function anilist(q, type) {
   const r = await fetch('https://graphql.anilist.co', {
     method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
