@@ -36,6 +36,14 @@ class Network(unittest.TestCase):
 
 
 class Matching(unittest.TestCase):
+    def test_volume_numbers_from_edition_titles(self):
+        from covers import volume_of
+        self.assertEqual(volume_of("Naoki Urasawa's Monster, Vol. 3"), 3)
+        self.assertEqual(volume_of('Blame!, Volume 10'), 10)
+        self.assertEqual(volume_of('Monster: The Perfect Edition #7'), 7)
+        self.assertEqual(volume_of('Vagabond 12'), 12)
+        self.assertIsNone(volume_of('Monster'))
+
     def test_similarity_ignores_editions_and_articles(self):
         self.assertEqual(covers.sim('Kid A (Remastered)', 'Kid A'), 1.0)
         self.assertGreater(covers.sim('The Dark Side of the Moon', 'Dark Side Of The Moon - 50th Anniversary'), 0.85)

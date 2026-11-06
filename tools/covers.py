@@ -204,9 +204,15 @@ MD = 'https://api.mangadex.org'
 
 
 def manga_mangadex(it, kind, log):
-    q = urllib.parse.urlencode([('title', it['title']), ('limit', 10), ('includes[]', 'author'),
-                                ('contentRating[]', 'safe'), ('contentRating[]', 'suggestive'), ('contentRating[]', 'erotica')])
-    res = get_json(f'{MD}/manga?{q}').get('data', [])
+    # a plain word like "Monster" has many series; look wider, and by the original title too
+    res, seen = [], set()
+    for title in dict.fromkeys(t for t in (it['title'], it.get('original')) if t):
+        q = urllib.parse.urlencode([('title', title), ('limit', 25), ('order[relevance]', 'desc'), ('includes[]', 'author'),
+                                    ('contentRating[]', 'safe'), ('contentRating[]', 'suggestive'), ('contentRating[]', 'erotica')])
+        for m in get_json(f'{MD}/manga?{q}').get('data', []):
+            if m.get('id') not in seen:
+                seen.add(m.get('id'))
+                res.append(m)
     best, s = pick(res, lambda m: score_mangadex(it, m))
     if not best or s < THRESHOLD:
         short('MangaDex', res, s, log)
@@ -220,12 +226,57 @@ def manga_mangadex(it, kind, log):
         if offset >= page.get('total', 0):
             break
     vols = choose_volume_covers(covers, set(it['_vols']), it.get('cover_locale'))
-    if not vols:
+    urls = {v: f"https://uploads.mangadex.org/covers/{best['id']}/{fn}.512.jpg" for v, fn in vols.items()}
+    # every owned volume should show its own cover: fill the gaps from Open Library's editions
+    missing = [v for v in it['_vols'] if str(v) not in urls]
+    extra = openlibrary_volumes(it, missing, log) if missing else {}
+    urls.update(extra)
+    if not urls:
         log('MangaDex: no covers for the owned volumes')
         return None
     titles = (best.get('attributes') or {}).get('title') or {}
-    return {'from': 'MangaDex', 'match': next(iter(titles.values()), it['title']), 'score': s,
-            'vols': {v: f"https://uploads.mangadex.org/covers/{best['id']}/{fn}.512.jpg" for v, fn in vols.items()}}
+    return {'from': 'MangaDex' + (' and Open Library' if extra else ''), 'match': next(iter(titles.values()), it['title']), 'score': s,
+            'vols': dict(sorted(urls.items(), key=lambda kv: int(kv[0])))}
+
+
+VOL_RE = re.compile(r'(?:\bvol(?:ume)?\.?|#|\bbook|\bpart)\s*(\d+)', re.I)
+BIG_EDITIONS = ('perfect', 'deluxe', 'kanzenban', 'master edition', 'omnibus', 'collector')
+
+
+def volume_of(title):
+    """The volume number in an edition's title: "Monster, Vol. 3", "Blame! 4", "Volume 10: ..."."""
+    t = str(title or '')
+    m = VOL_RE.search(t) or re.search(r'(\d+)\s*$', t)
+    return int(m.group(1)) if m else None
+
+
+def openlibrary_volumes(it, wanted, log):
+    """Per-volume covers from Open Library's editions of a manga series, for the volumes asked for."""
+    wanted, found = set(wanted), {}
+    big = it.get('format') in ('kanzenban', 'deluxe')
+    names = [n.lower() for n in (it['title'], it.get('original')) if n]
+    norm = lambda x: re.sub(r'[^a-z0-9 ]+', '', str(x).lower())  # noqa: E731
+    for params in ({'title': it['title'], 'author': it.get('creator') or ''}, {'q': f"{it['title']} {it.get('creator') or ''}".strip()}):
+        q = urllib.parse.urlencode({**params, 'limit': 100, 'fields': 'title,author_name,cover_i'})
+        for d in get_json(f'https://openlibrary.org/search.json?{q}').get('docs', []):
+            t, v = (d.get('title') or '').lower(), volume_of(d.get('title'))
+            if not d.get('cover_i') or v not in wanted or not any(norm(n) in norm(t) for n in names):
+                continue
+            if 'box' in t or '-in-1' in t or (it.get('creator') and best_sim(it['creator'], d.get('author_name') or []) < 0.6):
+                continue
+            rank = (1 if any(w in t for w in BIG_EDITIONS) == big else 0)
+            if v not in found or rank > found[v][0]:
+                found[v] = (rank, d['cover_i'])
+        if wanted <= set(found):
+            break
+    if found:
+        log(f'Open Library: covers for volumes {sorted(found)}')
+    return {str(v): f'https://covers.openlibrary.org/b/id/{c}-L.jpg?default=false' for v, (_, c) in found.items()}
+
+
+def manga_openlibrary(it, kind, log):
+    vols = openlibrary_volumes(it, it['_vols'], log)
+    return {'from': 'Open Library', 'match': it['title'], 'score': 1.0, 'vols': vols} if vols else None
 
 
 def score_mangadex(it, m):
@@ -350,7 +401,7 @@ def choose_imdb(it, res):
 
 SOURCES = {
     'anime': [anilist],
-    'manga': [manga_mangadex, anilist],
+    'manga': [manga_mangadex, manga_openlibrary, anilist],
     'music': [music_musicbrainz, music_deezer],
     'books': [book_openlibrary],
     'movies': [movie_imdb],
@@ -473,7 +524,9 @@ def main(argv=None):
             if (args.room and room['id'] != args.room) or (args.only and it['_id'] != args.only):
                 continue
             prev = covers.get(key)
-            if 'cover' in it or kind not in SOURCES or (prev and not args.refresh and not (prev.get('miss') and args.retry_misses)):
+            gaps = kind == 'manga' and prev and not prev.get('miss') and prev.get('checked') != today and \
+                {str(v) for v in parse_owned(it.get('owned'), it.get('total'))} - set(prev.get('vols') or {})
+            if 'cover' in it or kind not in SOURCES or (prev and not args.refresh and not (prev.get('miss') and args.retry_misses) and not gaps):
                 stats['skipped'] += 1
                 continue
             it['_vols'] = parse_owned(it.get('owned'), it.get('total')) if kind == 'manga' else []
@@ -486,6 +539,12 @@ def main(argv=None):
             log = lambda m, key=key: LOG(f'  {key}: {m}')  # noqa: E731
             entry = lookup(kind, it, log)
             with lock:
+                prev = covers.get(key) or {}
+                if entry and prev.get('vols') and len(entry.get('vols') or {}) <= len(prev['vols']):
+                    prev['checked'] = today  # no better than what we had: keep it, ask again tomorrow
+                    log(f"still {len(prev['vols'])} volume covers, keeping them")
+                    save()
+                    continue
                 if entry:
                     entry['fetched'] = today
                     covers[key] = entry
