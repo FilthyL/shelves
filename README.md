@@ -72,6 +72,7 @@ Everything lives in `data/`. The house and its rooms are in `data/house.json`, a
 | `facts` | Any extra rows for the card, like `{ "Director": "Satoshi Kon" }` |
 | `isbn` | Books only. Fetches the cover of that exact edition |
 | `cover` | A cover URL or path to use instead of the fetched one, or `false` to keep the generated art |
+| `edition`, `vol_covers` | Manga only. Covers come from the Japanese edition by default, since the shelves list Japanese publishers; `"edition": "en"` prefers the English ones. `"vol_covers": { "15": "https://…" }` pins one volume's cover when the lookup picks a wrong one |
 | `colors` | `[ground, ink, accent]` for the generated art and spine |
 | `id` | Only needed when a title has no Latin letters or two items share a title |
 
