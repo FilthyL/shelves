@@ -135,7 +135,7 @@ function rng(seed) {
 // ground floor is the entrance hall, its mansard roof holds the attic with a cupola on top, and a
 // basement runs under the whole house. hx,hy = top-left of the west wing's upper floor; the attic
 // and the roofs sit above it (y < 0).
-export const HG = { WW: 92, CW: 108, FH: 42, floors: 2, AH: 34, WR: 18, CR: 12, cup: 18, base: 6, BH: 40, wall: 3 };
+export const HG = { WW: 92, CW: 108, FH: 42, floors: 2, AH: 36, WR: 20, CR: 10, cup: 30, base: 6, BH: 40, wall: 3 };
 
 export function houseLayout(nRooms) {
   const TW = HG.WW * 2 + HG.CW, bodyH = HG.floors * HG.FH, top = HG.AH + HG.CR + HG.cup;
@@ -286,25 +286,34 @@ export function createStreet({ rooms, name, number }) {
   // ------------------------------------------------------------ the manor
   function drawHouse(S, r, cut) {
     const { hx, hy } = S, cx0 = hx + WW, cx1 = hx + WW + CW, mid = hx + Math.round(TW / 2);
-    // chimneys at the ends of the wings, behind their roofs
+    // corner pinnacle turrets at the ends of the wings, behind their roofs
     for (const x of [hx + 8, hx + TW - 18]) {
-      const top = hy - WR - 14;
-      r.rect(x, top, 10, 22, E.rust);
-      for (let j = 0; j < 22; j += 3) { r.hl(x, top + j, 10, E.brown); r.px(x + ((j / 3) % 2 ? 2 : 6), top + 1 + j, E.brown); }
-      r.rect(x - 1, top - 2, 12, 2, E.steel); r.hl(x - 1, top - 2, 12, E.fog);
-      r.rect(x + 2, top - 5, 2, 3, E.clay); r.rect(x + 6, top - 5, 2, 3, E.clay);
+      const top = hy - WR - 20;
+      r.rect(x, top, 10, 20, E.slate); r.vl(x, top, 20, E.steel); r.vl(x + 9, top, 20, E.ink);
+      for (let j = 3; j < 20; j += 4) r.hl(x, top + j, 10, E.navy);
+      r.rect(x - 1, top - 3, 12, 3, E.fog); r.hl(x - 1, top - 3, 12, E.steel); // a corbelled table
+      for (let j = 0; j < 7; j++) { const w = Math.max(1, 5 - Math.round(j * 0.7)); r.rect(x + 5 - Math.ceil(w / 2), top - 4 - j, w, 1, j % 2 ? E.ink : E.navy); }
+      r.px(x + 4, top - 11, E.steel);
     }
     wingRoof(r, hx - 3, WW + 3, true);
     wingRoof(r, cx1, WW + 3, false);
     centreRoof(r, cx0, cut);
     // the body
     if (!cut) {
-      stone(r, hx, hy, WW, bodyH, E.slate, E.navy);
-      stone(r, cx1, hy, WW, bodyH, E.slate, E.navy);
-      stone(r, cx0, hy, CW, bodyH, E.steel, E.slate);
-      for (const x of [hx, cx0 - 3, cx0, cx1 - 3, cx1, hx + TW - 3]) for (let y = hy; y < hy + bodyH; y += 4) r.rect(x, y, (y - hy) % 8 ? 3 : 4, 3, (y - hy) % 8 ? E.steel : E.fog);
+      stone(r, hx, hy, WW, bodyH, E.navy, E.ink);
+      stone(r, cx1, hy, WW, bodyH, E.navy, E.ink);
+      stone(r, cx0, hy, CW, bodyH, E.slate, E.navy);
+      for (const x of [hx, cx0 - 3, cx0, cx1 - 3, cx1, hx + TW - 3]) for (let y = hy; y < hy + bodyH; y += 4) r.rect(x, y, (y - hy) % 8 ? 3 : 4, 3, (y - hy) % 8 ? E.slate : E.fog);
       r.rect(hx - 1, hy + FH - 1, TW + 2, 2, E.fog); r.hl(hx - 1, hy + FH + 1, TW + 2, E.navy);
       r.rect(hx - 2, hy - 2, TW + 4, 3, E.fog); r.hl(hx - 2, hy + 1, TW + 4, E.navy);
+      // a castellated parapet along the whole roofline, stamped over the eaves
+      for (let i = hx - 2; i < hx + TW + 2; i += 10) {
+        r.rect(i, hy - 6, 6, 5, E.slate); r.hl(i, hy - 6, 6, E.steel); r.vl(i, hy - 6, 5, E.ink); r.vl(i + 5, hy - 6, 5, E.ink);
+      }
+      // a small gargoyle jutting from each outer corner of the cornice
+      for (const [gx, d] of [[hx - 3, -1], [hx + TW + 2, 1]]) {
+        r.rect(gx, hy + 3, 3, 2, E.night); r.px(gx + (d < 0 ? 0 : 2), hy + 2, E.ink); r.px(gx + 1, hy + 5, E.night); r.px(gx + 1, hy + 6, E.ink);
+      }
       // ivy up the west corner
       for (let y = hy + 6; y < hy + bodyH; y++) { const w = 3 + Math.round(3 * Math.sin(y * 0.4) + (y - hy) / 14); r.dith(hx, y, w, 1, (y >> 1) % 3 ? E.pine : E.green, 0.7); }
       // windows: two to a wing room, two either side of the portico in the centre
@@ -365,14 +374,17 @@ export function createStreet({ rooms, name, number }) {
         r.px(i, y, edge ? E.night : (j % 3 === 2 ? E.navy : ((i + (j / 3 | 0) * 2) % 5 === 0 ? E.night : E.ink)));
       }
     }
-    // a dormer with a little gable
-    const dx = x + Math.round(w / 2) - 5, dy = S.hy - WR + 5;
-    for (let j = 0; j < 4; j++) r.hl(dx + 4 - j, dy - 4 + j, 3 + j * 2, j === 0 ? E.fog : E.ink);
-    r.rect(dx, dy, 11, 11, E.fog); r.rect(dx + 2, dy + 2, 7, 8, E.amber); r.dith(dx + 2, dy + 2, 7, 8, E.yellow, 0.4);
-    r.vl(dx + 5, dy + 2, 8, E.fog); r.hl(dx + 2, dy + 5, 7, E.fog);
+    // a gothic dormer: a steep pointed gable over a lit lancet, with a tiny finial
+    const dx = x + Math.round(w / 2) - 5, dy = S.hy - WR + 7;
+    for (let j = 0; j < 7; j++) { const hw = Math.max(1, Math.round((j / 7) * 7)); r.hl(dx + 5 - hw, dy - 7 + j, hw * 2, j === 0 ? E.fog : E.ink); }
+    r.rect(dx, dy, 11, 11, E.fog);
+    for (let j = 0; j < 5; j++) { const hw = Math.max(1, Math.round((j / 5) * 4)); r.hl(dx + 5 - hw, dy - 4 + j, hw * 2, E.amber); }
+    r.rect(dx + 2, dy + 1, 7, 9, E.amber); r.dith(dx + 2, dy + 1, 7, 9, E.yellow, 0.4);
+    r.vl(dx + 5, dy - 4, 14, E.fog); r.hl(dx + 2, dy + 5, 7, E.fog);
+    r.px(dx + 5, dy - 9, E.fog); r.px(dx + 5, dy - 10, E.steel);
   }
 
-  /** the centre: the attic storey in a mansard, a balustrade, a cap, and a copper cupola */
+  /** the centre: the attic storey under a steep roof, a crocketed cap, and a stone spire between corner pinnacles */
   function centreRoof(r, x, cut) {
     const y0 = S.hy - AH;
     for (let j = 0; j < AH; j++) {
@@ -385,43 +397,59 @@ export function createStreet({ rooms, name, number }) {
     const ac = cells.find(c => c.attic);
     if (cut && ac) paintCell(r, ac, S.hx + ac.x, S.hy + ac.y);
     else for (let k = 0; k < 3; k++) {
-      const dx = x + 18 + k * 32, dy = y0 + 10;
+      // three tall lancets under pointed heads, like a triforium band
+      const dx = x + 18 + k * 32, dy = y0 + 14;
       const t = ac?.room ? THEMES[ac.room.kind] : null;
-      r.rect(dx - 1, dy - 3, 14, 18, E.fog); r.circle(dx + 6, dy - 2, 7, E.fog);
-      r.rect(dx + 1, dy - 1, 10, 14, E.amber); r.circle(dx + 6, dy - 1, 5, E.amber);
-      r.dith(dx + 1, dy - 5, 10, 18, t ? (t.light === E.fog ? E.white : t.light) : E.yellow, 0.3);
-      r.vl(dx + 6, dy - 6, 19, E.fog); r.hl(dx + 1, dy + 5, 10, E.fog);
+      for (let j = 0; j < 7; j++) { const hw = Math.max(1, Math.round((j / 7) * 6)); r.hl(dx + 6 - hw, dy - 10 + j, hw * 2, E.fog); }
+      r.rect(dx - 1, dy - 3, 14, 18, E.fog);
+      for (let j = 0; j < 5; j++) { const hw = Math.max(1, Math.round((j / 5) * 4)); r.hl(dx + 6 - hw, dy - 7 + j, hw * 2, E.amber); }
+      r.rect(dx + 1, dy - 2, 10, 14, E.amber);
+      r.dith(dx + 1, dy - 7, 10, 19, t ? (t.light === E.fog ? E.white : t.light) : E.yellow, 0.3);
+      r.vl(dx + 6, dy - 10, 22, E.fog); r.hl(dx + 1, dy + 5, 10, E.fog);
     }
-    // balustrade along the top of the mansard
-    r.rect(x - 1, y0 - 2, CW + 2, 2, E.fog);
-    for (let i = x; i < x + CW; i += 3) { r.vl(i, y0 - 6, 4, E.fog); r.px(i, y0 - 7, E.steel); }
-    r.hl(x - 1, y0 - 7, CW + 2, E.fog);
-    // the cap
+    // a plain stone cornice where the mansard meets the cap, with corner pinnacles
+    r.rect(x - 1, y0 - 2, CW + 2, 2, E.fog); r.hl(x - 1, y0 - 2, CW + 2, E.steel);
+    for (const px of [x + 3, x + CW - 6]) {
+      r.rect(px, y0 - 14, 3, 12, E.slate); r.vl(px, y0 - 14, 12, E.steel);
+      for (let j = 0; j < 5; j++) { const w = Math.max(1, 3 - Math.round(j * 0.5)); r.rect(px + Math.round((3 - w) / 2), y0 - 15 - j, w, 1, j % 2 ? E.ink : E.navy); }
+    }
+    // the cap: a steep crocketed roof narrowing to the spire's base
     const c0 = S.hy - AH - CR;
     for (let j = 0; j < CR; j++) {
       const inset = 22 - Math.round(j * 1.4), a = x + inset, b = x + CW - inset;
       for (let i = a; i < b; i++) r.px(i, c0 + j, j === 0 || i === a || i === b - 1 ? E.night : (j % 3 === 1 ? E.navy : E.ink));
+      if (j % 3 === 0) { r.px(a - 1, c0 + j, E.steel); r.px(b, c0 + j, E.steel); } // crockets along the raking edges
     }
-    // cupola: a lantern with a lit arch, a copper dome and a finial
-    const mid = S.hx + Math.round(TW / 2), cy = c0 - cup;
-    r.rect(mid - 8, cy + 8, 16, cup - 8, E.fog); r.vl(mid - 8, cy + 8, cup - 8, E.steel); r.vl(mid + 7, cy + 8, cup - 8, E.steel);
-    r.rect(mid - 3, cy + 10, 6, 7, E.amber); r.circle(mid, cy + 10, 3, E.amber); r.rect(mid - 1, cy + 11, 2, 6, E.yellow);
-    for (let j = 0; j < 8; j++) { const hw = Math.round(9 * Math.sqrt(1 - ((8 - j) / 8) ** 2)); r.hl(mid - hw, cy + j, hw * 2, j < 3 ? E.green : j % 2 ? E.pine : E.deep); }
-    r.vl(mid, cy - 5, 5, E.amber); r.px(mid, cy - 6, E.yellow);
+    // the spire: corner pinnacles flanking a lit belfry stage, then a tall stone point and a cross finial
+    const mid = S.hx + Math.round(TW / 2), lanternH = 16, spireH = Math.max(10, cup - lanternH), topLantern = c0 - lanternH, topSpire = topLantern - spireH;
+    for (const px of [mid - 12, mid + 10]) {
+      r.rect(px, c0 - 11, 3, 11, E.slate); r.vl(px, c0 - 11, 11, E.steel);
+      for (let j = 0; j < 6; j++) { const w = Math.max(1, 3 - Math.round(j * 0.5)); r.rect(px + Math.round((3 - w) / 2), c0 - 12 - j, w, 1, j % 2 ? E.ink : E.navy); }
+    }
+    r.rect(mid - 8, topLantern, 16, lanternH, E.fog); r.vl(mid - 8, topLantern, lanternH, E.steel); r.vl(mid + 7, topLantern, lanternH, E.ink);
+    for (let j = 0; j < lanternH - 3; j++) { const hw = j < 5 ? Math.max(1, 5 - j) : 5; r.hl(mid - hw, topLantern + 3 + j, hw * 2, E.amber); }
+    r.vl(mid, topLantern + 3, lanternH - 3, E.yellow);
+    for (let j = 0; j < spireH; j++) {
+      const hw = Math.max(1, Math.round(9 * (1 - j / spireH)));
+      r.hl(mid - hw, topLantern - j, hw * 2, j % 4 === 0 ? E.navy : j % 2 ? E.ink : E.night);
+      r.px(mid - hw, topLantern - j, E.steel); r.px(mid + hw - 1, topLantern - j, E.night);
+    }
+    r.vl(mid, topSpire - 6, 6, E.steel); r.hl(mid - 2, topSpire - 4, 5, E.steel); r.px(mid, topSpire - 7, E.fog);
   }
 
-  /** the portico: four columns, an entablature with the house's name, a pediment with a round window, the door */
+  /** the portico: pointed stone piers, an entablature with the house's name, a steep gable with a rose window, a gothic door */
   function portico(r, mid) {
     const y1 = S.hy + bodyH, top = S.hy + FH + 6, x0 = mid - 30, x1 = mid + 30;
     r.dith(x0, top, 60, y1 - top, E.night, 0.35); // the shade under it
     for (const cx of [x0 + 2, x0 + 17, x1 - 21, x1 - 6]) {
       r.rect(cx, top + 2, 4, y1 - top - 3, E.fog); r.vl(cx + 3, top + 2, y1 - top - 3, E.steel); r.vl(cx + 1, top + 2, y1 - top - 3, E.white);
-      r.rect(cx - 1, top, 6, 2, E.fog); r.rect(cx - 1, y1 - 2, 6, 2, E.fog);
+      for (let j = 0; j < 3; j++) { const hw = 3 - j; r.hl(cx + 2 - hw, top - j, Math.max(1, hw * 2), E.fog); } // a small pointed cap
+      r.rect(cx - 1, y1 - 2, 6, 2, E.fog);
     }
-    // the door: double leaves under a fanlight, a lantern either side
+    // the door: a pointed gothic arch over double leaves, a small light at the apex, a lantern either side
     const dx = mid - 8, dy = y1 - 24;
-    r.circle(mid, dy, 8, E.fog); r.circle(mid, dy, 6, E.amber); r.circle(mid, dy, 3, E.yellow);
-    for (let k = -2; k <= 2; k++) r.px(mid + k * 2, dy - 4 + Math.abs(k), E.fog);
+    for (let j = 0; j < 9; j++) { const hw = Math.max(1, Math.round((j / 9) * 9)); r.hl(mid - hw, dy - 9 + j, hw * 2, E.fog); }
+    r.circle(mid, dy - 3, 3, E.amber); r.circle(mid, dy - 3, 1, E.yellow);
     r.rect(dx - 1, dy, 18, 24, E.fog); r.rect(dx, dy + 1, 16, 23, E.wine);
     r.vl(mid, dy + 1, 23, E.plum);
     for (const px of [dx + 2, mid + 2]) { r.rect(px, dy + 4, 4, 7, E.plum); r.rect(px, dy + 14, 4, 7, E.plum); }
@@ -431,14 +459,23 @@ export function createStreet({ rooms, name, number }) {
     r.rect(x0 - 3, top - 8, 66, 8, E.fog); r.hl(x0 - 3, top - 1, 66, E.steel); r.hl(x0 - 3, top - 8, 66, E.white);
     const tw = textWidth(title);
     r.text(title, mid - Math.round(tw / 2), top - 6, E.slate);
-    // pediment
-    for (let j = 0; j < 14; j++) {
-      const half = Math.round(33 - (14 - j) * 2.3), y = top - 22 + j;
+    // a steep gothic gable
+    for (let j = 0; j < 18; j++) {
+      const half = Math.round(33 - (18 - j) * 1.8), y = top - 26 + j;
       if (half <= 0) continue;
       for (let i = -half; i < half; i++) r.px(mid + i, y, i === -half || i === half - 1 ? E.fog : E.steel);
     }
     r.hl(mid - 33, top - 9, 66, E.fog);
-    r.circle(mid, top - 14, 3, E.fog); r.circle(mid, top - 14, 2, E.amber); r.px(mid, top - 14, E.yellow);
+    // a rose window with simple radiating tracery, stone-ringed
+    const rr = 8, ry = top - 16, glass = [E.red, E.amber, E.cyan, E.lime, E.rose, E.sky];
+    r.circle(mid, ry, rr, E.fog);
+    for (let j = -rr + 1; j <= rr - 1; j++) for (let i = -rr + 1; i <= rr - 1; i++) {
+      const d = Math.hypot(i, j);
+      if (d > rr - 1) continue;
+      const seg = Math.floor(((Math.atan2(j, i) + Math.PI) / (Math.PI * 2)) * 6) % 6;
+      r.px(mid + i, ry + j, d < 2 ? E.fog : glass[seg]);
+    }
+    for (let s = 0; s < 6; s++) { const a = (s / 6) * Math.PI * 2; r.px(mid + Math.round(Math.cos(a) * (rr - 2)), ry + Math.round(Math.sin(a) * (rr - 2)), E.fog); }
   }
 
   /** the entrance hall: panelled walls, a marble floor, a double staircase and a chandelier */
@@ -468,22 +505,23 @@ export function createStreet({ rooms, name, number }) {
 
   function window_(r, x, y, room, arched) {
     const t = room ? THEMES[room.kind] : null;
+    const pk = arched ? 9 : 4; // how tall the pointed head rises above the lintel: a full lancet below, a short one above
+    for (let j = 0; j <= pk; j++) { const hw = Math.max(1, Math.round((j / pk) * 10)); r.hl(x + 9 - hw, y - pk + j, hw * 2, E.fog); }
     r.rect(x - 1, y - 1, 20, 24, E.fog);
-    if (arched) { r.circle(x + 9, y, 10, E.fog); }
     const glowc = [E.yellow, E.amber, E.orange];
-    for (let j = arched ? -8 : 0; j < 22; j++) for (let i = 0; i < 18; i++) {
-      if (j < 0 && (i - 8.5) ** 2 + j * j > 72) continue;
+    for (let j = -pk; j < 22; j++) for (let i = 0; i < 18; i++) {
+      if (j < 0) { const hw = ((pk + j) / pk) * 9; if (Math.abs(i - 8.5) > hw) continue; }
       const d = Math.abs(i - 8.5) / 9 + Math.abs(j - 9) / 14;
       const k = d < 0.45 ? 0 : d < 0.85 ? 1 : 2;
       r.px(x + i, y + j, k === 0 && BAYER[j & 3][i & 3] > 9 ? glowc[1] : glowc[k]);
     }
-    if (t) r.dith(x, y - (arched ? 8 : 0), 18, 22 + (arched ? 8 : 0), t.light === E.fog ? E.white : t.light, 0.18);
+    if (t) r.dith(x, y - pk, 18, 22 + pk, t.light === E.fog ? E.white : t.light, 0.18);
     // shelves seen through the glass
     if (room) { for (let i = 0; i < 18; i++) if (i % 2 === 0 || i % 5 === 0) r.vl(x + i, y + 15, 7, i % 4 === 0 ? E.brown : E.plum); r.hl(x, y + 14, 18, E.brown); }
     // curtains and glazing bars
     for (let j = 0; j < 22; j++) { const w = 3 + (j > 12 ? 1 : 0); r.rect(x, y + j, w, 1, j % 2 ? E.wine : E.red); r.rect(x + 18 - w, y + j, w, 1, j % 2 ? E.wine : E.red); }
-    r.vl(x + 8, y - (arched ? 8 : 0), 22 + (arched ? 8 : 0), E.fog); r.vl(x + 9, y - (arched ? 8 : 0), 22 + (arched ? 8 : 0), E.steel); r.hl(x, y + 9, 18, E.fog);
-    if (arched) r.hl(x, y, 18, E.fog);
+    r.vl(x + 8, y - pk, 22 + pk, E.fog); r.vl(x + 9, y - pk, 22 + pk, E.steel); r.hl(x, y + 9, 18, E.fog);
+    if (arched) r.hl(x, y, 18, E.fog); // a transom at the springline on the tall ground-floor lancets
     // sill
     r.rect(x - 3, y + 22, 24, 2, E.fog); r.hl(x - 3, y + 23, 24, E.steel);
     r.dith(x - 1, y + 24, 20, 4, E.amber, 0.1);
