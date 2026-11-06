@@ -21,7 +21,7 @@ The site is a folder of static files: no framework, no bundler, no server and no
 | Hands | The generic hand models from [WebXR Input Profiles](https://github.com/immersive-web/webxr-input-profiles) (MIT), from jsDelivr | Realistic rigged hands without sculpting our own or storing models in the repo. The fingers are posed by the site's own code. |
 | Tricks and combos | Keyframes joined into one smooth track, with physics where it matters (`tricks.js`) | A combo plays as one continuous motion, so tricks flow into each other. Tosses fly under real gravity with a steady spin, spins in the fingers start with a flick and lose speed to friction, and parts that slam into a stop bounce and kick the wrist. The hand's grip is worked out from the same track rather than animated by hand. |
 | Sound | The Web Audio API | Every sound is made on the fly from noise and short tones, worked out from each trick's motion. There are no audio files to store or download. |
-| Covers and suggestions | AniList, MangaDex, MusicBrainz with the Cover Art Archive, Deezer, Open Library, IMDb's suggestion feed and Wikipedia | All free, with no API keys. The repo keeps only links (`data/covers.json`), and images load from their sources, so the repo stays small. |
+| Covers and suggestions | AniList, MusicBrainz with the Cover Art Archive, Deezer, Open Library, IMDb's suggestion feed and Wikipedia | All free, with no API keys. The repo keeps only links (`data/covers.json`), and images load from their sources, so the repo stays small. |
 | Tools | Python 3 standard library (`tools/`), with Pillow optional for spine colours | Runs on any machine and on GitHub's runners with nothing to install. Tests use saved responses, so they run offline. |
 | Type | Google Fonts | Pixelify Sans and Jersey 10 for the interface, Archivo, Bodoni Moda and IBM Plex Mono for printing on the objects. |
 
@@ -93,7 +93,7 @@ python3 tools/validate.py
 | Shelf | Source |
 | --- | --- |
 | Anime | AniList |
-| Manga | MangaDex, a cover for every owned volume; Open Library's editions for any volume MangaDex lacks; AniList for a series neither has |
+| Manga | Open Library's editions, a cover for every owned volume (the cover Open Library holds, else an image keyed by the edition's ISBN); AniList's series cover for any volume without one. MangaDex is not used: it sends image requests to a bot challenge, so browsers cannot load its covers |
 | Music | MusicBrainz and the Cover Art Archive; Deezer for a record it lacks |
 | Books | Open Library, by `isbn` when the item has one |
 | Films | IMDb |
