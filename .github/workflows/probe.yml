@@ -3,6 +3,8 @@ on:
   push:
     branches: [ccr-9ed8a046-dq7s74]
     paths: [".github/workflows/probe.yml"]
+permissions:
+  contents: write
 jobs:
   probe:
     runs-on: ubuntu-latest
@@ -34,10 +36,13 @@ jobs:
                   im = get(u.replace('-L.jpg', '-M.jpg') if u and 'openlibrary' in u else u) if u else None
                   if im: im.thumbnail((W - 6, H)); sheet.paste(im, (x + 3, y + 18))
                   d.text((x + 4, y + 3), label, fill='#feae34')
-              sheet.save(f"sheets/{key.split('/')[1]}.png")
+              sheet.save(f"sheets/{key.split('/')[1]}.jpg", quality=60)
               print(key, len(cells))
           PY
-      - uses: actions/upload-artifact@v4
-        with:
-          name: sheets
-          path: sheets
+      - name: Publish the sheets on a throwaway branch
+        run: |
+          cd sheets
+          git init -q -b probe-sheets
+          git config user.name "shelves-bot"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add . && git commit -q -m "Contact sheets (throwaway)"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" probe-sheets
