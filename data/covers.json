@@ -564,1414 +564,1414 @@
     "fetched": "2026-11-06"
   },
   "manga/akira": {
-    "from": "MangaDex",
+    "from": "Open Library and AniList",
     "match": "Akira",
     "vols": {
       "1": {
-        "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/822889a6-15b0-47d5-8a95-8dc9f0818cc7.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/814967-L.jpg?default=false",
         "pal": [
-          "#141818",
-          "#fefefe",
-          "#d52633",
-          "#676869"
+          "#040308",
+          "#f64916",
+          "#f64916",
+          "#f98886"
         ]
       },
       "2": {
-        "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/17bb3503-60f8-4595-83be-e150e8ecf062.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/814968-L.jpg?default=false",
         "pal": [
-          "#17529c",
+          "#5c6acb",
           "#fdfdfd",
-          "#62b72c",
-          "#151616"
+          "#75cafa",
+          "#171c22"
         ]
       },
       "3": {
-        "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/f02b5c7a-476a-441b-9e87-14ee0af4e5b7.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/814991-L.jpg?default=false",
         "pal": [
-          "#0d1614",
-          "#fcfdfd",
-          "#0998b7",
-          "#fcfdfd"
-        ]
-      },
-      "4": {
-        "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/b32f5c2c-f652-43c2-8f0d-007be9ff2c40.png.512.jpg",
-        "pal": [
-          "#010202",
-          "#fbf6d8",
-          "#d70402",
-          "#fbf6d8"
-        ]
-      },
-      "5": {
-        "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/a295eb4a-27bb-4c17-8996-984ab50f1471.jpg.512.jpg",
-        "pal": [
-          "#171918",
-          "#fafbfa",
-          "#687945",
-          "#fafbfa"
+          "#090d14",
+          "#fdfcfb",
+          "#2b5a97",
+          "#fdfcfb"
         ]
       },
       "6": {
-        "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/abcdc429-3019-4c9d-9799-fe136149c512.png.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/9254142-L.jpg?default=false",
         "pal": [
-          "#070806",
-          "#f1ed77",
-          "#e63734",
-          "#f1ed77"
+          "#060708",
+          "#a49a66",
+          "#972c0c",
+          "#a49a66"
+        ]
+      },
+      "5": {
+        "src": "https://covers.openlibrary.org/b/id/814993-L.jpg?default=false",
+        "pal": [
+          "#030303",
+          "#faf9f7",
+          "#586949",
+          "#faf9f7"
+        ]
+      },
+      "4": {
+        "src": "https://covers.openlibrary.org/b/id/814992-L.jpg?default=false",
+        "pal": [
+          "#e9e8d8",
+          "#161719",
+          "#e89517",
+          "#161719"
         ]
       }
     },
-    "src": "https://uploads.mangadex.org/covers/175cf215-2122-4656-9fac-37ac092438af/822889a6-15b0-47d5-8a95-8dc9f0818cc7.jpg.512.jpg",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30664-JJq9tosQvlpW.jpg",
     "pal": [
-      "#141818",
-      "#fefefe",
-      "#d52633",
-      "#676869"
+      "#020206",
+      "#fd5349",
+      "#96191b",
+      "#37373a"
     ],
-    "fetched": "2026-11-05"
+    "fetched": "2026-11-06"
   },
   "manga/berserk": {
-    "from": "MangaDex",
+    "from": "Open Library and AniList",
     "match": "Berserk",
     "vols": {
       "1": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/bae91cd3-2847-4c19-8777-9da5db0ed2d1.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/869205-L.jpg?default=false",
         "pal": [
-          "#fcf9f7",
-          "#66585a",
-          "#a64a59",
-          "#56474a"
-        ]
-      },
-      "2": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/00c4d205-e955-46c5-8a09-fcd5046cad59.jpg.512.jpg",
-        "pal": [
-          "#fefcfa",
-          "#593837",
-          "#593837",
-          "#985948"
-        ]
-      },
-      "3": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/5ca0c30f-e5b7-405c-8014-39b9cdbfbe91.jpg.512.jpg",
-        "pal": [
-          "#393636",
-          "#fcfaf9",
-          "#b7a648",
-          "#fcfaf9"
-        ]
-      },
-      "4": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/46e070a7-629a-424e-a0a4-5e99959c4683.jpg.512.jpg",
-        "pal": [
-          "#fdfbf6",
-          "#494658",
-          "#6688b6",
-          "#494658"
-        ]
-      },
-      "5": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/fdca00ea-d95b-45f7-86bb-1ed502430c2f.jpg.512.jpg",
-        "pal": [
-          "#453838",
-          "#f4ebe7",
-          "#c7441d",
-          "#676889"
+          "#fcfcfc",
+          "#464738",
+          "#265275",
+          "#464738"
         ]
       },
       "6": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/9dab493c-e5e9-41ad-abc0-40a6783a1a84.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/869292-L.jpg?default=false",
         "pal": [
-          "#fdfaf8",
-          "#26262b",
-          "#764629",
-          "#26262b"
+          "#fefefe",
+          "#253937",
+          "#880f0f",
+          "#253937"
+        ]
+      },
+      "2": {
+        "src": "https://covers.openlibrary.org/b/id/869208-L.jpg?default=false",
+        "pal": [
+          "#fbfbfa",
+          "#040404",
+          "#d56669",
+          "#040404"
+        ]
+      },
+      "4": {
+        "src": "https://covers.openlibrary.org/b/id/869269-L.jpg?default=false",
+        "pal": [
+          "#fefefe",
+          "#276888",
+          "#276888",
+          "#a9a7a4"
         ]
       },
       "7": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/7b4ce148-e8be-48fc-b0e2-4bc7964c3982.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/869353-L.jpg?default=false",
         "pal": [
-          "#fcf9f6",
-          "#484857",
-          "#2d3c58",
-          "#767885"
+          "#fefefe",
+          "#667675",
+          "#027796",
+          "#667675"
         ]
       },
-      "8": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/8b7575f0-79bb-4c5a-8b45-7ef0b1c09ff9.jpg.512.jpg",
+      "5": {
+        "src": "https://covers.openlibrary.org/b/id/869290-L.jpg?default=false",
         "pal": [
-          "#fdf9f6",
-          "#893928",
-          "#973926",
-          "#a8845a"
-        ]
-      },
-      "9": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/0a4fb0f5-93c4-4557-b9ba-0f1882de4c7f.jpg.512.jpg",
-        "pal": [
-          "#29262b",
-          "#fefcf8",
-          "#c9882b",
-          "#fefcf8"
-        ]
-      },
-      "10": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/5632fc2e-0fe1-4036-9177-6fa01e4ca5f0.jpg.512.jpg",
-        "pal": [
-          "#39272b",
-          "#fefcf9",
-          "#99492a",
-          "#fefcf9"
-        ]
-      },
-      "11": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/54e9e261-f9af-42e9-a4ec-dac55ae3e83e.jpg.512.jpg",
-        "pal": [
-          "#272547",
-          "#fffdfb",
-          "#b5ba3c",
-          "#fffdfb"
-        ]
-      },
-      "12": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/fa1054c3-d0db-4c41-b7f5-79b240473b7b.jpg.512.jpg",
-        "pal": [
-          "#37232c",
-          "#fefdf7",
-          "#d59936",
-          "#fefdf7"
+          "#fefcfb",
+          "#383617",
+          "#352c09",
+          "#aaa8a5"
         ]
       },
       "13": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/9d04e56a-450a-43c9-94de-4d25d07ef27e.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/869473-L.jpg?default=false",
         "pal": [
-          "#48343c",
-          "#95aad2",
-          "#95aad2",
-          "#847799"
-        ]
-      },
-      "14": {
-        "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/8fad7375-604d-426c-90e8-08a456cf2d90.jpg.512.jpg",
-        "pal": [
-          "#2a262c",
-          "#fffbf7",
-          "#795959",
-          "#fffbf7"
-        ]
-      }
-    },
-    "src": "https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/bae91cd3-2847-4c19-8777-9da5db0ed2d1.jpg.512.jpg",
-    "pal": [
-      "#fcf9f7",
-      "#66585a",
-      "#a64a59",
-      "#56474a"
-    ],
-    "fetched": "2026-11-05"
-  },
-  "manga/blame": {
-    "from": "MangaDex",
-    "match": "BLAME!",
-    "vols": {
-      "1": {
-        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/f4b7ffea-5835-49dc-8e27-e560bc8b8dad.jpg.512.jpg",
-        "pal": [
-          "#443b36",
-          "#ea9b66",
-          "#c66a37",
-          "#88a59a"
-        ]
-      },
-      "2": {
-        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/a04104fa-4b42-444d-9636-e5b4f9989d2d.jpg.512.jpg",
-        "pal": [
-          "#060c0b",
-          "#fcfcfc",
-          "#fcfcfc",
-          "#fcfcfc"
-        ]
-      },
-      "3": {
-        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/3ddfe81c-f000-47ca-9346-484e2ad1cdbd.jpg.512.jpg",
-        "pal": [
-          "#e83706",
-          "#f4f0e6",
-          "#892617",
-          "#f7eae5"
-        ]
-      },
-      "4": {
-        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/d129063d-fb23-4631-8448-7ec4413cedbb.jpg.512.jpg",
-        "pal": [
-          "#172528",
-          "#88a7c6",
-          "#88a7c6",
-          "#88a7c6"
-        ]
-      },
-      "5": {
-        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/bf0d325b-704f-4be4-ba42-23a1211b7439.jpg.512.jpg",
-        "pal": [
-          "#16261b",
-          "#78c497",
-          "#357738",
-          "#78c497"
-        ]
-      },
-      "6": {
-        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/ee9a559e-f4b5-4337-b830-7b59d5509000.jpg.512.jpg",
-        "pal": [
-          "#182a2a",
-          "#969c69",
-          "#b76849",
-          "#868877"
-        ]
-      },
-      "7": {
-        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/3cf641ba-f743-46a3-b0ca-29107fedfec6.jpg.512.jpg",
-        "pal": [
-          "#192628",
-          "#a2b1be",
-          "#d61b08",
-          "#a2b1be"
-        ]
-      },
-      "8": {
-        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/a65f3495-bb57-4cb8-a9b9-e7867a1d2e8a.jpg.512.jpg",
-        "pal": [
-          "#39489a",
-          "#f7f9f9",
-          "#050c0a",
-          "#f7f9f9"
-        ]
-      },
-      "9": {
-        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/a9716d9b-bf17-416b-80b8-4c349088681a.jpg.512.jpg",
-        "pal": [
-          "#161a16",
-          "#8a8359",
-          "#865728",
-          "#98966b"
+          "#393636",
+          "#b9b6b4",
+          "#a8161d",
+          "#b9b6b4"
         ]
       },
       "10": {
-        "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/32b567ed-7635-47ab-93e4-356e1c5fe0c7.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/869356-L.jpg?default=false",
         "pal": [
-          "#030504",
-          "#f9faf9",
-          "#2b4445",
-          "#f9faf9"
+          "#574745",
+          "#ccc9c7",
+          "#b97654",
+          "#b5aba7"
+        ]
+      },
+      "11": {
+        "src": "https://covers.openlibrary.org/b/id/869447-L.jpg?default=false",
+        "pal": [
+          "#361b25",
+          "#948b88",
+          "#984623",
+          "#948b88"
+        ]
+      },
+      "12": {
+        "src": "https://covers.openlibrary.org/b/id/869459-L.jpg?default=false",
+        "pal": [
+          "#281816",
+          "#968c88",
+          "#893a22",
+          "#968c88"
+        ]
+      },
+      "8": {
+        "src": "https://covers.openlibrary.org/b/id/869354-L.jpg?default=false",
+        "pal": [
+          "#fdfcfc",
+          "#b84756",
+          "#d75638",
+          "#e7c987"
+        ]
+      },
+      "3": {
+        "src": "https://covers.openlibrary.org/b/id/869209-L.jpg?default=false",
+        "pal": [
+          "#66676a",
+          "#eaf5f6",
+          "#842329",
+          "#eaf5f6"
+        ]
+      },
+      "14": {
+        "src": "https://covers.openlibrary.org/b/id/869474-L.jpg?default=false",
+        "pal": [
+          "#373a37",
+          "#aba8a5",
+          "#9a4a2b",
+          "#a49b99"
+        ]
+      },
+      "9": {
+        "src": "https://covers.openlibrary.org/b/id/869355-L.jpg?default=false",
+        "pal": [
+          "#1b2735",
+          "#9a9695",
+          "#9a9695",
+          "#9a9695"
         ]
       }
     },
-    "src": "https://uploads.mangadex.org/covers/b905f827-8d48-4948-b58c-0d6fd330d10d/f4b7ffea-5835-49dc-8e27-e560bc8b8dad.jpg.512.jpg",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30002-Cul4OeN7bYtn.jpg",
     "pal": [
-      "#443b36",
-      "#ea9b66",
-      "#c66a37",
-      "#88a59a"
+      "#fdfdfd",
+      "#575549",
+      "#673b19",
+      "#676959"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "manga/blame": {
+    "from": "Open Library and AniList",
+    "match": "BLAME!",
+    "vols": {
+      "1": {
+        "src": "https://covers.openlibrary.org/b/id/874491-L.jpg?default=false",
+        "pal": [
+          "#272625",
+          "#99bcbc",
+          "#894838",
+          "#bc745d"
+        ]
+      },
+      "5": {
+        "src": "https://covers.openlibrary.org/b/id/874495-L.jpg?default=false",
+        "pal": [
+          "#171715",
+          "#8a8786",
+          "#1a7738",
+          "#585856"
+        ]
+      },
+      "2": {
+        "src": "https://covers.openlibrary.org/b/id/874492-L.jpg?default=false",
+        "pal": [
+          "#151418",
+          "#fcfbfc",
+          "#fcc514",
+          "#fcfbfc"
+        ]
+      },
+      "3": {
+        "src": "https://covers.openlibrary.org/b/id/874493-L.jpg?default=false",
+        "pal": [
+          "#c83a35",
+          "#fdfcfa",
+          "#173684",
+          "#fdfcfa"
+        ]
+      },
+      "4": {
+        "src": "https://covers.openlibrary.org/b/id/874494-L.jpg?default=false",
+        "pal": [
+          "#0b0809",
+          "#cac9ca",
+          "#1b4776",
+          "#696566"
+        ]
+      },
+      "8": {
+        "src": "https://covers.openlibrary.org/b/id/4858542-L.jpg?default=false",
+        "pal": [
+          "#faf9f9",
+          "#745896",
+          "#745896",
+          "#383437"
+        ]
+      },
+      "6": {
+        "src": "https://covers.openlibrary.org/b/id/874496-L.jpg?default=false",
+        "pal": [
+          "#191615",
+          "#86846a",
+          "#b73a44",
+          "#837a78"
+        ]
+      },
+      "10": {
+        "src": "https://covers.openlibrary.org/b/id/4858554-L.jpg?default=false",
+        "pal": [
+          "#070809",
+          "#878686",
+          "#8a2329",
+          "#878686"
+        ]
+      },
+      "7": {
+        "src": "https://covers.openlibrary.org/b/id/874497-L.jpg?default=false",
+        "pal": [
+          "#120d0b",
+          "#8a8689",
+          "#752635",
+          "#777676"
+        ]
+      },
+      "9": {
+        "src": "https://covers.openlibrary.org/b/id/4858548-L.jpg?default=false",
+        "pal": [
+          "#282427",
+          "#78a993",
+          "#a85725",
+          "#7a7473"
+        ]
+      }
+    },
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30149-YetcNrfacNVj.jpg",
+    "pal": [
+      "#474949",
+      "#bbd4d8",
+      "#b88557",
+      "#85b4ac"
     ],
     "fetched": "2026-11-06"
   },
   "manga/chainsaw-man": {
-    "from": "MangaDex",
+    "from": "Open Library and AniList",
     "match": "Chainsaw Man",
     "vols": {
       "1": {
-        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/59ade418-3590-4d7b-91b0-24c8feaa845f.png.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/11432953-L.jpg?default=false",
         "pal": [
-          "#593738",
-          "#fde602",
-          "#fde602",
-          "#ea5823"
+          "#35ba39",
+          "#262a27",
+          "#f8ca09",
+          "#694846"
         ]
       },
       "2": {
-        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/fc3df9c7-ce4c-4e81-8440-099516749158.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/12794652-L.jpg?default=false",
         "pal": [
-          "#99d4bb",
-          "#682846",
-          "#fc4b89",
-          "#b78986"
-        ]
-      },
-      "3": {
-        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/2eb57e50-7baf-4416-b0dd-2cb20adf6ca4.jpg.512.jpg",
-        "pal": [
-          "#092838",
-          "#ebd9d5",
-          "#d9d804",
-          "#ebd9d5"
-        ]
-      },
-      "4": {
-        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/9fbe8b0d-12a5-4a16-a99e-123268d910b9.jpg.512.jpg",
-        "pal": [
-          "#39a8c8",
-          "#152746",
-          "#c71637",
-          "#c8d7e6"
-        ]
-      },
-      "5": {
-        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/d141ff37-f633-426c-9406-8c73b2f197f9.jpg.512.jpg",
-        "pal": [
-          "#fbf9b4",
-          "#071538",
-          "#ea2858",
-          "#071538"
+          "#92d2bc",
+          "#35182b",
+          "#35182b",
+          "#b55b84"
         ]
       },
       "6": {
-        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/2bab7518-8cc8-4df2-888e-5155834142a2.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/10544946-L.jpg?default=false",
         "pal": [
-          "#d6b8b9",
-          "#010306",
-          "#010306",
-          "#e90a85"
-        ]
-      },
-      "7": {
-        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/8c3c169a-85fd-45d4-b697-a3ed9eb00419.jpg.512.jpg",
-        "pal": [
-          "#048a88",
-          "#000000",
-          "#000000",
-          "#fbfdfb"
-        ]
-      },
-      "8": {
-        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/d8133023-195f-4822-bfc8-3fbdec38fd76.jpg.512.jpg",
-        "pal": [
-          "#037a59",
+          "#f9832b",
           "#f4f0e6",
-          "#f7dc06",
-          "#674856"
+          "#f8e228",
+          "#fac79f"
         ]
       },
-      "9": {
-        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/b4874983-21c3-40a6-acef-21f561f45064.jpg.512.jpg",
+      "5": {
+        "src": "https://covers.openlibrary.org/b/id/11177825-L.jpg?default=false",
         "pal": [
-          "#c5d6d8",
-          "#17675a",
-          "#007a65",
-          "#69a6a7"
-        ]
-      },
-      "10": {
-        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/8c89c66f-aa88-4c33-a6e6-dd9cd589e400.jpg.512.jpg",
-        "pal": [
-          "#ea1933",
+          "#e9386a",
           "#f4f0e6",
-          "#c8c70a",
-          "#c3a7ab"
+          "#742756",
+          "#e8e8a4"
         ]
       },
       "11": {
-        "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/a5dd3e26-278f-45eb-a5ca-2544deee3387.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/14830424-L.jpg?default=false",
         "pal": [
-          "#a8676b",
+          "#000000",
+          "#d6d7d6",
+          "#990802",
+          "#d6d7d6"
+        ]
+      },
+      "9": {
+        "src": "https://covers.openlibrary.org/b/id/12794660-L.jpg?default=false",
+        "pal": [
+          "#a7c8ca",
+          "#524c3c",
+          "#17978a",
+          "#c4966a"
+        ]
+      },
+      "10": {
+        "src": "https://covers.openlibrary.org/b/id/11305267-L.jpg?default=false",
+        "pal": [
+          "#dd1535",
+          "#f8f9f8",
+          "#e8e609",
+          "#bd9ba3"
+        ]
+      },
+      "7": {
+        "src": "https://covers.openlibrary.org/b/id/11994974-L.jpg?default=false",
+        "pal": [
+          "#020102",
+          "#0b8688",
+          "#0b8688",
+          "#d64579"
+        ]
+      },
+      "3": {
+        "src": "https://covers.openlibrary.org/b/id/11272054-L.jpg?default=false",
+        "pal": [
+          "#264958",
+          "#e5ccc8",
+          "#060718",
+          "#e5ccc8"
+        ]
+      },
+      "4": {
+        "src": "https://covers.openlibrary.org/b/id/12794654-L.jpg?default=false",
+        "pal": [
+          "#089ab6",
+          "#1d141e",
+          "#c52734",
+          "#b6bac8"
+        ]
+      },
+      "8": {
+        "src": "https://covers.openlibrary.org/b/id/12794658-L.jpg?default=false",
+        "pal": [
+          "#048878",
           "#f4f0e6",
-          "#f4f0e6",
-          "#f7b688"
+          "#e7d918",
+          "#da6a67"
         ]
       }
     },
-    "src": "https://uploads.mangadex.org/covers/a77742b1-befd-49a4-bff5-1ad4e6b0ef7b/59ade418-3590-4d7b-91b0-24c8feaa845f.png.512.jpg",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx105778-euxXZEIfDY2u.png",
     "pal": [
-      "#593738",
-      "#fde602",
-      "#fde602",
-      "#ea5823"
+      "#fad803",
+      "#5a3638",
+      "#ea5825",
+      "#5a3638"
     ],
-    "fetched": "2026-11-05"
+    "fetched": "2026-11-06"
   },
   "manga/death-note": {
-    "from": "MangaDex",
+    "from": "Open Library and AniList",
     "match": "Death Note",
     "vols": {
       "1": {
-        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/8f45c074-5512-4679-a14b-cac837c87171.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/1041608-L.jpg?default=false",
         "pal": [
-          "#242429",
-          "#a698aa",
-          "#79394c",
-          "#a698aa"
+          "#3a3937",
+          "#a7a5a5",
+          "#b6a889",
+          "#7c797a"
         ]
       },
       "2": {
-        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/14f108ed-7398-4396-a026-7a329c04fc28.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/764905-L.jpg?default=false",
         "pal": [
-          "#e7e4ea",
-          "#a33746",
-          "#a33746",
-          "#e7b665"
+          "#e4eaec",
+          "#b71429",
+          "#b71429",
+          "#6596b7"
         ]
       },
-      "3": {
-        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/a2293788-279e-4849-ab75-dc324ee36161.jpg.512.jpg",
+      "8": {
+        "src": "https://covers.openlibrary.org/b/id/765240-L.jpg?default=false",
         "pal": [
-          "#34597b",
-          "#bccfda",
-          "#78a6c2",
-          "#282c2a"
+          "#97454a",
+          "#e7dad6",
+          "#e4926c",
+          "#161515"
         ]
       },
       "4": {
-        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/36a4d59f-042e-48d0-bdd3-77d6e0a4040e.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/1041612-L.jpg?default=false",
         "pal": [
-          "#477995",
-          "#f4f0e6",
-          "#0c0c14",
-          "#c6c8c7"
+          "#578496",
+          "#0e121b",
+          "#181b25",
+          "#b9b9b9"
+        ]
+      },
+      "3": {
+        "src": "https://covers.openlibrary.org/b/id/1041611-L.jpg?default=false",
+        "pal": [
+          "#585569",
+          "#d0d1d5",
+          "#97a5bc",
+          "#d0d1d5"
         ]
       },
       "5": {
-        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/f082b9fe-0b9f-43d7-a5d9-b366f4cb49b3.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/765237-L.jpg?default=false",
         "pal": [
-          "#c9b728",
-          "#3b3847",
-          "#584a11",
+          "#a6bb38",
+          "#15161b",
+          "#5b6a11",
+          "#f9fbf8"
+        ]
+      },
+      "6": {
+        "src": "https://covers.openlibrary.org/b/id/765238-L.jpg?default=false",
+        "pal": [
+          "#b5b5c3",
+          "#43453d",
+          "#785858",
+          "#f3f2ec"
+        ]
+      },
+      "7": {
+        "src": "https://covers.openlibrary.org/b/id/765239-L.jpg?default=false",
+        "pal": [
+          "#d6ccc2",
+          "#575657",
+          "#5794a2",
+          "#575657"
+        ]
+      },
+      "9": {
+        "src": "https://covers.openlibrary.org/b/id/765241-L.jpg?default=false",
+        "pal": [
+          "#388598",
+          "#0a0806",
+          "#243439",
+          "#96bac5"
+        ]
+      },
+      "10": {
+        "src": "https://covers.openlibrary.org/b/id/765528-L.jpg?default=false",
+        "pal": [
+          "#aaa798",
+          "#181518",
+          "#181518",
           "#fdfdfc"
         ]
       },
-      "6": {
-        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/cb09ea01-764d-4da3-bda4-b01e0b153be5.jpg.512.jpg",
-        "pal": [
-          "#b4a5ca",
-          "#15161c",
-          "#77375a",
-          "#fcfbf9"
-        ]
-      },
-      "7": {
-        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/3b23af6e-c5a6-497e-b82e-5648536d988d.jpg.512.jpg",
-        "pal": [
-          "#dac7b7",
-          "#554c53",
-          "#554c53",
-          "#fefdf9"
-        ]
-      },
-      "8": {
-        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/a761618b-0dfc-410a-a672-651a62a3a078.jpg.512.jpg",
-        "pal": [
-          "#583a48",
-          "#fbd9c8",
-          "#b75b65",
-          "#bb9799"
-        ]
-      },
-      "9": {
-        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/86d6ef2c-a7be-4b1e-a085-604a25e3407f.jpg.512.jpg",
-        "pal": [
-          "#538cb7",
-          "#f4f0e6",
-          "#2b3946",
-          "#a6cae9"
-        ]
-      },
-      "10": {
-        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/b88bc227-656b-48db-a4e1-fd6d502fdeac.jpg.512.jpg",
-        "pal": [
-          "#d6a858",
-          "#473b33",
-          "#8a6847",
-          "#fefefe"
-        ]
-      },
       "11": {
-        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/79c89fc5-5a29-4ee4-ba1b-05a61c15b5d3.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/765539-L.jpg?default=false",
         "pal": [
-          "#383628",
-          "#fcf8d5",
-          "#ba7555",
-          "#fcf8d5"
+          "#382816",
+          "#b79566",
+          "#b79566",
+          "#766b67"
         ]
       },
       "12": {
-        "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/d6555598-8202-477d-acde-303202cb3475.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/765551-L.jpg?default=false",
         "pal": [
-          "#f9f6f4",
-          "#796757",
-          "#c5ac96",
-          "#947a65"
+          "#e8e6e5",
+          "#695646",
+          "#baa895",
+          "#8b7867"
         ]
       }
     },
-    "src": "https://uploads.mangadex.org/covers/75ee72ab-c6bf-4b87-badd-de839156934c/8f45c074-5512-4679-a14b-cac837c87171.jpg.512.jpg",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30021-FE6kmrfpuKyb.jpg",
     "pal": [
       "#242429",
       "#a698aa",
-      "#79394c",
+      "#78394c",
       "#a698aa"
     ],
-    "fetched": "2026-11-05"
+    "fetched": "2026-11-06"
   },
   "manga/dorohedoro": {
-    "from": "MangaDex",
+    "from": "Open Library and AniList",
     "match": "Dorohedoro",
     "vols": {
-      "1": {
-        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/d004bed4-9bab-4ded-b1ec-116a8371f294.jpg.512.jpg",
-        "pal": [
-          "#030601",
-          "#b6772c",
-          "#86150b",
-          "#b6772c"
-        ]
-      },
       "2": {
-        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/04ec3647-16f1-448b-8e68-b71d3b0d90b1.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/7767603-L.jpg?default=false",
         "pal": [
-          "#050504",
-          "#b85a77",
-          "#bc3629",
-          "#b85a77"
+          "#040404",
+          "#ca5939",
+          "#ca5939",
+          "#c27596"
         ]
       },
       "3": {
-        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/d8f7e03a-9c65-487c-8bdd-3dd737554086.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/7810803-L.jpg?default=false",
         "pal": [
-          "#27352a",
-          "#9aa695",
-          "#9aa695",
-          "#667975"
+          "#040706",
+          "#767877",
+          "#a91c25",
+          "#364947"
         ]
       },
       "4": {
-        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/afb55224-7c24-41bd-a96c-2db287da6bd3.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/14842734-L.jpg?default=false",
         "pal": [
-          "#263718",
-          "#7c9fd5",
-          "#7c9fd5",
-          "#775835"
-        ]
-      },
-      "5": {
-        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/e9cf5fb5-c786-42a9-a181-dc48cfe7916f.jpg.512.jpg",
-        "pal": [
-          "#0a1618",
-          "#52a418",
-          "#52a418",
-          "#344868"
+          "#262919",
+          "#72a4c9",
+          "#0171bb",
+          "#6a5346"
         ]
       },
       "6": {
-        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/3ba34acd-1da9-4813-9fc2-1ed6859594e5.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/13478635-L.jpg?default=false",
         "pal": [
-          "#562816",
-          "#b2bcb4",
-          "#ac4933",
-          "#b2bcb4"
-        ]
-      },
-      "7": {
-        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/468a52e6-386d-41f2-baa4-eee37eaac084.jpg.512.jpg",
-        "pal": [
-          "#585635",
-          "#fbe929",
-          "#fbe929",
-          "#020506"
+          "#583529",
+          "#bbb7b6",
+          "#bb141c",
+          "#bbb7b6"
         ]
       },
       "8": {
-        "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/6a4aa21d-a7e2-445f-8431-1c136ce76ddb.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/13478644-L.jpg?default=false",
         "pal": [
-          "#686655",
+          "#787669",
           "#f4f0e6",
-          "#1badeb",
-          "#a9aa95"
+          "#04a4e4",
+          "#e8e5d7"
+        ]
+      },
+      "5": {
+        "src": "https://covers.openlibrary.org/b/id/13478632-L.jpg?default=false",
+        "pal": [
+          "#050406",
+          "#5afa06",
+          "#5afa06",
+          "#242b53"
+        ]
+      },
+      "7": {
+        "src": "https://covers.openlibrary.org/b/id/13478640-L.jpg?default=false",
+        "pal": [
+          "#393737",
+          "#cba527",
+          "#b69a2a",
+          "#f5e70a"
+        ]
+      },
+      "1": {
+        "src": "https://covers.openlibrary.org/b/id/11898356-L.jpg?default=false",
+        "pal": [
+          "#aa8647",
+          "#040302",
+          "#882329",
+          "#040302"
         ]
       }
     },
-    "src": "https://uploads.mangadex.org/covers/34f45c13-2b78-4900-8af2-d0bb551101f4/d004bed4-9bab-4ded-b1ec-116a8371f294.jpg.512.jpg",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx31133-Jx6map3Oidz1.png",
     "pal": [
-      "#030601",
-      "#b6772c",
-      "#86150b",
-      "#b6772c"
+      "#040601",
+      "#c58837",
+      "#87150c",
+      "#c58837"
     ],
-    "fetched": "2026-11-05"
+    "fetched": "2026-11-06"
   },
   "manga/fullmetal-alchemist": {
-    "from": "MangaDex",
+    "from": "Open Library and AniList",
     "match": "Fullmetal Alchemist",
     "vols": {
-      "1": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/a9cd0207-1b86-4738-a2b5-3575c32d5315.jpg.512.jpg",
+      "3": {
+        "src": "https://covers.openlibrary.org/b/id/9274815-L.jpg?default=false",
         "pal": [
-          "#060808",
-          "#fbfcfb",
-          "#a5342a",
-          "#474646"
+          "#fcfdfc",
+          "#444a4b",
+          "#444a4b",
+          "#444a4b"
         ]
       },
       "2": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/81243b68-dddb-431f-b254-4d767a0bcaa5.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/1813422-L.jpg?default=false",
         "pal": [
-          "#050606",
-          "#368779",
-          "#297868",
-          "#749c96"
+          "#fafafa",
+          "#556779",
+          "#556779",
+          "#a69597"
         ]
       },
-      "3": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/22977b85-d384-4a77-9700-7657dbba5de7.jpg.512.jpg",
+      "1": {
+        "src": "https://covers.openlibrary.org/b/id/3290930-L.jpg?default=false",
         "pal": [
-          "#050707",
-          "#759a58",
-          "#1a4795",
-          "#759a58"
-        ]
-      },
-      "4": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/3c0e8ec6-eefe-4f38-9924-4cc1defcfc3e.jpg.512.jpg",
-        "pal": [
-          "#060607",
-          "#e6b748",
-          "#e6b748",
-          "#685436"
-        ]
-      },
-      "5": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/ce1919fd-8b9e-4d30-9ee2-23092acf9fc0.jpg.512.jpg",
-        "pal": [
-          "#040504",
-          "#baa8d6",
-          "#785697",
-          "#baa8d6"
-        ]
-      },
-      "6": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/8eaade3f-144f-4d72-ae5b-e6a335650562.jpg.512.jpg",
-        "pal": [
-          "#151914",
-          "#579a47",
-          "#579a47",
-          "#979678"
-        ]
-      },
-      "7": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/987f1d98-e2af-4cb6-8265-65d58bc7fe5c.jpg.512.jpg",
-        "pal": [
-          "#1a1c1a",
-          "#b88c83",
-          "#d63835",
-          "#883839"
-        ]
-      },
-      "8": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/08a8a771-93c0-4796-9a9a-9889865abd6e.jpg.512.jpg",
-        "pal": [
-          "#080b09",
-          "#7895ba",
-          "#459be7",
-          "#647aa6"
+          "#767bb9",
+          "#f4f0e6",
+          "#363558",
+          "#874b54"
         ]
       },
       "9": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/bb4018d1-bcea-47e0-8aa0-b131cd4f0bf8.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/13749426-L.jpg?default=false",
         "pal": [
-          "#191b18",
-          "#fcd578",
-          "#f6b849",
-          "#595548"
+          "#282924",
+          "#fbf387",
+          "#f8eb6a",
+          "#696b64"
         ]
       },
-      "10": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/6ba9c1b1-d047-47b8-bf30-36054dcceacb.jpg.512.jpg",
+      "7": {
+        "src": "https://covers.openlibrary.org/b/id/13749429-L.jpg?default=false",
         "pal": [
-          "#050707",
-          "#b79a66",
-          "#a85828",
-          "#b79a66"
+          "#353629",
+          "#9da494",
+          "#86594a",
+          "#959887"
         ]
       },
-      "11": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/d3e9625d-6923-4986-9fc3-0196049b9945.jpg.512.jpg",
+      "6": {
+        "src": "https://covers.openlibrary.org/b/id/13749431-L.jpg?default=false",
         "pal": [
-          "#050706",
-          "#888a88",
-          "#484b9a",
-          "#363a46"
+          "#37362a",
+          "#a3a99a",
+          "#964c3a",
+          "#a3a99a"
+        ]
+      },
+      "4": {
+        "src": "https://covers.openlibrary.org/b/id/863664-L.jpg?default=false",
+        "pal": [
+          "#c6c8c9",
+          "#5a4539",
+          "#d52d38",
+          "#fdfdfd"
+        ]
+      },
+      "5": {
+        "src": "https://covers.openlibrary.org/b/id/764911-L.jpg?default=false",
+        "pal": [
+          "#b6b7b9",
+          "#010203",
+          "#d72432",
+          "#86494a"
         ]
       },
       "12": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/b698db04-2a1d-4b53-8bcc-8d80b717be0b.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/765348-L.jpg?default=false",
         "pal": [
-          "#070808",
-          "#98b479",
-          "#2c5234",
-          "#667a5a"
-        ]
-      },
-      "13": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/ffdb30aa-675b-4ac3-b536-ef8abf2340f1.jpg.512.jpg",
-        "pal": [
-          "#060607",
-          "#99838b",
-          "#652a35",
-          "#99838b"
-        ]
-      },
-      "14": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/6495bfc5-7528-4440-a565-265aa9b304cd.jpg.512.jpg",
-        "pal": [
-          "#070b0a",
-          "#95cae7",
-          "#364859",
-          "#95cae7"
+          "#a7a8a9",
+          "#262a27",
+          "#d30f1d",
+          "#e8e6e7"
         ]
       },
       "15": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/587f8d69-fabf-4b5b-aa50-19edf94d3b02.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/9119688-L.jpg?default=false",
         "pal": [
-          "#131b17",
-          "#f6d9a6",
-          "#ca6718",
-          "#f6d9a6"
+          "#b6b7b9",
+          "#77252a",
+          "#d1121c",
+          "#d4767c"
         ]
       },
-      "16": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/fcd460d9-4966-4629-a4cc-bfb90e62a9ae.jpg.512.jpg",
+      "13": {
+        "src": "https://covers.openlibrary.org/b/id/765530-L.jpg?default=false",
         "pal": [
-          "#050909",
-          "#6888a7",
-          "#476869",
-          "#6888a7"
-        ]
-      },
-      "17": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/c5276ace-3986-45f1-8284-a58ecffe3f76.jpg.512.jpg",
-        "pal": [
-          "#050607",
-          "#c6c8ca",
-          "#28628d",
-          "#c6c8ca"
-        ]
-      },
-      "18": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/cd390c5d-ddb4-4354-adac-c0ad9d6e81c6.jpg.512.jpg",
-        "pal": [
-          "#050708",
-          "#848688",
-          "#546675",
-          "#3a3c44"
-        ]
-      },
-      "19": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/c0afd15a-5b44-4b4e-904d-5cf37987d21d.jpg.512.jpg",
-        "pal": [
-          "#050607",
-          "#7b7787",
-          "#3d3747",
-          "#7b7787"
-        ]
-      },
-      "20": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/23c46a2f-b2cf-4a8d-a7f8-876b9deb06bb.jpg.512.jpg",
-        "pal": [
-          "#040606",
-          "#5a7a95",
-          "#3a64b9",
-          "#7598b8"
-        ]
-      },
-      "21": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/5dca54d9-fd24-49d4-863c-ea1095ae2949.jpg.512.jpg",
-        "pal": [
-          "#040405",
-          "#798484",
-          "#495768",
-          "#798484"
-        ]
-      },
-      "22": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/704196ae-33ea-4327-9da7-f3214c139441.jpg.512.jpg",
-        "pal": [
-          "#050705",
-          "#a68879",
-          "#b8452a",
-          "#474848"
-        ]
-      },
-      "23": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/31499907-70d3-470a-be66-fc5c5a378a2b.jpg.512.jpg",
-        "pal": [
-          "#080908",
-          "#c9973d",
-          "#c9973d",
-          "#1c3858"
-        ]
-      },
-      "24": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/99b53ded-0f2d-47a1-bedb-a191a0577baa.jpg.512.jpg",
-        "pal": [
-          "#080a0d",
-          "#a6c7f6",
-          "#2b448b",
-          "#a6c7f6"
-        ]
-      },
-      "25": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/b44b0a7d-331d-4a08-9576-948e0dba49d5.jpg.512.jpg",
-        "pal": [
-          "#040405",
-          "#fefefe",
-          "#1d3759",
-          "#fefefe"
-        ]
-      },
-      "26": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/34328fb8-d763-480d-ba3d-bab6cb07c11b.jpg.512.jpg",
-        "pal": [
-          "#050506",
-          "#8593bb",
-          "#7c2618",
-          "#463a4a"
-        ]
-      },
-      "27": {
-        "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/02e39a29-d569-4943-98e5-3c7492913352.jpg.512.jpg",
-        "pal": [
-          "#040406",
-          "#acb6b7",
-          "#e8b886",
-          "#acb6b7"
-        ]
-      }
-    },
-    "src": "https://uploads.mangadex.org/covers/dd8a907a-3850-4f95-ba03-ba201a8399e3/a9cd0207-1b86-4738-a2b5-3575c32d5315.jpg.512.jpg",
-    "pal": [
-      "#060808",
-      "#fbfcfb",
-      "#a5342a",
-      "#474646"
-    ],
-    "fetched": "2026-11-05"
-  },
-  "manga/goodnight-punpun": {
-    "from": "MangaDex",
-    "match": "Oyasumi Punpun",
-    "vols": {
-      "1": {
-        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/0295431e-ccb9-4599-900f-0a1bc7380561.jpg.512.jpg",
-        "pal": [
-          "#fdd937",
-          "#161412",
-          "#a6912d",
-          "#a6912d"
-        ]
-      },
-      "2": {
-        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/8bdd7847-b634-453e-93ab-654cf1612e8d.jpg.512.jpg",
-        "pal": [
-          "#5dceaa",
-          "#161412",
-          "#f0ece2",
-          "#f0ece2"
-        ]
-      },
-      "3": {
-        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/1067c320-812c-4d0d-8301-740429b332f5.jpg.512.jpg",
-        "pal": [
-          "#fa198a",
-          "#f4f0e6",
-          "#f0ece2",
-          "#f0ece2"
-        ]
-      },
-      "4": {
-        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/6d31fe58-d8f9-437f-8739-cc0f00cffa80.jpg.512.jpg",
-        "pal": [
-          "#229828",
-          "#f4f0e6",
-          "#f0ece2",
-          "#f0ece2"
-        ]
-      },
-      "5": {
-        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/b8eb107d-4397-4870-a634-e2b8478c810b.jpg.512.jpg",
-        "pal": [
-          "#fe6a2a",
-          "#f4f0e6",
-          "#f0ece2",
-          "#f0ece2"
-        ]
-      },
-      "6": {
-        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/a33d0de7-1184-43b2-9bf0-3b8c9bb7256e.jpg.512.jpg",
-        "pal": [
-          "#881bc4",
-          "#f4f0e6",
-          "#541277",
-          "#541277"
-        ]
-      },
-      "7": {
-        "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/9d406abb-cbab-4f34-8f48-34db5690d5db.jpg.512.jpg",
-        "pal": [
-          "#d3eb12",
-          "#161412",
-          "#839213",
-          "#839213"
-        ]
-      }
-    },
-    "src": "https://uploads.mangadex.org/covers/4301d363-ee02-43f4-ae24-4cbf29a74830/0295431e-ccb9-4599-900f-0a1bc7380561.jpg.512.jpg",
-    "pal": [
-      "#fdd937",
-      "#161412",
-      "#a6912d",
-      "#a6912d"
-    ],
-    "fetched": "2026-11-05"
-  },
-  "manga/monster": {
-    "from": "MangaDex",
-    "match": "Monster",
-    "vols": {
-      "1": {
-        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/a397b3d3-d7b3-413f-8d6a-f2b136a4b4e2.jpg.512.jpg",
-        "pal": [
-          "#fefefe",
-          "#466ca4",
-          "#466ca4",
-          "#8aa5c7"
-        ]
-      },
-      "2": {
-        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/a4a8c173-03af-4aa1-8186-82cc560f26a0.jpg.512.jpg",
-        "pal": [
-          "#fefdfd",
-          "#757675",
-          "#b64a18",
-          "#c9c8c7"
-        ]
-      },
-      "3": {
-        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/ff82fe16-dba2-44fd-949c-38c8b2bf22d5.jpg.512.jpg",
-        "pal": [
-          "#fefefe",
-          "#757574",
-          "#6a9b35",
-          "#c9c9c8"
-        ]
-      },
-      "4": {
-        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/fa3de01f-d672-4de9-b11f-8d91b85b4220.jpg.512.jpg",
-        "pal": [
-          "#fefefe",
-          "#8a538b",
-          "#8a538b",
-          "#b9b8b8"
-        ]
-      },
-      "5": {
-        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/d63db5ba-ac36-49f3-b297-873222cff23d.jpg.512.jpg",
-        "pal": [
-          "#fefefe",
-          "#656779",
-          "#cb2835",
-          "#b7b7ba"
-        ]
-      },
-      "6": {
-        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/feade5da-511a-4a39-834b-b0d5a1987f51.jpg.512.jpg",
-        "pal": [
-          "#fefefe",
-          "#c90448",
-          "#c90448",
-          "#bbbab9"
-        ]
-      },
-      "7": {
-        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/3cf98b97-87c0-4cd7-8881-eb2a18e5ca65.jpg.512.jpg",
-        "pal": [
-          "#fefefe",
-          "#765846",
-          "#d49b16",
-          "#a9a9a8"
+          "#040303",
+          "#a7a8a9",
+          "#d30f1e",
+          "#a7a8a9"
         ]
       },
       "8": {
-        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/edd9a2a2-45be-4c5d-98d6-98883d17fb55.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/765078-L.jpg?default=false",
         "pal": [
-          "#fdfefe",
-          "#3a6498",
-          "#37a7d7",
-          "#c8c8c8"
+          "#b80c12",
+          "#f6f5f1",
+          "#f6f5f1",
+          "#98a7b9"
         ]
       },
-      "9": {
-        "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/1ae196b3-88af-47e3-9bcf-94adf383b849.jpg.512.jpg",
+      "14": {
+        "src": "https://covers.openlibrary.org/b/id/4813764-L.jpg?default=false",
         "pal": [
+          "#a7a7a7",
+          "#262a36",
+          "#d3101d",
+          "#495868"
+        ]
+      },
+      "11": {
+        "src": "https://covers.openlibrary.org/b/id/765347-L.jpg?default=false",
+        "pal": [
+          "#a6a7a9",
+          "#363937",
+          "#d2101d",
+          "#e6e7e7"
+        ]
+      },
+      "10": {
+        "src": "https://covers.openlibrary.org/b/id/765080-L.jpg?default=false",
+        "pal": [
+          "#a6a7a8",
+          "#282a24",
+          "#d30e1d",
+          "#e8e7e8"
+        ]
+      },
+      "16": {
+        "src": "https://covers.openlibrary.org/b/id/1813412-L.jpg?default=false",
+        "pal": [
+          "#a7a8a9",
+          "#482b35",
+          "#d3111c",
+          "#e7e8e8"
+        ]
+      },
+      "20": {
+        "src": "https://covers.openlibrary.org/b/id/6678874-L.jpg?default=false",
+        "pal": [
+          "#a6a8a8",
+          "#192438",
+          "#d4111f",
+          "#e8e7e8"
+        ]
+      },
+      "18": {
+        "src": "https://covers.openlibrary.org/b/id/6673903-L.jpg?default=false",
+        "pal": [
+          "#a7a9a9",
+          "#49292a",
+          "#c82b32",
+          "#47494a"
+        ]
+      },
+      "21": {
+        "src": "https://covers.openlibrary.org/b/id/6683708-L.jpg?default=false",
+        "pal": [
+          "#567b88",
+          "#f4f0e6",
+          "#f4f0e6",
+          "#a5a7a8"
+        ]
+      },
+      "17": {
+        "src": "https://covers.openlibrary.org/b/id/6673281-L.jpg?default=false",
+        "pal": [
+          "#a6a7a8",
+          "#393c45",
+          "#d2101e",
+          "#fbfbfb"
+        ]
+      },
+      "19": {
+        "src": "https://covers.openlibrary.org/b/id/6678162-L.jpg?default=false",
+        "pal": [
+          "#a5a7a9",
+          "#4a3348",
+          "#d4101f",
+          "#553849"
+        ]
+      },
+      "22": {
+        "src": "https://covers.openlibrary.org/b/id/6692609-L.jpg?default=false",
+        "pal": [
+          "#a5a8a8",
+          "#353b36",
+          "#d60c11",
+          "#e9eaea"
+        ]
+      },
+      "23": {
+        "src": "https://covers.openlibrary.org/b/id/6461078-L.jpg?default=false",
+        "pal": [
+          "#a6a7a7",
+          "#272b2a",
+          "#d60f19",
+          "#d86568"
+        ]
+      },
+      "26": {
+        "src": "https://covers.openlibrary.org/b/id/12817672-L.jpg?default=false",
+        "pal": [
+          "#a7a8a7",
+          "#36383b",
+          "#c91921",
+          "#36383b"
+        ]
+      },
+      "25": {
+        "src": "https://covers.openlibrary.org/b/id/10661445-L.jpg?default=false",
+        "pal": [
+          "#aaa9a9",
+          "#1b2a43",
+          "#890000",
+          "#656568"
+        ]
+      },
+      "27": {
+        "src": "https://covers.openlibrary.org/b/id/10229325-L.jpg?default=false",
+        "pal": [
+          "#19120d",
           "#fefefe",
-          "#757674",
-          "#285664",
-          "#757674"
+          "#e7c787",
+          "#fefefe"
+        ]
+      },
+      "24": {
+        "src": "https://covers.openlibrary.org/b/id/6679756-L.jpg?default=false",
+        "pal": [
+          "#d7121e",
+          "#f4f0e6",
+          "#782827",
+          "#b4a8a8"
         ]
       }
     },
-    "src": "https://uploads.mangadex.org/covers/d9e30523-9d65-469e-92a2-302995770950/a397b3d3-d7b3-413f-8d6a-f2b136a4b4e2.jpg.512.jpg",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30025-mpPVpCKFTowt.png",
+    "pal": [
+      "#060807",
+      "#fcfcfb",
+      "#a6342b",
+      "#686b65"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "manga/goodnight-punpun": {
+    "from": "Open Library and AniList",
+    "match": "Goodnight Punpun",
+    "vols": {
+      "1": {
+        "src": "https://covers.openlibrary.org/b/id/12327624-L.jpg?default=false",
+        "pal": [
+          "#ffd124",
+          "#161412",
+          "#817123",
+          "#817123"
+        ]
+      },
+      "2": {
+        "src": "https://covers.openlibrary.org/b/id/12332237-L.jpg?default=false",
+        "pal": [
+          "#29bcb2",
+          "#f4f0e6",
+          "#266f69",
+          "#266f69"
+        ]
+      },
+      "3": {
+        "src": "https://covers.openlibrary.org/b/id/13477540-L.jpg?default=false",
+        "pal": [
+          "#e7427f",
+          "#f4f0e6",
+          "#852743",
+          "#852743"
+        ]
+      },
+      "5": {
+        "src": "https://covers.openlibrary.org/b/id/12327620-L.jpg?default=false",
+        "pal": [
+          "#fcbb92",
+          "#161412",
+          "#896c5b",
+          "#896c5b"
+        ]
+      },
+      "6": {
+        "src": "https://covers.openlibrary.org/b/id/13477552-L.jpg?default=false",
+        "pal": [
+          "#8c288d",
+          "#f4f0e6",
+          "#f0ece2",
+          "#f0ece2"
+        ]
+      },
+      "7": {
+        "src": "https://covers.openlibrary.org/b/id/12327619-L.jpg?default=false",
+        "pal": [
+          "#f1e401",
+          "#161412",
+          "#948d1d",
+          "#948d1d"
+        ]
+      },
+      "4": {
+        "src": "https://covers.openlibrary.org/b/id/13477549-L.jpg?default=false",
+        "pal": [
+          "#08ad60",
+          "#f4f0e6",
+          "#185738",
+          "#185738"
+        ]
+      }
+    },
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx34632-5xMDkx3pXsEh.png",
+    "pal": [
+      "#fdd838",
+      "#161412",
+      "#141414",
+      "#141414"
+    ],
+    "fetched": "2026-11-06"
+  },
+  "manga/monster": {
+    "from": "Open Library and AniList",
+    "match": "Monster",
+    "vols": {
+      "1": {
+        "src": "https://covers.openlibrary.org/b/id/863480-L.jpg?default=false",
+        "pal": [
+          "#fdfdfd",
+          "#666767",
+          "#c6454a",
+          "#666767"
+        ]
+      },
+      "5": {
+        "src": "https://covers.openlibrary.org/b/id/765112-L.jpg?default=false",
+        "pal": [
+          "#fdfdfd",
+          "#686866",
+          "#b11318",
+          "#888985"
+        ]
+      },
+      "6": {
+        "src": "https://covers.openlibrary.org/b/id/765113-L.jpg?default=false",
+        "pal": [
+          "#fdfdfd",
+          "#676666",
+          "#7a191d",
+          "#757676"
+        ]
+      },
+      "2": {
+        "src": "https://covers.openlibrary.org/b/id/764859-L.jpg?default=false",
+        "pal": [
+          "#fdfdfd",
+          "#666768",
+          "#d96929",
+          "#666768"
+        ]
+      },
+      "7": {
+        "src": "https://covers.openlibrary.org/b/id/765114-L.jpg?default=false",
+        "pal": [
+          "#fdfdfd",
+          "#676768",
+          "#b88a2a",
+          "#676768"
+        ]
+      },
+      "9": {
+        "src": "https://covers.openlibrary.org/b/id/10839349-L.jpg?default=false",
+        "pal": [
+          "#9a221c",
+          "#f6c797",
+          "#3b0b0b",
+          "#977869"
+        ]
+      },
+      "8": {
+        "src": "https://covers.openlibrary.org/b/id/765115-L.jpg?default=false",
+        "pal": [
+          "#fefefe",
+          "#c54a47",
+          "#b82b29",
+          "#9b9c92"
+        ]
+      },
+      "4": {
+        "src": "https://covers.openlibrary.org/b/id/765027-L.jpg?default=false",
+        "pal": [
+          "#fdfdfd",
+          "#666667",
+          "#3a0c27",
+          "#767676"
+        ]
+      },
+      "3": {
+        "src": "https://covers.openlibrary.org/b/id/764959-L.jpg?default=false",
+        "pal": [
+          "#fdfdfd",
+          "#565757",
+          "#020603",
+          "#aaaaaa"
+        ]
+      }
+    },
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30001-Knby7l1jevE7.jpg",
     "pal": [
       "#fefefe",
-      "#466ca4",
-      "#466ca4",
-      "#8aa5c7"
+      "#3758a5",
+      "#3758a5",
+      "#8799c5"
     ],
     "fetched": "2026-11-06"
   },
   "manga/one-piece": {
-    "from": "MangaDex",
+    "from": "Open Library and AniList",
     "match": "One Piece",
     "vols": {
       "1": {
-        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/2f4aca53-64c7-46ac-ae85-3bc9b3169890.png.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/1020563-L.jpg?default=false",
         "pal": [
-          "#e9d59d",
-          "#060100",
-          "#060100",
-          "#f9f8f9"
+          "#f9f9f8",
+          "#5a749a",
+          "#667ba6",
+          "#a67767"
         ]
       },
       "2": {
-        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/47b000fb-c5af-451a-a6b2-580e7b4c81bc.png.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/9609527-L.jpg?default=false",
         "pal": [
-          "#fbfbfa",
-          "#4a4426",
-          "#4a4426",
-          "#b7bb64"
+          "#dad9d6",
+          "#575714",
+          "#78990a",
+          "#a99886"
         ]
       },
       "3": {
-        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/64cda2ed-291d-4b57-9ec4-f6b10497c8fa.png.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/9929208-L.jpg?default=false",
         "pal": [
-          "#fdbb8c",
-          "#694935",
-          "#773524",
-          "#b98766"
+          "#b62916",
+          "#f4f0e6",
+          "#270805",
+          "#c97768"
         ]
       },
       "4": {
-        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/f63ba04d-795c-47f4-8255-3a8055cf1397.png.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/9485994-L.jpg?default=false",
         "pal": [
-          "#c3bde9",
-          "#060101",
-          "#060101",
-          "#aa957b"
+          "#959abb",
+          "#010101",
+          "#010101",
+          "#010101"
         ]
       },
       "5": {
-        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/e90a28a5-12ff-441c-9b7a-2f38d32441dd.png.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/9602846-L.jpg?default=false",
         "pal": [
-          "#fcfcfd",
-          "#78573c",
-          "#764c2d",
-          "#c8b9b7"
-        ]
-      },
-      "6": {
-        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/0199c5de-32ec-45db-9d57-aaf301205469.png.512.jpg",
-        "pal": [
-          "#020202",
-          "#c9c5b7",
-          "#365827",
-          "#c9c5b7"
-        ]
-      },
-      "7": {
-        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/60136814-fb9d-43e1-85b6-dcd362125560.png.512.jpg",
-        "pal": [
-          "#fd2a37",
-          "#030202",
-          "#030202",
-          "#c8b49a"
-        ]
-      },
-      "8": {
-        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/82ac1d1f-d972-4881-b4f0-24c9fd271f3e.png.512.jpg",
-        "pal": [
-          "#fdcb59",
-          "#684748",
-          "#984a3a",
-          "#fcfbf9"
-        ]
-      },
-      "9": {
-        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/5eec93a4-41ae-40c7-a2b4-ca5a951149ff.png.512.jpg",
-        "pal": [
-          "#83e8b1",
-          "#46392a",
-          "#46392a",
-          "#e8d7b6"
+          "#b9b6a9",
+          "#362718",
+          "#c6483c",
+          "#867b75"
         ]
       },
       "10": {
-        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/04872b81-9859-43dd-b82f-fbf956d089e6.png.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/1020698-L.jpg?default=false",
         "pal": [
-          "#126cfd",
+          "#67789a",
           "#f4f0e6",
-          "#0d46a8",
-          "#fbfbfa"
+          "#f4f0e6",
+          "#fafaf5"
+        ]
+      },
+      "6": {
+        "src": "https://covers.openlibrary.org/b/id/1020568-L.jpg?default=false",
+        "pal": [
+          "#d8dbc7",
+          "#375788",
+          "#375788",
+          "#859589"
         ]
       },
       "11": {
-        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/0ac2767b-ca89-453f-a996-6a6b13c40b3c.png.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/1020699-L.jpg?default=false",
         "pal": [
-          "#fc73bd",
-          "#030303",
-          "#b55488",
-          "#030303"
+          "#476699",
+          "#f4f0e6",
+          "#f67b5b",
+          "#987567"
+        ]
+      },
+      "7": {
+        "src": "https://covers.openlibrary.org/b/id/1020569-L.jpg?default=false",
+        "pal": [
+          "#67769a",
+          "#f4f0e6",
+          "#c79556",
+          "#382c2a"
+        ]
+      },
+      "9": {
+        "src": "https://covers.openlibrary.org/b/id/1020570-L.jpg?default=false",
+        "pal": [
+          "#466796",
+          "#eae7e5",
+          "#eae7e5",
+          "#e8c699"
+        ]
+      },
+      "8": {
+        "src": "https://covers.openlibrary.org/b/id/984633-L.jpg?default=false",
+        "pal": [
+          "#fbfbfb",
+          "#6c6768",
+          "#e88745",
+          "#898789"
         ]
       },
       "12": {
-        "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/344b270b-822d-4ba0-9cea-4ed9582554b6.png.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/1020700-L.jpg?default=false",
         "pal": [
-          "#fc9b4c",
-          "#040304",
-          "#040304",
-          "#c7a994"
+          "#877b77",
+          "#f4f0e6",
+          "#f4f0e6",
+          "#d6c6b6"
         ]
       }
     },
-    "src": "https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/2f4aca53-64c7-46ac-ae85-3bc9b3169890.png.512.jpg",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30013-BeslEMqiPhlk.jpg",
     "pal": [
-      "#e9d59d",
-      "#060100",
-      "#060100",
-      "#f9f8f9"
+      "#e7d395",
+      "#050100",
+      "#050100",
+      "#a89569"
     ],
-    "fetched": "2026-11-05"
+    "fetched": "2026-11-06"
   },
   "manga/vagabond": {
-    "from": "MangaDex",
+    "from": "Open Library and AniList",
     "match": "Vagabond",
     "vols": {
+      "6": {
+        "src": "https://covers.openlibrary.org/b/id/8211378-L.jpg?default=false",
+        "pal": [
+          "#3697d3",
+          "#0b090b",
+          "#c9161e",
+          "#0b090b"
+        ]
+      },
       "1": {
-        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/00cf99f7-5145-44ea-a068-0a8a5cd4dc76.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/863044-L.jpg?default=false",
         "pal": [
-          "#fbf8e7",
-          "#555769",
-          "#131c26",
-          "#555769"
-        ]
-      },
-      "2": {
-        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/377d1d2b-ba1c-4ed4-b173-591b23fe01fa.jpg.512.jpg",
-        "pal": [
-          "#fefdf6",
-          "#775b88",
-          "#fa3526",
-          "#966a98"
-        ]
-      },
-      "3": {
-        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/3021c157-ff54-4c98-8b78-f814c918abce.jpg.512.jpg",
-        "pal": [
-          "#293a67",
-          "#faf9ea",
-          "#a4c527",
-          "#faf9ea"
+          "#564c56",
+          "#c7d5ea",
+          "#c7d5ea",
+          "#c7d5ea"
         ]
       },
       "4": {
-        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/915d1bf6-a4fb-40d3-b6f8-1f470a4f103a.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/813863-L.jpg?default=false",
         "pal": [
-          "#fcfae9",
-          "#26241c",
-          "#e98558",
-          "#26241c"
+          "#fcfefd",
+          "#171a25",
+          "#fc4943",
+          "#171a25"
         ]
       },
-      "5": {
-        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/e5fc4b95-4f7b-4832-bd41-3aefab28f189.jpg.512.jpg",
+      "3": {
+        "src": "https://covers.openlibrary.org/b/id/4933421-L.jpg?default=false",
         "pal": [
-          "#763b4a",
-          "#fdb30a",
-          "#f9a909",
-          "#eb746b"
-        ]
-      },
-      "6": {
-        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/7e92da9f-828b-4044-9ea3-a2d5dba71013.jpg.512.jpg",
-        "pal": [
-          "#fcf9e7",
-          "#655a2b",
-          "#655a2b",
-          "#171b23"
-        ]
-      },
-      "7": {
-        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/16a6b1d4-a4d7-4dd9-9c50-aeac9c99127f.jpg.512.jpg",
-        "pal": [
-          "#383a78",
-          "#fbf6e5",
-          "#fa2809",
-          "#fbf6e5"
+          "#f8f8f9",
+          "#575967",
+          "#99b617",
+          "#575967"
         ]
       },
       "8": {
-        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/12f61045-73db-4edc-bcd5-ac59f72b0fa4.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/5260875-L.jpg?default=false",
         "pal": [
-          "#faf8ea",
-          "#675757",
-          "#047db6",
-          "#f8c697"
+          "#fbfcfb",
+          "#383936",
+          "#1a84c8",
+          "#f9aa88"
+        ]
+      },
+      "7": {
+        "src": "https://covers.openlibrary.org/b/id/15169100-L.jpg?default=false",
+        "pal": [
+          "#fefefe",
+          "#292448",
+          "#292448",
+          "#080908"
         ]
       },
       "9": {
-        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/af50ed37-6041-40bf-852a-ce4b0ea88059.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/15169103-L.jpg?default=false",
         "pal": [
-          "#fefdf4",
-          "#5a6a78",
-          "#d84b66",
-          "#5a6a78"
-        ]
-      },
-      "10": {
-        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/cdea9456-4a53-4384-b0fd-dc38e4e75756.jpg.512.jpg",
-        "pal": [
-          "#fefdf7",
-          "#463947",
-          "#160619",
-          "#463947"
+          "#fefefe",
+          "#5a5557",
+          "#2d3948",
+          "#cac9c9"
         ]
       },
       "11": {
-        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/b12915a2-297d-4157-bbc0-eefdd6113967.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/15169104-L.jpg?default=false",
         "pal": [
-          "#39434c",
-          "#fdf7e7",
-          "#02b498",
-          "#798688"
+          "#292826",
+          "#7a9797",
+          "#3aa6a8",
+          "#476867"
         ]
       },
       "12": {
-        "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/f0544167-aca8-432c-8ea4-ea1bfb34d321.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/15169107-L.jpg?default=false",
         "pal": [
-          "#fcfaea",
-          "#1c2736",
-          "#1c2736",
-          "#465858"
-        ]
-      }
-    },
-    "src": "https://uploads.mangadex.org/covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/00cf99f7-5145-44ea-a068-0a8a5cd4dc76.jpg.512.jpg",
-    "pal": [
-      "#fbf8e7",
-      "#555769",
-      "#131c26",
-      "#555769"
-    ],
-    "fetched": "2026-11-05"
-  },
-  "manga/vinland-saga": {
-    "from": "MangaDex",
-    "match": "Vinland Saga",
-    "vols": {
-      "1": {
-        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/47e19a12-b0fb-4b52-b105-c202c555b966.jpg.512.jpg",
-        "pal": [
-          "#e5d3ca",
-          "#993a29",
-          "#aa432b",
-          "#b67769"
+          "#fefefe",
+          "#28263a",
+          "#28263a",
+          "#69696b"
         ]
       },
       "2": {
-        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/58f5bc48-0a72-4739-84aa-16a13b5e5d6f.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/4932965-L.jpg?default=false",
         "pal": [
-          "#b8cbd9",
-          "#484a4b",
-          "#2c679b",
-          "#c95635"
-        ]
-      },
-      "3": {
-        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/b0228f1b-3c2f-4d4f-a095-2bedabe1bfcc.jpg.512.jpg",
-        "pal": [
-          "#fc9756",
-          "#394637",
-          "#996648",
-          "#f6eae4"
-        ]
-      },
-      "4": {
-        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/c5c99ff7-9296-42d2-a1a1-a20c92de036e.jpg.512.jpg",
-        "pal": [
-          "#a5bbbc",
-          "#444a43",
-          "#bb5856",
-          "#fbfdfd"
+          "#f8f8f8",
+          "#796978",
+          "#d35c86",
+          "#796978"
         ]
       },
       "5": {
-        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/9b95ed1d-8844-4243-a36d-4d1719460ab0.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/813892-L.jpg?default=false",
         "pal": [
-          "#3a4b57",
-          "#f8f3e8",
-          "#e98867",
-          "#987468"
-        ]
-      },
-      "6": {
-        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/66d1eca2-18bb-497a-8a50-741ae73baa6e.jpg.512.jpg",
-        "pal": [
-          "#886a76",
-          "#f4f0e6",
-          "#fbb77a",
-          "#e6d8da"
-        ]
-      },
-      "7": {
-        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/0e58f1a7-b688-44d1-b008-777849ef9826.jpg.512.jpg",
-        "pal": [
-          "#385775",
-          "#c8dae4",
-          "#c85175",
-          "#678bc5"
-        ]
-      },
-      "8": {
-        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/df31fe1d-b77b-4c68-a2dd-17bbc2a8d52d.jpg.512.jpg",
-        "pal": [
-          "#f9f9fa",
-          "#484748",
-          "#e6bb69",
-          "#b8bbc9"
-        ]
-      },
-      "9": {
-        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/b8301266-9311-41d8-8208-c469efc29278.jpg.512.jpg",
-        "pal": [
-          "#596558",
-          "#e5e9e5",
-          "#c6ba89",
-          "#e5e9e5"
+          "#c74a36",
+          "#fcfdfb",
+          "#d4c94b",
+          "#eb8674"
         ]
       },
       "10": {
-        "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/ebfa4ecd-77ec-469c-ae63-c85731c28972.jpg.512.jpg",
+        "src": "https://covers.openlibrary.org/b/id/8432437-L.jpg?default=false",
         "pal": [
-          "#5a5555",
-          "#d6d6d8",
-          "#aa8765",
-          "#d6d6d8"
+          "#eaebe9",
+          "#785776",
+          "#592a56",
+          "#a6a6a7"
         ]
       }
     },
-    "src": "https://uploads.mangadex.org/covers/5d1fc77e-706a-4fc5-bea8-486c9be0145d/47e19a12-b0fb-4b52-b105-c202c555b966.jpg.512.jpg",
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30656-9mW113O7rDnA.png",
     "pal": [
-      "#e5d3ca",
-      "#993a29",
-      "#aa432b",
-      "#b67769"
+      "#fcfcfb",
+      "#060608",
+      "#5588c3",
+      "#060608"
     ],
-    "fetched": "2026-11-05"
+    "fetched": "2026-11-06"
+  },
+  "manga/vinland-saga": {
+    "from": "Open Library and AniList",
+    "match": "Vinland Saga",
+    "vols": {
+      "8": {
+        "src": "https://covers.openlibrary.org/b/id/15272025-L.jpg?default=false",
+        "pal": [
+          "#faf9f9",
+          "#1a1926",
+          "#d68948",
+          "#1a1926"
+        ]
+      },
+      "5": {
+        "src": "https://covers.openlibrary.org/b/id/10224206-L.jpg?default=false",
+        "pal": [
+          "#c75835",
+          "#f4f0e6",
+          "#252c45",
+          "#684748"
+        ]
+      },
+      "9": {
+        "src": "https://covers.openlibrary.org/b/id/15272026-L.jpg?default=false",
+        "pal": [
+          "#383836",
+          "#dbe3dd",
+          "#c2b235",
+          "#677966"
+        ]
+      },
+      "6": {
+        "src": "https://covers.openlibrary.org/b/id/15272027-L.jpg?default=false",
+        "pal": [
+          "#7677a7",
+          "#f4f0e6",
+          "#571928",
+          "#e8d8d9"
+        ]
+      },
+      "4": {
+        "src": "https://covers.openlibrary.org/b/id/15223478-L.jpg?default=false",
+        "pal": [
+          "#373757",
+          "#d9b795",
+          "#6a6ba9",
+          "#96325d"
+        ]
+      },
+      "7": {
+        "src": "https://covers.openlibrary.org/b/id/10846537-L.jpg?default=false",
+        "pal": [
+          "#364578",
+          "#e4e8eb",
+          "#ca244d",
+          "#e4e8eb"
+        ]
+      },
+      "10": {
+        "src": "https://covers.openlibrary.org/b/id/11131329-L.jpg?default=false",
+        "pal": [
+          "#563d96",
+          "#e9e6e8",
+          "#e9e6e8",
+          "#e9e6e8"
+        ]
+      },
+      "1": {
+        "src": "https://covers.openlibrary.org/b/id/8443603-L.jpg?default=false",
+        "pal": [
+          "#041646",
+          "#98b9c6",
+          "#0679a7",
+          "#98b9c6"
+        ]
+      },
+      "2": {
+        "src": "https://covers.openlibrary.org/b/id/15094840-L.jpg?default=false",
+        "pal": [
+          "#356c68",
+          "#d8e8e3",
+          "#64b7a6",
+          "#d8e8e3"
+        ]
+      },
+      "3": {
+        "src": "https://covers.openlibrary.org/b/id/14839289-L.jpg?default=false",
+        "pal": [
+          "#ea674b",
+          "#282719",
+          "#6a4539",
+          "#f4e8e5"
+        ]
+      }
+    },
+    "src": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30642-0mjRDkf4THpo.jpg",
+    "pal": [
+      "#eadad5",
+      "#b92728",
+      "#b92728",
+      "#c78887"
+    ],
+    "fetched": "2026-11-06"
   },
   "movies/100-meters": {
     "from": "IMDb",
