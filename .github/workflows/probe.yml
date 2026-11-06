@@ -2,48 +2,60 @@ name: Probe covers
 on:
   push:
     branches: [ccr-9ed8a046-dq7s74]
-    paths: [".github/workflows/probe.yml"]
+    paths: [".github/workflows/probe.yml", "tools/covers.py"]
+permissions:
+  contents: write
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
-      - name: Probe Japanese cover services with real ISBNs
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet pillow
+      - name: Look the manga covers up
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: python tools/covers.py --room manga
+      - name: Where the covers come from
         run: |
-          python3 - <<'PY'
-          import json, re, time, urllib.request, urllib.parse
-          UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126 Safari/537.36'
-          def get(u, ua=UA, ref=None):
-              h = {'User-Agent': ua}
-              if ref: h['Referer'] = ref
-              try:
-                  r = urllib.request.urlopen(urllib.request.Request(u, headers=h), timeout=25); b = r.read()
-                  return r.status, r.headers.get('content-type'), len(b), b[:4]
-              except Exception as e:
-                  return str(e), None, 0, b''
-          def isbn13(i):
-              d = re.sub(r'[^0-9Xx]', '', i).upper()
-              if len(d) == 13: return d
-              if len(d) == 10:
-                  core = '978' + d[:9]; return core + str((10 - sum(int(c) * (1 if k % 2 == 0 else 3) for k, c in enumerate(core)) % 10) % 10)
-          q = urllib.parse.urlencode({'title': 'バガボンド', 'limit': 60, 'fields': 'title,isbn,cover_i,language'})
-          docs = json.loads(urllib.request.urlopen(urllib.request.Request('https://openlibrary.org/search.json?' + q, headers={'User-Agent': 'shelves/1.0'}), timeout=30).read())['docs']
-          seen = 0
-          for d in docs:
-              m = re.search(r'\((\d+)\)\s*$', d.get('title', ''))
-              if not m or int(m.group(1)) > 6: continue
-              isbns = [isbn13(i) for i in d.get('isbn', []) if isbn13(i)]
-              jp = [i for i in dict.fromkeys(isbns) if i.startswith('9784')]
-              print('==', d['title'], 'cover_i', d.get('cover_i'), 'lang', d.get('language'), 'isbn13', jp[:4])
-              for i in jp[:2]:
-                  i10 = None
-                  for u in [f'https://cover.openbd.jp/{i}.jpg', f'https://api.openbd.jp/v1/get?isbn={i}',
-                            f'https://ndlsearch.ndl.go.jp/thumbnail/{i}.jpg', f'https://iss.ndl.go.jp/thumbnail/{i}',
-                            f'https://books.google.com/books/content?vid=ISBN{i}&printsec=frontcover&img=1&zoom=1',
-                            f'https://covers.openlibrary.org/b/isbn/{i}-L.jpg?default=false']:
-                      print('  ', get(u)[:3], u)
-                  print('   (ndl with referer)', get(f'https://ndlsearch.ndl.go.jp/thumbnail/{i}.jpg', ref='https://filthyl.github.io/shelves/')[:3])
-              seen += 1
-              time.sleep(0.5)
-              if seen >= 4: break
+          python - <<'PY'
+          import json, collections, urllib.parse
+          c = json.load(open('data/covers.json'))
+          for k, e in c.items():
+              if k.startswith('manga/'):
+                  print(k, dict(collections.Counter(urllib.parse.urlparse((x['src'] if isinstance(x, dict) else x)).netloc for x in e.get('vols', {}).values())))
           PY
+      - name: Contact sheets
+        run: |
+          mkdir sheets
+          python - <<'PY'
+          import json, io, urllib.request
+          from PIL import Image, ImageDraw
+          c = json.load(open('data/covers.json'))
+          def get(u):
+              try: return Image.open(io.BytesIO(urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': 'shelves/1.0'}), timeout=30).read())).convert('RGB')
+              except Exception as e: return None
+          for key, e in c.items():
+              if not key.startswith('manga/'): continue
+              cells = [('series', e.get('src'))] + [(f'v{v}', (x['src'] if isinstance(x, dict) else x).replace('?default=false', '')) for v, x in sorted(e.get('vols', {}).items(), key=lambda kv: int(kv[0]))]
+              W, H, cols = 150, 225, 7
+              rows = (len(cells) + cols - 1) // cols
+              sheet = Image.new('RGB', (cols * W, rows * (H + 18)), '#181425'); d = ImageDraw.Draw(sheet)
+              for i, (label, u) in enumerate(cells):
+                  x, y = (i % cols) * W, (i // cols) * (H + 18)
+                  im = get(u.replace('-L.jpg', '-M.jpg') if u and 'openlibrary' in u else u) if u else None
+                  if im: im.thumbnail((W - 6, H)); sheet.paste(im, (x + 3, y + 18))
+                  d.text((x + 4, y + 3), label, fill='#feae34')
+              sheet.save(f"sheets/{key.split('/')[1]}.jpg", quality=60)
+              print(key, len(cells))
+          PY
+      - name: Publish the sheets on a throwaway branch
+        run: |
+          cd sheets
+          git init -q -b probe-sheets
+          git config user.name "shelves-bot"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add . && git commit -q -m "Contact sheets (throwaway)"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" probe-sheets

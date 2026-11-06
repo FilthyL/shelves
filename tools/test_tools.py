@@ -112,7 +112,7 @@ class Matching(unittest.TestCase):
     def test_japanese_isbns_become_cover_links_and_foreign_ones_do_not(self):
         self.assertEqual(covers.isbn13('4063360134'), '9784063360134')
         self.assertEqual(covers.jp_links(['4063360134', '9781506711980', '9784063360134']),
-                         ['https://cover.openbd.jp/9784063360134.jpg', 'https://ndlsearch.ndl.go.jp/thumbnail/9784063360134.jpg'])
+                         ['https://cover.openbd.jp/9784063360134.jpg', 'https://covers.openlibrary.org/b/isbn/9784063360134-L.jpg?default=false'])
 
     def test_volume_lookup_tries_each_candidate_link_and_falls_back_to_the_series_cover(self):
         good = b'x' * 3000

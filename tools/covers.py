@@ -206,7 +206,7 @@ def choose_anilist(it, res):
 VOL_RE = re.compile(r'(?:\bvol(?:ume)?\.?|#|\bbook|\bpart)\s*(\d+)', re.I)
 BIG_EDITIONS = ('perfect', 'deluxe', 'kanzenban', 'master edition', 'omnibus', 'collector', 'vizbig', 'definitive')
 CJK_RE = re.compile(r'[\u3040-\u30ff\u3400-\u9fff]')
-MANGA_V = 4  # bump to look every manga up again (entries made by an older recipe are dropped)
+MANGA_V = 5  # bump to look every manga up again (entries made by an older recipe are dropped)
 RANGE_RE = re.compile(r'\d+\s*[-\u2010-\u2015~\u301c]\s*\d+')  # "17\u201018": two volumes in one
 
 
@@ -240,11 +240,13 @@ def isbn13(isbn):
 
 
 def jp_links(isbns):
-    """Covers of a Japanese edition by its ISBN, from Japanese book-cover services. A record's own ISBNs are far
-    more reliable than the images Open Library attaches to it, which are sometimes another volume's."""
+    """A Japanese edition's cover by its own ISBN: openBD where the publisher supplies one, then Open Library's cover
+    for that exact edition. A record's ISBNs are far more reliable than the work-level cover_i Open Library
+    attaches to it, which is sometimes another volume's. (The National Diet Library refuses our requests, and
+    Google Books answers a placeholder, so neither is used.)"""
     out = []
     for i in list(dict.fromkeys(x for x in map(isbn13, isbns) if x and x.startswith('9784')))[:4]:
-        out += [f'https://cover.openbd.jp/{i}.jpg', f'https://ndlsearch.ndl.go.jp/thumbnail/{i}.jpg']
+        out += [f'https://cover.openbd.jp/{i}.jpg', f'https://covers.openlibrary.org/b/isbn/{i}-L.jpg?default=false']
     return out
 
 
