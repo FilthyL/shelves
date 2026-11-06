@@ -1,0 +1,25 @@
+name: Probe covers
+on:
+  push:
+    branches: [ccr-9ed8a046-dq7s74]
+    paths: [".github/workflows/probe.yml"]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe
+        run: |
+          U1="https://uploads.mangadex.org/covers/801513ba-a712-498c-8f57-cae55b38cc92/5ca0c30f-e5b7-405c-8014-39b9cdbfbe91.jpg.512.jpg"
+          U2="https://uploads.mangadex.org/covers/a1c7c817-4e59-43b7-9365-09675a149a6f/2f4aca53-64c7-46ac-ae85-3bc9b3169890.png.512.jpg"
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126 Safari/537.36"
+          for u in "$U1" "$U2"; do
+            echo "== $u"
+            echo "-- no referer"; curl -sS -m 20 -A "$UA" -o /tmp/a -D - "$u" | head -12; ls -l /tmp/a
+            echo "-- referer github.io"; curl -sS -m 20 -A "$UA" -e "https://filthyl.github.io/shelves/" -o /tmp/b -D - "$u" | head -12; ls -l /tmp/b
+            echo "-- referer + sec-fetch image"; curl -sS -m 20 -A "$UA" -H "Sec-Fetch-Dest: image" -H "Sec-Fetch-Site: cross-site" -H "Sec-Fetch-Mode: no-cors" -o /tmp/c -D - "$u" | head -12; ls -l /tmp/c; file /tmp/c
+          done
+          echo "== live site"
+          curl -sS -m 20 -o /dev/null -w "index %{http_code}\n" https://filthyl.github.io/shelves/
+          curl -sS -m 20 https://filthyl.github.io/shelves/data/covers.json | head -c 300; echo
+          echo "== api cover lookup"
+          curl -sS -m 20 "https://api.mangadex.org/cover?limit=1&manga[]=801513ba-a712-498c-8f57-cae55b38cc92&order[volume]=asc" | head -c 500
