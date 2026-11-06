@@ -482,16 +482,23 @@ function obj3dHTML(o, z) {
   const edge = { book: `eg-book${it.format === 'hardcover' ? ' eg-hardcover' : ''}`, manga: 'eg-manga', case: 'eg-case', jewel: 'eg-jewel', sleeve: 'eg-open', vhs: 'eg-vhs', box: 'eg-box', cassette: 'eg-cassette' }[g] || 'eg-case';
   const top = { book: 'eg-book', manga: 'eg-manga', sleeve: 'eg-sleeve' }[g] || edge;
   const caseCol = { bluray: '#1d58b8', dvd: '#121212', '4k': '#0b0b0b' }[it.format] || '#111';
-  return `<div class="obj3d" style="--W:${z.W}px;--H:${z.H}px;--D:${z.D}px;--case:${caseCol};${palVars(pal)}">
+  const spineFace = `<span class="${spineClass(o)}" style="width:var(--D);height:var(--H)">${spineHTML(o)}</span>`;
+  const edgeFace = `<span class="edge ${edge}"></span>`;
+  return `<div class="obj3d${rtl(o) ? ' rtl' : ''}" style="--W:${z.W}px;--H:${z.H}px;--D:${z.D}px;--case:${caseCol};${palVars(pal)}">
     ${mediaHTML(o)}
     <div class="f f-front">${frameHTML(o)}</div>
     <div class="f f-back">${backHTML(o)}</div>
-    <div class="f f-left"><span class="${spineClass(o)}" style="width:var(--D);height:var(--H)">${spineHTML(o)}</span></div>
-    <div class="f f-right"><span class="edge ${edge}"></span></div>
+    <div class="f f-left">${rtl(o) ? edgeFace : spineFace}</div>
+    <div class="f f-right">${rtl(o) ? spineFace : edgeFace}</div>
     <div class="f f-top"><span class="edge ${top}"></span></div>
     <div class="f f-bottom"><span class="edge ${top}"></span></div>
   </div>`;
 }
+
+/** Manga is bound on the right, read right to left: its spine is on the right of the front cover. */
+const rtl = o => o.item.fmt.group === 'manga';
+/** the turn that shows an object's spine, the way it sat on the shelf */
+const spineTurn = o => (rtl(o) ? -90 : 90);
 
 function buildInspect(o) {
   const el = document.createElement('div');
@@ -544,7 +551,7 @@ function fill(o, fly) {
   const face = shelfEl?.classList.contains('face');
   const obj3d = $('.obj3d', holder);
   const rest = `translate(${-z.out / 2}px, 0px) scale(1)`;
-  I.rotX = 6; I.rotY = z.out ? -14 : -24;
+  I.rotX = 6; I.rotY = (z.out ? -14 : -24) * (rtl(o) ? -1 : 1); // a little of the spine side shows
   const restRot = `rotateX(${I.rotX}deg) rotateY(${I.rotY}deg)`;
 
   if (fly && shelfEl && !reduced) {
@@ -552,7 +559,7 @@ function fill(o, fly) {
     const r = shelfEl.getBoundingClientRect();
     const m = r.height / z.H;
     const startT = `translate(${r.left + r.width / 2 - a.left}px, ${r.top + r.height / 2 - a.top}px) scale(${m})`;
-    const startR = face ? 'rotateX(5deg) rotateY(0deg)' : 'rotateX(0deg) rotateY(90deg)';
+    const startR = face ? 'rotateX(5deg) rotateY(0deg)' : `rotateX(0deg) rotateY(${spineTurn(o)}deg)`;
     shelfEl.classList.add('is-out');
     holder.animate([{ transform: startT }, { transform: rest }], { duration: 820, easing: SWING, fill: 'both' });
     obj3d.animate([{ transform: startR }, { transform: restRot }], { duration: 820, easing: SWING, fill: 'both' })
@@ -563,7 +570,7 @@ function fill(o, fly) {
     holder.style.transform = rest;
     if (fly || reduced) { setRot(); slideOut(); }
     else {
-      obj3d.animate([{ transform: `rotateX(${I.rotX}deg) rotateY(${I.rotY + 70}deg)`, opacity: 0 }, { transform: restRot, opacity: 1 }],
+      obj3d.animate([{ transform: `rotateX(${I.rotX}deg) rotateY(${I.rotY + (rtl(o) ? -70 : 70)}deg)`, opacity: 0 }, { transform: restRot, opacity: 1 }],
         { duration: 480, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' }).onfinish = () => { setRot(); slideOut(); };
     }
   }
@@ -652,7 +659,8 @@ function closeInspect(instant) {
   $('.inspect-backdrop', I.el).animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: 'forwards' });
   holder.animate([{ transform: getComputedStyle(holder).transform }, { transform: `translate(${r.left + r.width / 2 - a.left}px, ${r.top + r.height / 2 - a.top}px) scale(${m})` }],
     { duration: 640, easing: SWING, fill: 'forwards' });
-  o3.animate([{ transform: o3.style.transform || 'none' }, { transform: face ? 'rotateX(5deg) rotateY(0deg)' : `rotateX(0deg) rotateY(${90 + 360 * Math.round((I.rotY - 90) / 360)}deg)` }],
+  const turn = spineTurn(I.o);
+  o3.animate([{ transform: o3.style.transform || 'none' }, { transform: face ? 'rotateX(5deg) rotateY(0deg)' : `rotateX(0deg) rotateY(${turn + 360 * Math.round((I.rotY - turn) / 360)}deg)` }],
     { duration: 640, easing: SWING, fill: 'forwards' }).onfinish = done;
 }
 
