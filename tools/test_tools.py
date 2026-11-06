@@ -49,6 +49,10 @@ class Matching(unittest.TestCase):
         self.assertEqual(volume_of('Vagabond 12'), 12)
         self.assertEqual(volume_of('ドロヘドロ (1)'), 1)
         self.assertEqual(volume_of('バガボンド(12)'), 12)
+        self.assertEqual(volume_of('鋼の錬金術師 10 (ガンガンコミックス)'), 10)
+        self.assertEqual(volume_of('ONE PIECE　巻十'), None)
+        self.assertEqual(volume_of('ワンピース 第３巻'), 3)
+        self.assertEqual(volume_of('Monster 5 [Omnibus]'), 5)
         self.assertIsNone(volume_of('Monster'))
 
     def test_similarity_ignores_editions_and_articles(self):

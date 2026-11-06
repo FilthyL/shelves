@@ -206,14 +206,18 @@ def choose_anilist(it, res):
 VOL_RE = re.compile(r'(?:\bvol(?:ume)?\.?|#|\bbook|\bpart)\s*(\d+)', re.I)
 BIG_EDITIONS = ('perfect', 'deluxe', 'kanzenban', 'master edition', 'omnibus', 'collector', 'vizbig', 'definitive')
 CJK_RE = re.compile(r'[\u3040-\u30ff\u3400-\u9fff]')
-MANGA_V = 5  # bump to look every manga up again (entries made by an older recipe are dropped)
+MANGA_V = 6  # bump to look every manga up again (entries made by an older recipe are dropped)
 RANGE_RE = re.compile(r'\d+\s*[-\u2010-\u2015~\u301c]\s*\d+')  # "17\u201018": two volumes in one
 
 
 def volume_of(title):
-    """The volume number in an edition's title: "Monster, Vol. 3", "Blame! 4", "Volume 10: ..."."""
-    t = str(title or '')
-    m = VOL_RE.search(t) or re.search(r'\u7b2c\s*(\d+)\s*\u5dfb', t) or re.search(r'\(?(\d+)\)?\s*$', t)
+    """The volume number in an edition's title: "Monster, Vol. 3", "Blame! 4", "Volume 10: ...", "ドロヘドロ (1)",
+    "鋼の錬金術師 10 (ガンガンコミックス)"."""
+    t = unicodedata.normalize('NFKC', str(title or ''))
+    m = VOL_RE.search(t) or re.search(r'\u7b2c\s*(\d+)\s*\u5dfb', t)
+    if not m:
+        t = re.sub(r'\s*[(\[][^\d)\]][^)\]]*[)\]]\s*$', '', t)  # drop a trailing "(ガンガンコミックス)" or "[Omnibus]"
+        m = re.search(r'\(?(\d+)\)?\s*$', t)
     return int(m.group(1)) if m else None
 
 
@@ -265,7 +269,8 @@ def isbn_links(isbns):
 
 
 SET_WORDS = ('box', '-in-1', 'omnibus', 'maximum', 'maximun', ' set', 'collection', 'guide', 'artbook', 'art book', 'illustration', 'fan book', 'fanbook', 'official',
-             '\u30ac\u30a4\u30c9', '\u30a4\u30e9\u30b9\u30c8', '\u30bb\u30c3\u30c8', '\u753b\u96c6')
+             '\u30ac\u30a4\u30c9', '\u30a4\u30e9\u30b9\u30c8', '\u30bb\u30c3\u30c8', '\u753b\u96c6', 'the art of', 'limited edition',
+             '\u7279\u88c5', '\u521d\u56de\u9650\u5b9a', '\u9650\u5b9a\u7248')
 
 
 def openlibrary_volumes(it, wanted, log):
