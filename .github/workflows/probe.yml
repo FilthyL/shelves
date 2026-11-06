@@ -2,35 +2,42 @@ name: Probe covers
 on:
   push:
     branches: [ccr-9ed8a046-dq7s74]
-    paths: [".github/workflows/probe.yml", "tools/covers.py"]
+    paths: [".github/workflows/probe.yml"]
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - run: pip install --quiet pillow
-      - name: Look the manga covers up
-        env:
-          PYTHONUNBUFFERED: "1"
-        run: python tools/covers.py --room manga
-      - name: Summarise
+      - name: Probe
         run: |
-          python - <<'PY'
-          import json, sys, urllib.parse, collections
-          sys.path.insert(0, 'tools')
-          from shelflib import slug, parse_owned
-          c = json.load(open('data/covers.json'))
-          items = json.load(open('data/rooms/manga.json'))['items']
-          tot = got = 0
-          for it in items:
-              sid = slug(it['title']); e = c.get('manga/' + sid) or {}
-              vols = parse_owned(it['owned'], it.get('total')); vc = e.get('vols', {})
-              hosts = collections.Counter(urllib.parse.urlparse(x['src']).netloc for x in vc.values())
-              tot += len(vols); got += len(vc)
-              print(f"{sid:22} owned {len(vols):3} own-cover {len(vc):3}  series={urllib.parse.urlparse(e.get('src','')).netloc or 'NONE'}  {dict(hosts)}")
-          print('TOTAL', got, 'of', tot)
+          python3 - <<'PY'
+          import json, urllib.request, urllib.parse
+          UA = {'User-Agent': 'Mozilla/5.0 Chrome/126', 'Sec-Fetch-Dest': 'image', 'Sec-Fetch-Mode': 'no-cors', 'Sec-Fetch-Site': 'cross-site'}
+          def get(u, h=None):
+              try:
+                  r = urllib.request.urlopen(urllib.request.Request(u, headers=h or {'User-Agent': 'shelves/1.0 (cover probe)'}), timeout=25)
+                  return r.status, r.headers.get('content-type'), r.read()
+              except Exception as e:
+                  return str(e), None, b''
+          for q in ({'title': 'one piece', 'author': 'Eiichiro Oda'}, {'q': 'one piece vol 3 oda'}, {'title': 'berserk', 'author': 'Kentaro Miura'}, {'q': 'goodnight punpun vol 2 asano'}):
+              s, t, b = get('https://openlibrary.org/search.json?' + urllib.parse.urlencode({**q, 'limit': 40, 'fields': 'title,author_name,cover_i,isbn'}))
+              print('==', q, s, len(b))
+              try:
+                  for d in json.loads(b)['docs'][:40]:
+                      print('  ', (d.get('title') or '')[:55], '|', (d.get('author_name') or [''])[0][:20], '| cover', d.get('cover_i'), '| isbns', len(d.get('isbn') or []))
+              except Exception as e:
+                  print('  parse', e, b[:200])
+          print('== image hosts for One Piece vol 1 (VIZ) 9781569319017 / 156931901X')
+          for u in ['https://covers.openlibrary.org/b/isbn/9781569319017-L.jpg?default=false',
+                    'https://pictures.abebooks.com/isbn/9781569319017-us.jpg',
+                    'https://pictures.abebooks.com/isbn/9781569319017-us-300.jpg',
+                    'https://m.media-amazon.com/images/P/156931901X.01.LZZZZZZZ.jpg',
+                    'https://images-na.ssl-images-amazon.com/images/P/156931901X.01._SCLZZZZZZZ_.jpg',
+                    'https://books.google.com/books/content?vid=ISBN9781569319017&printsec=frontcover&img=1&zoom=1',
+                    'https://www.syndetics.com/index.aspx?isbn=9781569319017/LC.JPG&client=x',
+                    'https://dw9to29mmj727.cloudfront.net/products/1569319014.jpg',
+                    'https://cdn.kodansha.us/x',
+                    'https://image.bookwalker.jp/x']:
+              s, t, b = get(u, UA)
+              print(s, t, len(b), u)
           PY
