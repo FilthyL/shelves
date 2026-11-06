@@ -33,6 +33,42 @@ export function col(hex) {
   return c;
 }
 
+// ============================================================ SKY / TIME OF DAY
+// Four named phases (zenith-to-horizon sky bands, overall darkness, whether lamps are lit) and the
+// hours they hold or blend between, in the viewer's own local time. Everything else in the street
+// scene (grounds, city blocks) stays the same across phases; only the sky, lit windows and lamps vary.
+const SKY_PHASES = {
+  night: { bands: [E.night, E.night, E.ink, E.navy], dark: 1, lampLit: true },
+  dawn: { bands: [E.navy, E.plum, E.wine, E.peach], dark: 0.42, lampLit: true },
+  day: { bands: [E.blue, E.sky, E.sky, E.cyan], dark: 0, lampLit: false },
+  dusk: { bands: [E.ink, E.grape, E.rose, E.amber], dark: 0.48, lampLit: true },
+};
+const SKY_KEYS = [
+  { h: 0, k: 'night' }, { h: 5, k: 'night' }, { h: 7, k: 'dawn' }, { h: 9, k: 'day' },
+  { h: 17, k: 'day' }, { h: 19, k: 'dusk' }, { h: 21, k: 'night' }, { h: 24, k: 'night' },
+];
+const lerp = (a, b, f) => a + (b - a) * f;
+
+/** which two named phases the given (or real) local time falls between, and how far across */
+function skyPhase(clock) {
+  const d = clock instanceof Date ? clock : typeof clock === 'number' ? new Date(clock) : new Date();
+  const hour = d.getHours() + d.getMinutes() / 60 + d.getSeconds() / 3600;
+  let i = 0;
+  while (i < SKY_KEYS.length - 2 && hour >= SKY_KEYS[i + 1].h) i++;
+  const a = SKY_KEYS[i], b = SKY_KEYS[i + 1], span = b.h - a.h;
+  return { a: a.k, b: b.k, f: span <= 0 ? 0 : Math.max(0, Math.min(1, (hour - a.h) / span)), hour };
+}
+
+/** cross-fades two equally-sized pixel buffers with the same ordered dither used for the house cutaway */
+function blendBg(dst, a, b, f, W, H) {
+  if (f <= 0) { dst.set(a); return; }
+  if (f >= 1) { dst.set(b); return; }
+  for (let y = 0; y < H; y++) {
+    const row = y * W, thresh = BAYER[y & 3];
+    for (let x = 0; x < W; x++) { const i = row + x; dst[i] = (thresh[x & 3] + 0.5) / 16 < f ? b[i] : a[i]; }
+  }
+}
+
 export class Raster {
   constructor(w, h) { this.w = w; this.h = h; this.d = new Uint32Array(w * h); }
   px(x, y, c) { x |= 0; y |= 0; if (x < 0 || y < 0 || x >= this.w || y >= this.h) return; this.d[y * this.w + x] = col(c); }
@@ -127,45 +163,32 @@ export function cellsFor(rooms) {
 export function createStreet({ rooms, name, number }) {
   const { L, cells } = cellsFor(rooms);
   const title = String(name || 'Filth Manor').toUpperCase().slice(0, 14);
-  const S = { W: 0, H: 0, hx: 0, hy: 0, ground: 0, bg: null, ext: null, int: null, frame: null, stars: [], box: null };
+  const S = { W: 0, H: 0, hx: 0, hy: 0, ground: 0, bg: null, ext: null, int: null, frame: null, starField: [], box: null };
   const { WW, CW, FH, AH, WR, CR, cup, base, BH, wall } = HG, TW = L.TW, bodyH = L.bodyH;
 
   function resize(W, H, ground) {
     Object.assign(S, { W, H, ground });
     S.hx = Math.round(W / 2 - TW / 2);
     S.hy = ground - base - bodyH;
-    S.bg = new Raster(W, H); S.ext = new Raster(W, H); S.int = new Raster(W, H); S.frame = new Raster(W, H);
+    S.ext = new Raster(W, H); S.int = new Raster(W, H); S.frame = new Raster(W, H);
     S.box = { x: S.hx - 6, y: S.hy - L.top - 4, w: TW + 12, h: L.top + bodyH + base + 6 + (L.basement ? BH : 0) };
-    drawBackground(S);
+    S.bg = {};
+    for (const name in SKY_PHASES) S.bg[name] = drawBackground(S, SKY_PHASES[name]);
+    S.starField = buildStars(W, ground);
     drawHouse(S, S.ext, false);
     drawHouse(S, S.int, true);
   }
 
-  function drawBackground(S) {
-    const r = S.bg, { W, H, ground } = S, rand = rng(7);
+  function drawBackground(S, phase) {
+    const r = new Raster(S.W, S.H), { W, H, ground } = S, rand = rng(7);
     // ordered-dither gradient from the zenith down to the horizon
-    const bands = [E.night, E.night, E.ink, E.navy];
+    const bands = phase.bands;
     for (let y = 0; y < ground; y++) {
       const f = (y / ground) ** 1.15 * (bands.length - 1);
       const i = Math.min(bands.length - 2, Math.floor(f)), frac = f - i;
       const a = col(bands[i]), b = col(bands[i + 1]);
       for (let x = 0; x < W; x++) r.d[y * W + x] = BAYER[y & 3][x & 3] < frac * 16 ? b : a;
     }
-    S.stars = [];
-    for (let n = 0; n < (W * ground) / 140; n++) {
-      const x = Math.floor(rand() * W), y = Math.floor(rand() * ground * 0.62);
-      const c = rand() < 0.7 ? E.steel : rand() < 0.6 ? E.fog : E.white;
-      r.px(x, y, c);
-      if (rand() < 0.2) S.stars.push({ x, y, p: rand() * 6.28, s: 0.6 + rand() * 1.6, base: c });
-    }
-    for (let n = 0; n < 5; n++) {
-      const x = 6 + Math.floor(rand() * (W - 12)), y = 4 + Math.floor(rand() * ground * 0.4);
-      r.px(x, y, E.white); r.px(x - 1, y, E.fog); r.px(x + 1, y, E.fog); r.px(x, y - 1, E.fog); r.px(x, y + 1, E.fog);
-    }
-    const mx = Math.round(W * 0.84), my = Math.round(ground * 0.16);
-    r.circle(mx, my, 15, E.ink, 0.5); r.circle(mx, my, 12, E.navy, 0.35);
-    r.circle(mx, my, 8, E.sand); r.circle(mx - 2, my - 2, 6, E.white);
-    r.circle(mx + 3, my + 2, 2, E.peach); r.px(mx - 3, my + 3, E.peach); r.px(mx - 2, my + 3, E.peach); r.circle(mx + 1, my - 4, 1, E.skin);
     // the city, low and far off, so the manor stands above it
     let x = -2;
     while (x < W) {
@@ -175,7 +198,7 @@ export function createStreet({ rooms, name, number }) {
       if (rand() < 0.3) { r.vl(x + 2, top - 5, 5, E.ink); r.px(x + 2, top - 6, E.red); }
       for (let wy = top + 3; wy < ground - 4; wy += 4) for (let wx = x + 2; wx < x + w - 1; wx += 3) {
         const q = rand();
-        if (q < 0.12) r.rect(wx, wy, 1, 2, q < 0.04 ? E.yellow : q < 0.09 ? E.amber : E.orange);
+        if (q < 0.12 * phase.dark) r.rect(wx, wy, 1, 2, q < 0.04 ? E.yellow : q < 0.09 ? E.amber : E.orange);
       }
       x += w + (rand() < 0.3 ? 2 : 0);
     }
@@ -198,8 +221,8 @@ export function createStreet({ rooms, name, number }) {
     }
     for (const gx of [left - 4, right - 2]) {
       r.rect(gx, ground - 16, 6, 16, E.steel); r.vl(gx, ground - 16, 16, E.fog); r.rect(gx - 1, ground - 17, 8, 2, E.fog);
-      r.rect(gx + 1, ground - 22, 4, 5, E.night); r.rect(gx + 2, ground - 21, 2, 3, E.yellow);
-      glow(r, gx + 3, ground - 20, 9, E.amber, 0.2);
+      r.rect(gx + 1, ground - 22, 4, 5, E.night); r.rect(gx + 2, ground - 21, 2, 3, phase.lampLit ? E.yellow : E.slate);
+      if (phase.lampLit) glow(r, gx + 3, ground - 20, 9, E.amber, 0.2);
     }
     // the pavement and the road
     r.rect(0, ground, W, H - ground, E.night);
@@ -219,9 +242,42 @@ export function createStreet({ rooms, name, number }) {
     // street lamps along the pavement
     for (const lx of [S.hx - 120, S.hx + TW + 120]) {
       r.rect(lx, ground - 40, 2, 40, E.navy); r.rect(lx - 1, ground - 2, 4, 2, E.ink);
-      r.rect(lx - 2, ground - 44, 6, 4, E.night); r.rect(lx - 1, ground - 41, 4, 2, E.yellow);
-      for (let j = 0; j < 40; j++) r.dith(lx + 1 - Math.floor(j / 3), ground - 39 + j, 1 + Math.floor(j / 1.5), 1, E.amber, 0.06);
-      r.dith(lx - 10, ground + 1, 24, 5, E.peach, 0.18);
+      r.rect(lx - 2, ground - 44, 6, 4, E.night); r.rect(lx - 1, ground - 41, 4, 2, phase.lampLit ? E.yellow : E.slate);
+      if (phase.lampLit) {
+        for (let j = 0; j < 40; j++) r.dith(lx + 1 - Math.floor(j / 3), ground - 39 + j, 1 + Math.floor(j / 1.5), 1, E.amber, 0.06);
+        r.dith(lx - 10, ground + 1, 24, 5, E.peach, 0.18);
+      }
+    }
+    return r;
+  }
+
+  /** the field of twinkling stars and the sparkle highlights, built once and faded in by how dark it is */
+  function buildStars(W, ground) {
+    const rand = rng(23), stars = [];
+    for (let n = 0; n < (W * ground) / 140; n++) {
+      const x = Math.floor(rand() * W), y = Math.floor(rand() * ground * 0.62);
+      const c = rand() < 0.7 ? E.steel : rand() < 0.6 ? E.fog : E.white;
+      stars.push({ x, y, p: rand() * 6.28, s: 0.6 + rand() * 1.6, base: c, vis: 0.3 + rand() * 0.7 });
+    }
+    for (let n = 0; n < 5; n++) {
+      const x = 6 + Math.floor(rand() * (W - 12)), y = 4 + Math.floor(rand() * ground * 0.4);
+      stars.push({ x, y, base: E.white, vis: 0.16 + rand() * 0.18, sparkle: true });
+    }
+    return stars;
+  }
+
+  /** the moon by night or the sun by day, swept across the sky on an arc keyed to local time */
+  function drawBody(f, hour) {
+    const { W, ground } = S, isSun = hour >= 6 && hour < 18;
+    const frac = Math.max(0, Math.min(1, isSun ? (hour - 6) / 12 : hour >= 18 ? (hour - 18) / 12 : (hour + 6) / 12));
+    const x = Math.round(W * 0.08 + frac * W * 0.84), y = Math.round(ground * 0.58 - Math.sin(frac * Math.PI) * ground * 0.46);
+    if (isSun) {
+      f.circle(x, y, 15, E.orange, 0.3); f.circle(x, y, 11, E.amber, 0.5);
+      f.circle(x, y, 7, E.yellow); f.circle(x - 1, y - 1, 4, E.sand);
+    } else {
+      f.circle(x, y, 15, E.ink, 0.5); f.circle(x, y, 12, E.navy, 0.35);
+      f.circle(x, y, 8, E.sand); f.circle(x - 2, y - 2, 6, E.white);
+      f.circle(x + 3, y + 2, 2, E.peach); f.px(x - 3, y + 3, E.peach); f.px(x - 2, y + 3, E.peach); f.circle(x + 1, y - 4, 1, E.skin);
     }
   }
 
@@ -497,7 +553,17 @@ export function createStreet({ rooms, name, number }) {
   // ------------------------------------------------------------ frame
   function compose(ctx, t, st) {
     const f = S.frame, b = S.box;
-    f.d.set(S.bg.d);
+    const sky = skyPhase(st.clock);
+    blendBg(f.d, S.bg[sky.a].d, S.bg[sky.b].d, sky.f, S.W, S.H);
+    const dark = lerp(SKY_PHASES[sky.a].dark, SKY_PHASES[sky.b].dark, sky.f);
+    // the sky: stars fade in as it gets dark, the sun or moon sweeps the arc for the real local hour —
+    // drawn before the house, so the manor's silhouette occludes them like anything else behind it
+    for (const s of S.starField) {
+      if (dark < s.vis) continue;
+      if (s.sparkle) { f.px(s.x, s.y, E.white); f.px(s.x - 1, s.y, E.fog); f.px(s.x + 1, s.y, E.fog); f.px(s.x, s.y - 1, E.fog); f.px(s.x, s.y + 1, E.fog); continue; }
+      const v = Math.sin(t * s.s + s.p); f.px(s.x, s.y, v > 0.75 ? E.white : v < -0.6 ? E.navy : s.base);
+    }
+    drawBody(f, sky.hour);
     const open = st.open;
     for (let y = Math.max(0, b.y); y < Math.min(S.H, b.y + b.h); y++) {
       const row = y * S.W;
@@ -507,8 +573,6 @@ export function createStreet({ rooms, name, number }) {
         if (src[i]) f.d[i] = src[i];
       }
     }
-    // twinkle
-    for (const s of S.stars) { const v = Math.sin(t * s.s + s.p); f.px(s.x, s.y, v > 0.75 ? E.white : v < -0.6 ? E.navy : s.base); }
     // smoke from the east chimney
     const cxs = S.hx + TW - 13, cys = S.hy - WR - 21;
     for (let k = 0; k < 3; k++) {
