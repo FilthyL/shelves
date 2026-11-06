@@ -284,7 +284,7 @@ export function openLog({ house, roomId, onLogged }) {
       const set = (id, v) => { const f = $(`#log-${id}`, el); if (f && v != null && v !== '') f.value = v; };
       set('creator', h.creator); set('year', h.year); set('pages', h.pages); set('isbn', h.isbn);
       set('episodes', h.episodes); set('total', h.total); set('original', h.original && h.original !== h.title ? h.original : null);
-      cover = kind() === 'manga' ? null : h.cover || null; // manga volumes get their own covers from MangaDex
+      cover = kind() === 'manga' ? null : h.cover || null; // manga volumes get their own covers from Open Library when the next deploy looks them up
       picked.hidden = !h.thumb;
       if (h.thumb) { $('img', picked).src = h.thumb; $('span', picked).textContent = cover ? 'This cover goes on the shelf' : 'Volume covers are found after logging'; }
       hits = []; render();

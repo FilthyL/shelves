@@ -1,8 +1,13 @@
 """Offline tests for the data helpers and cover matching. Run: python3 -m unittest discover -s tools"""
+import json
+import re
+import shutil
+import subprocess
 import sys
 import unittest
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import covers  # noqa: E402
 from shelflib import load_house, parse_owned, slug  # noqa: E402
@@ -151,6 +156,24 @@ class Matching(unittest.TestCase):
         self.assertEqual(got['1'][0], 'https://covers.openlibrary.org/b/id/11-L.jpg?default=false')
         self.assertIn('https://dw9to29mmj727.cloudfront.net/products/1569319014.jpg', got['1'])
         self.assertTrue(got['2'][0].startswith('https://covers.openlibrary.org/b/isbn/1569319030'))
+
+
+class Warm(unittest.TestCase):
+    """tools/warm.mjs asks the CDN for the same links the site builds (it loads assets/js/img.js itself)."""
+
+    @unittest.skipUnless(shutil.which('node'), 'node is not installed')
+    def test_links_are_the_sites_own_and_cover_every_slow_host_cover(self):
+        out = subprocess.run(['node', str(ROOT / 'tools' / 'warm.mjs'), '--list'], capture_output=True, text=True, check=True).stdout.split()
+        data = json.loads((ROOT / 'data' / 'covers.json').read_text(encoding='utf-8'))
+        slow = set()
+        for e in data.values():
+            for s in [e.get('src'), *[(v.get('src') if isinstance(v, dict) else v) for v in (e.get('vols') or {}).values()]]:
+                if s and re.match(r'https://(covers\.openlibrary\.org|coverartarchive\.org)/', s):
+                    slow.add(s)
+        self.assertEqual(len(out), 2 * len(slow))
+        self.assertTrue(all(u.startswith('https://wsrv.nl/?url=https%3A%2F%2F') for u in out))
+        self.assertFalse(any('default%3Dfalse' in u for u in out))
+        self.assertEqual({re.search(r'&w=(\d+)&', u).group(1) for u in out}, {'200', '480'})
 
 
 if __name__ == '__main__':

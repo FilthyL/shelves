@@ -96,6 +96,11 @@ jobs:
             for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break; sleep 5; done
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: Warm the image CDN
+        # visitors then get every cover from the CDN's cache; a slow first request here is the price they never pay
+        timeout-minutes: 8
+        continue-on-error: true
+        run: node tools/warm.mjs
       - name: Build the site with the new covers
         if: steps.commit.outputs.changed == 'true'
         run: |

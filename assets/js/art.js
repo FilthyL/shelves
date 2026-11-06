@@ -1,5 +1,6 @@
 // Generative cover art, spines, back covers and case frames. Pure CSS, no images needed.
 import { rng, esc, hash, compactRanges } from './model.js';
+import { coverSrc } from './img.js';
 
 const COMPS = {
   music:  ['orb', 'rings', 'grid', 'sun', 'mesh', 'stripes', 'type', 'arch', 'split', 'void'],
@@ -34,7 +35,7 @@ function lastName(c) {
 }
 
 /** Front-cover markup for one physical object. Caller wraps it in .cover (a size container). */
-export function coverHTML(obj) {
+export function coverHTML(obj, size = 'lg') {
   const it = obj.item;
   const r = rng(it.seed ^ 0x9e3779b9);
   const comps = COMPS[it.kind] || COMPS.books;
@@ -84,7 +85,9 @@ export function coverHTML(obj) {
   if (!obj.cover) return art;
   // a series cover reused for a volume gets a volume badge; a real per-volume cover already shows it
   const badge = obj.vol && obj.cover === it.cover && !it.volCovers[obj.vol] ? `<span class="img-vol">${obj.vol}</span>` : '';
-  return `${art}<img class="art-img" src="${esc(obj.cover)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">${badge}`;
+  // a shelf face or thumbnail is small and may be far off screen; the inspector's cover is wanted at once
+  const src = coverSrc(obj.cover, size), direct = src !== obj.cover ? ` data-direct="${esc(obj.cover)}"` : '';
+  return `${art}<img class="art-img" src="${esc(src)}"${direct} alt="" loading="${size === 'lg' ? 'eager' : 'lazy'}" decoding="async" referrerpolicy="no-referrer">${badge}`;
 }
 
 /** Inner markup for a spine. The wrapper carries palette vars and sp-<group>/fmt-<format>. */
@@ -123,9 +126,9 @@ export function spineClass(obj) {
 }
 
 /** A face-out object: the cover inside its case or sleeve. */
-export function frameHTML(obj) {
+export function frameHTML(obj, size = 'lg') {
   const it = obj.item, g = it.fmt.group;
-  const cover = `<span class="cover">${coverHTML(obj)}</span>`;
+  const cover = `<span class="cover">${coverHTML(obj, size)}</span>`;
   const gloss = '<span class="fr-gloss"></span>';
   switch (g) {
     case 'jewel': return `<span class="fr fr-jewel"><span class="fr-hinge"></span>${cover}${gloss}</span>`;

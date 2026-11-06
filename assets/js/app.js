@@ -1,4 +1,5 @@
 import { loadHouse, putEntry, hash, esc, roomStats, countLine } from './model.js';
+import { coverSrc } from './img.js';
 import { spineHTML, spineClass, frameHTML, backHTML, mediaHTML, coverHTML, palVars, volumeLine } from './art.js';
 import { createStreet, decorSprite, wallTile } from './pixel.js';
 import { openLog, canLog, applyPending } from './log.js';
@@ -34,7 +35,12 @@ async function boot() {
   document.addEventListener('click', e => { if (e.target.closest('.js-sound')) toggleSound(); });
   onSound(syncSound);
   // a cover that fails to load falls back to the generated art underneath it
-  document.addEventListener('error', e => { if (e.target?.classList?.contains('art-img')) e.target.remove(); }, true);
+  // (a cover that came through the image CDN is tried once more straight from its source first)
+  document.addEventListener('error', e => {
+    const el = e.target;
+    if (!el?.classList?.contains('art-img')) return;
+    if (el.dataset.direct) { el.src = el.dataset.direct; delete el.dataset.direct; } else el.remove();
+  }, true);
   route();
 }
 
@@ -268,6 +274,14 @@ function showRoom(room) {
     const b = e.target.closest('.obj');
     if (b) { S.pushed = true; go(`${room.id}--${b.dataset.key}`); }
   });
+  // a volume the pointer rests on is about to be opened: fetch its big cover now (not for one it only passes over)
+  let rest = 0;
+  $('#case').addEventListener('pointerover', e => {
+    const b = e.target.closest('.obj');
+    clearTimeout(rest);
+    if (b) rest = setTimeout(() => warmCover(room.objects.find(x => x.key === b.dataset.key)), 120);
+  });
+  $('#case').addEventListener('pointerleave', () => clearTimeout(rest));
   packShelves();
   window.scrollTo(0, 0);
   samplePalettes(room);
@@ -362,7 +376,7 @@ function objHTML(x) {
   const pal = o.pal || it.pal;
   const cls = ['obj', x.face ? 'face' : 'sp', it.kind === 'books' && /read/i.test(it.status || '') ? 'reading' : '', x.lean ? 'lean' : ''].filter(Boolean).join(' ');
   const style = `--sw:${x.w.toFixed(1)}px;--sh:${x.h.toFixed(1)}px;--gap:${x.gap}px;${palVars(pal)};--hue:${o.vol ? (o.vol * 23) % 360 : 0}deg${x.lean ? `;--lean:${x.lean}deg` : ''}`;
-  const inner = x.face ? frameHTML(o) : `<span class="${spineClass(o)}">${spineHTML(o)}</span>`;
+  const inner = x.face ? frameHTML(o, 'sm') : `<span class="${spineClass(o)}">${spineHTML(o)}</span>`;
   const title = `${it.title}${o.vol ? ` ${o.vol}` : ''}`;
   const sub = [it.creator, it.year].filter(Boolean).join(' · ');
   const label = `${it.title}${o.vol ? `, volume ${o.vol}` : ''}${it.creator ? `, ${it.creator}` : ''}`;
@@ -429,8 +443,9 @@ function samplePal(src) {
         resolve(p);
       } catch { resolve(null); }
     };
-    img.onerror = () => resolve(null);
-    img.src = src;
+    const small = coverSrc(src, 'sm');
+    img.onerror = () => { if (img.src !== src && small !== src) img.src = src; else resolve(null); };
+    img.src = small;
   });
 }
 
@@ -464,8 +479,20 @@ function openInspect(key) {
   if (!o) { history.replaceState(null, '', `#${room.id}`); return; }
   if (S.insp?.o === o) return;
   play(['books', 'manga'].includes(room.kind) ? 'paper' : 'case', S.insp ? 0.6 : 1);
-  if (S.insp) return swapInspect(o);
-  buildInspect(o);
+  if (S.insp) swapInspect(o); else buildInspect(o);
+  setTimeout(() => { if (S.insp?.o === o) for (const d of [1, -1, 2, -2]) warmCover(room.objects.find(x => x.key === S.order[S.order.indexOf(o.key) + d])); }, 400);
+}
+
+const warmed = new Set();
+/** load an object's inspector-size cover into the browser cache before it is asked for */
+function warmCover(o) {
+  const url = o?.cover && coverSrc(o.cover, 'lg');
+  if (!url || warmed.has(url)) return;
+  warmed.add(url);
+  const img = new Image();
+  img.referrerPolicy = 'no-referrer';
+  img.decoding = 'async';
+  img.src = url;
 }
 
 function sizeFor(o, stage) {
@@ -736,7 +763,7 @@ function openSearch() {
       const key = it.kind === 'manga' ? `${it.id}--${it.vols[0]}` : it.id;
       const o = r.objects.find(x => x.key === key);
       return `<li><a href="#${r.id}--${esc(key)}" role="option" aria-selected="${i === sel}">
-        <span class="thumb"><span class="cover" style="inset:0">${coverHTML(o)}</span></span>
+        <span class="thumb"><span class="cover" style="inset:0">${coverHTML(o, 'sm')}</span></span>
         <span class="r-t"><b>${esc(it.title)}</b><i>${esc([it.creator, it.year, it.fmt.label].filter(Boolean).join(' · '))}</i></span>
         <span class="r-room">${esc(r.name.replace(/^The\s+/i, ''))}</span></a></li>`;
     }).join('') : `<li class="empty">Nothing on any shelf matches “${esc(input.value)}”.</li>`;
